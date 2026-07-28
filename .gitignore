@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Editor and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary and backup files
+*.tmp
+*.bak
+
+# Generated documentation output
+site/
+_site/
+.cache/
+
