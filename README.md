@@ -9,3 +9,7 @@ Public, implementation-facing specifications for Barometer library behavior, tas
 - [`data-formats/`](data-formats/README.md) — schemas and semantics for measurement tasks and their component objects.
 - [`library/`](library/README.md) — host integration and library lifecycle behavior.
 - [`tests/`](tests/README.md) — registered measurement test specifications and the reusable test-document template.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
