@@ -1,3 +1,7 @@
+<p align="left">
+  <img src="assets/barometer-logo.svg" alt="Barometer" width="80">
+</p>
+
 # Barometer Specification
 
 Public, implementation-facing specifications for Barometer library behavior, task data formats, and network measurement tests.
