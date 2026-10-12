@@ -62,6 +62,10 @@ Task provenance, issuer authorization, replay protection, target registration, a
 | [`safety`](task-safety.md) | Yes | Declares task risk and consent requirements evaluated before execution. |
 | [`labels`](task-labels.md) | No | Bounded metadata used for grouping, filtering, or analytics. |
 
+<a id="REQ-TASK-0001"></a>
+
+**REQ-TASK-0001:**
+
 Unknown top-level fields are rejected.
 
 `task_id` is 1–128 bytes matching `^[a-z0-9][a-z0-9._-]{0,127}$`. It must be identical for every installation receiving the same task definition and must not contain or derive from a person, account, installation, device, advertising ID, push token, linkage token, IP address, or other participant-specific value.

@@ -8,6 +8,8 @@ Public, implementation-facing specifications for Barometer library behavior, tas
 
 ## Directory Index
 
+- [`requirements/`](requirements/README.md) — stable requirement IDs, public allocation, lifecycle, and consumer-reference convention.
+- [`scripts/`](scripts/README.md) — local requirement-identifier validation tools.
 - [`measurement-limitations.md`](measurement-limitations.md) — cross-cutting interpretation limits, missingness, comparability, test-specific caveats, and reporting guardrails.
 - [`threat-model.md`](threat-model.md) — system boundaries, adversaries, assumptions, mitigations, abuse cases, and residual exposure.
 - [`data-formats/`](data-formats/README.md) — schemas and semantics for measurement tasks and their component objects.

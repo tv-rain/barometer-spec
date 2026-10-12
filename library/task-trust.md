@@ -22,6 +22,10 @@ Version `0.1.0` supports two origins:
 
 Examples of a remote mechanism include an authenticated, integrity-protected channel or a verified signed task package. Transport encryption without authenticated issuer authorization is insufficient.
 
+<a id="REQ-TRUST-0001"></a>
+
+**REQ-TRUST-0001:**
+
 Barometer must not accept a remote task when authentication, integrity verification, trusted time needed for validity, or source context is unavailable.
 
 ## Trusted Source Context
