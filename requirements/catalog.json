@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "namespaces": {
+    "TASK": {
+      "owner": "Public specification maintainers",
+      "scope": "Top-level task format obligations"
+    },
+    "TRUST": {
+      "owner": "Public specification maintainers",
+      "scope": "Task provenance, admission, and trusted local policy obligations"
+    },
+    "TCP-01": {
+      "owner": "Public specification maintainers",
+      "scope": "TCP-01 registered measurement obligations"
+    }
+  },
+  "requirements": [
+    {
+      "id": "REQ-TASK-0001",
+      "status": "active",
+      "source": "data-formats/task.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0001",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TCP-01-0001",
+      "status": "active",
+      "source": "tests/tcp-01.md",
+      "successors": [],
+      "reason": ""
+    }
+  ]
+}
