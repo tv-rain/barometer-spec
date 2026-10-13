@@ -1,0 +1,251 @@
+{
+  "base": "example.partial.json",
+  "scenarios": [
+    {
+      "name": "unknown-field",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/unexpected",
+          "value": true
+        }
+      ],
+      "expected": [
+        {
+          "code": "MALFORMED",
+          "level": "error",
+          "pointer": "/unexpected"
+        }
+      ]
+    },
+    {
+      "name": "duplicate-requirement",
+      "patch": [
+        {
+          "op": "add",
+          "path": "/requirements/-",
+          "value": {
+            "id": "REQ-TASK-0001",
+            "implementation_status": "planned",
+            "implementation_locations": [
+              {
+                "path": "internal/taskdecode/decode.go",
+                "selector": "symbol:Decode",
+                "state": "planned"
+              }
+            ],
+            "case_ids": [
+              "CASE-TASK-UNKNOWN-FIELD"
+            ],
+            "issue_ids": [],
+            "review_evidence_ids": [],
+            "support": [
+              {
+                "kind": "core",
+                "scope": "Go task decoding",
+                "status": "unclaimed",
+                "evidence_ids": []
+              }
+            ],
+            "notes": "Proposed owner and case only; no runtime implementation or executed conformance evidence."
+          }
+        }
+      ],
+      "expected": [
+        {
+          "code": "DUPLICATE_ID",
+          "level": "error",
+          "pointer": "/requirements/1/id"
+        }
+      ]
+    },
+    {
+      "name": "dangling-case",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/requirements/0/case_ids/0",
+          "value": "CASE-MISSING"
+        }
+      ],
+      "expected": [
+        {
+          "code": "DANGLING_REFERENCE",
+          "level": "error",
+          "pointer": "/requirements/0/case_ids/0"
+        },
+        {
+          "code": "UNREFERENCED_RECORD",
+          "level": "error",
+          "pointer": "/cases/0/id"
+        }
+      ]
+    },
+    {
+      "name": "stale-location",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/requirements/0/implementation_locations/0/state",
+          "value": "existing"
+        }
+      ],
+      "expected": [
+        {
+          "code": "STALE_LOCATION",
+          "level": "error",
+          "pointer": "/requirements/0/implementation_locations/0/path"
+        }
+      ]
+    },
+    {
+      "name": "unsupported-implemented-claim",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/requirements/0/implementation_status",
+          "value": "implemented"
+        }
+      ],
+      "expected": [
+        {
+          "code": "MALFORMED",
+          "level": "error",
+          "pointer": "/requirements/0"
+        }
+      ]
+    },
+    {
+      "name": "missing-catalog-entry",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/coverage/mode",
+          "value": "catalog_complete"
+        }
+      ],
+      "expected": [
+        {
+          "code": "MISSING_REQUIREMENT",
+          "level": "error",
+          "pointer": "/requirements"
+        }
+      ]
+    },
+    {
+      "name": "stale-baseline",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/implementation/revision",
+          "value": "0000000000000000000000000000000000000000"
+        }
+      ],
+      "expected": [
+        {
+          "code": "BASELINE_UNAVAILABLE",
+          "level": "error",
+          "pointer": "/implementation/revision"
+        }
+      ]
+    },
+    {
+      "name": "duplicate-member",
+      "raw_json": "{\"format_version\":1,\"format_version\":1}",
+      "expected": [
+        {
+          "code": "DUPLICATE_MEMBER",
+          "level": "error",
+          "pointer": "/format_version"
+        }
+      ]
+    },
+    {
+      "name": "unresolved-issue-claim",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/requirements/0/implementation_status",
+          "value": "implemented"
+        },
+        {
+          "op": "replace",
+          "path": "/requirements/0/implementation_locations",
+          "value": [
+            {
+              "path": "doc.go",
+              "selector": "file",
+              "state": "existing"
+            }
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/requirements/0/review_evidence_ids",
+          "value": [
+            "REVIEW-MISSING"
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/requirements/0/issue_ids",
+          "value": [
+            "ISSUE-EXAMPLE"
+          ]
+        },
+        {
+          "op": "add",
+          "path": "/issues/-",
+          "value": {
+            "id": "ISSUE-EXAMPLE",
+            "disposition": "open",
+            "finding": {
+              "repository": "https://github.com/tv-rain/barometer-go",
+              "revision": "d808f1b94e713a5f3970f8c780e0aef5b22a391d",
+              "path": "docs/specification-issues.md",
+              "selector": "file"
+            },
+            "resolution_references": [],
+            "notes": "Illustrative unresolved blocker; not a claim that this real finding affects REQ-TASK-0001."
+          }
+        }
+      ],
+      "expected": [
+        {
+          "code": "CLAIM_NOT_JUSTIFIED",
+          "level": "error",
+          "pointer": "/requirements/0/implementation_status"
+        }
+      ]
+    },
+    {
+      "name": "unsupported-support-claim",
+      "patch": [
+        {
+          "op": "replace",
+          "path": "/requirements/0/implementation_status",
+          "value": "unsupported"
+        },
+        {
+          "op": "replace",
+          "path": "/requirements/0/support/0/status",
+          "value": "supported"
+        },
+        {
+          "op": "replace",
+          "path": "/requirements/0/support/0/evidence_ids",
+          "value": [
+            "EVIDENCE-MISSING"
+          ]
+        }
+      ],
+      "expected": [
+        {
+          "code": "MALFORMED",
+          "level": "error",
+          "pointer": "/requirements/0/support/0/status"
+        }
+      ]
+    }
+  ]
+}

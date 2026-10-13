@@ -11,6 +11,7 @@ IDs are for documentation, code, tests, and specification issues. They do not be
 
 ## Directory Index
 
+- [`../traceability/`](../traceability/README.md) — development mapping format for immutable specification/implementation baselines, cases, issues, evidence, and support scope.
 - [`catalog.json`](catalog.json) — public namespaces and allocated requirement identities, including future retirement records.
 - [`../scripts/README.md`](../scripts/README.md) — checker, tests, invocation, and validation limits.
 
