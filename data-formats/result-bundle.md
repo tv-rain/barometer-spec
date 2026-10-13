@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 A Result Bundle groups one or more task results into one bounded submission packet. It allows a collector to associate results produced together without assigning a persistent identifier to a person, device, application account, or installation.

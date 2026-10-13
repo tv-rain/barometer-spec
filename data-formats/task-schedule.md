@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 The `schedule` object defines when a task becomes eligible for execution, when repeated runs become due, and how execution failures may be retried.
 
 Scheduling does not guarantee exact execution time. Mobile operating systems, application lifecycle, network availability, battery state, and local safety policies may delay or prevent execution.

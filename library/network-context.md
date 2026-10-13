@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](../data-formats/json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 Barometer maintains a bounded Network Context snapshot that can be used to evaluate execution eligibility and interpret measurement results. The snapshot separates information safely exposed by the operating system from coarse information derived from the public egress observed on the selected network path.

@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 A **Task** is a concrete instruction sent to a probe to execute a specific measurement.

@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 The Network Context object contains minimized access-network and selected-egress metadata used for execution eligibility and result interpretation. Acquisition and lifecycle behavior are defined in [`library/network-context.md`](../library/network-context.md).

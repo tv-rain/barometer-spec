@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 Measurement observations are ordered, bounded records of protocol or platform operations performed within one [`Measurement Result`](measurement-result.md). Registered tests select the observation types they may emit and define how those observations determine the test-specific outcome.

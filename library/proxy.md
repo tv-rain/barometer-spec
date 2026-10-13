@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](../data-formats/json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 Barometer can use one proxy supplied by the host application to run compatible measurements through a host-managed circumvention or alternate connection path. The proxy is configured with a small serializable object suitable for Flutter bindings. Tasks select either the direct path or the currently configured proxy without receiving or controlling the proxy endpoint.

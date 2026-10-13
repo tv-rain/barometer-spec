@@ -4,6 +4,7 @@ Specifications for normalized runtime context and the objects used to define, co
 
 ## Directory Index
 
+- [`json-decoding.md`](json-decoding.md) — shared strict runtime decoding, representation, schema selection, bounds, and failure contract.
 - [`measurement-observations.md`](measurement-observations.md) — bounded reusable DNS, TCP, TLS, and HTTP observation objects.
 - [`measurement-result.md`](measurement-result.md) — common per-attempt result envelope, execution state, timing, and versioning.
 - [`network-context.md`](network-context.md) — normalized access and egress metadata shared by execution and measurement results.
