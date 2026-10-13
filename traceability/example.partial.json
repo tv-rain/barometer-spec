@@ -1,0 +1,61 @@
+{
+  "format_version": 1,
+  "specification": {
+    "repository": "https://github.com/tv-rain/barometer-spec",
+    "revision": "72bbc985280b072e80de65ee9dc13ba600ea2ba4",
+    "version": "0.1.0"
+  },
+  "implementation": {
+    "repository": "https://github.com/tv-rain/barometer-go",
+    "revision": "d808f1b94e713a5f3970f8c780e0aef5b22a391d"
+  },
+  "coverage": {
+    "mode": "partial",
+    "unallocated_sources": [
+      "data-formats/task.md"
+    ],
+    "notes": "Illustrative mapping for one allocated requirement only. Other allocated requirements and authoritative unallocated text remain outside this example; this is not a production inventory."
+  },
+  "requirements": [
+    {
+      "id": "REQ-TASK-0001",
+      "implementation_status": "planned",
+      "implementation_locations": [
+        {
+          "path": "internal/taskdecode/decode.go",
+          "selector": "symbol:Decode",
+          "state": "planned"
+        }
+      ],
+      "case_ids": [
+        "CASE-TASK-UNKNOWN-FIELD"
+      ],
+      "issue_ids": [],
+      "review_evidence_ids": [],
+      "support": [
+        {
+          "kind": "core",
+          "scope": "Go task decoding",
+          "status": "unclaimed",
+          "evidence_ids": []
+        }
+      ],
+      "notes": "Proposed owner and case only; no runtime implementation or executed conformance evidence."
+    }
+  ],
+  "cases": [
+    {
+      "id": "CASE-TASK-UNKNOWN-FIELD",
+      "location": {
+        "path": "internal/taskdecode/decode_test.go",
+        "selector": "symbol:TestRejectUnknownTopLevelField",
+        "state": "planned"
+      },
+      "scope": "Synthetic top-level task decoding",
+      "status": "planned",
+      "evidence_ids": []
+    }
+  ],
+  "issues": [],
+  "evidence": []
+}

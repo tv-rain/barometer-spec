@@ -8,6 +8,7 @@ Public, implementation-facing specifications for Barometer library behavior, tas
 
 ## Directory Index
 
+- [`traceability/`](traceability/README.md) — development manifest schema, coverage gaps, evidence/status rules, and examples; no runtime or support claim.
 - [`specification-issues/`](specification-issues/README.md) — public contributor workflow and template for findings, review, and ordered adoption.
 - [`requirements/`](requirements/README.md) — stable requirement IDs, public allocation, lifecycle, and consumer-reference convention.
 - [`scripts/`](scripts/README.md) — local requirement-identifier validation tools.
