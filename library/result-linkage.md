@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](../data-formats/json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Overview
 
 Barometer can optionally correlate Result Bundles produced by the same library installation during a limited rotation epoch. It does this with a random installation secret held in non-synchronizing platform-protected storage and a token derived locally from that secret.

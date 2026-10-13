@@ -12,6 +12,10 @@
     "TCP-01": {
       "owner": "Public specification maintainers",
       "scope": "TCP-01 registered measurement obligations"
+    },
+    "JSON": {
+      "owner": "Public specification maintainers",
+      "scope": "Shared runtime JSON framing, text, names, types, numbers, version selection, bounds, and failure obligations"
     }
   },
   "requirements": [
@@ -33,6 +37,83 @@
       "id": "REQ-TCP-01-0001",
       "status": "active",
       "source": "tests/tcp-01.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0001",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0002",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0003",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0004",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0005",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0006",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0007",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0008",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0009",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0010",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-JSON-0011",
+      "status": "active",
+      "source": "data-formats/json-decoding.md",
       "successors": [],
       "reason": ""
     }

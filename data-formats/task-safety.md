@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 The `safety` object declares the user risks associated with a configured task and whether the task requires explicit user consent.
 
 Safety declarations are evaluated before every execution attempt. They provide input to the probe's local safety policy but do not authorize execution by themselves.

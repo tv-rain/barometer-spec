@@ -3,6 +3,8 @@
 **Status:** Draft  
 **Version:** 0.1.0
 
+Runtime JSON values follow the shared [strict decoding contract](../data-formats/json-decoding.md) in addition to this document's schema, limits, and validation rules.
+
 ## Purpose
 
 This document is the canonical numeric limit registry for Barometer version `0.1.0`. Public schemas and test specifications use these values unless they define a stricter value.
