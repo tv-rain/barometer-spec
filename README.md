@@ -11,7 +11,7 @@ Public, implementation-facing specifications for Barometer library behavior, tas
 - [`traceability/`](traceability/README.md) — development manifest schema, coverage gaps, evidence/status rules, and examples; no runtime or support claim.
 - [`specification-issues/`](specification-issues/README.md) — public contributor workflow and template for findings, review, and ordered adoption.
 - [`requirements/`](requirements/README.md) — stable requirement IDs, public allocation, lifecycle, and consumer-reference convention.
-- [`scripts/`](scripts/README.md) — local requirement-identifier validation tools.
+- [`scripts/`](scripts/README.md) — requirement-identifier checks and local/CI traceability metadata validation.
 - [`measurement-limitations.md`](measurement-limitations.md) — cross-cutting interpretation limits, missingness, comparability, test-specific caveats, and reporting guardrails.
 - [`threat-model.md`](threat-model.md) — system boundaries, adversaries, assumptions, mitigations, abuse cases, and residual exposure.
 - [`data-formats/`](data-formats/README.md) — schemas and semantics for measurement tasks and their component objects.
