@@ -1,0 +1,43 @@
+name: Specification tooling
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.14"]
+    steps:
+      - name: Check out public repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up Go declaration parser toolchain
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version: "1.26.0"
+          cache: false
+      - name: Install pinned checker dependencies
+        run: python -m pip install -r scripts/requirements.txt
+      - name: Check public requirement identifiers
+        run: python -B scripts/check_requirements.py
+      - name: Test offline tooling and public invalid scenarios
+        run: python -B -m unittest discover -s scripts -p 'test_*.py' -v
+      - name: Check Go helper formatting and static analysis
+        run: |
+          test -z "$(gofmt -l scripts/go_selector.go)"
+          go vet scripts/go_selector.go
+      - name: Check whitespace
+        run: git diff --check
