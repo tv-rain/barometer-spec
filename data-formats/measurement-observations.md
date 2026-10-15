@@ -144,13 +144,19 @@ The object does not retain a resolver address, resolver provider, system DNS con
 
 <a id="REQ-OBS-0011"></a>
 
-**REQ-OBS-0011:**
+**REQ-OBS-0011 (retired):**
+
+The historical DNS response table used an undefined registered response-code vocabulary. [REQ-OBS-0042](#REQ-OBS-0042) replaces that table with an explicit normalized value contract; historical revisions remain available.
+
+<a id="REQ-OBS-0042"></a>
+
+**REQ-OBS-0042:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `arrival_index` | integer | Yes | Positive and sequential within the observation. | Preserves matching-response arrival order. |
 | `arrival_offset_ms` | integer | Yes | Quantized non-negative duration from operation start. | Coarse relative response timing. |
-| `rcode` | string | Yes | Registered uppercase DNS response-code name. | Directly observed response code. |
+| `rcode` | string | Yes | One value from [DNS response-code normalization](#dns-response-code-normalization). | Normalized directly observed response code; `OTHER` is a coarse class. |
 | `answers` | array | Yes | At most 16 normalized answers, including at most 8 CNAME entries; may be empty. | Relevant answer values from this response. |
 
 ### DNS Answer
@@ -269,15 +275,21 @@ An underlying TCP failure is emitted as a preceding `tcp_connect` observation. A
 
 <a id="REQ-OBS-0021"></a>
 
-**REQ-OBS-0021:**
+**REQ-OBS-0021 (retired):**
+
+The historical TLS detail table referenced undefined registered vocabularies. [REQ-OBS-0043](#REQ-OBS-0043) replaces it with explicit negotiated-property and alert vocabularies; historical revisions remain available.
+
+<a id="REQ-OBS-0043"></a>
+
+**REQ-OBS-0043:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `address_family` | string | Yes | `ipv4` or `ipv6` | Family of the established TCP stream. |
-| `tls_version` | string | No | Registered normalized negotiated version. | Present only when negotiation produced a version. |
-| `alpn` | string | No | Registered ASCII ALPN value of 1–32 bytes. | Present only when a protocol was negotiated. |
+| `tls_version` | string | No | `TLS1.2`, `TLS1.3`, or `unknown`, using [negotiated-property normalization](#tls-negotiated-properties). | Present only when negotiation produced a version. |
+| `alpn` | string | No | `http/1.1`, `h2`, `dot`, or `unknown`, using [negotiated-property normalization](#tls-negotiated-properties). | Present only when a protocol was negotiated; `unknown` is a coarse marker, not an ALPN identifier. |
 | `certificate_validation` | string | Yes | `trusted`, `untrusted`, `name_mismatch`, `time_invalid`, `not_completed`, or `inconclusive` | Minimized certificate-validation outcome. |
-| `alert` | string | No | Registered coarse TLS alert class. | Present only when needed to support an `alert` failure. |
+| `alert` | string | No | One class from [TLS peer-alert normalization](#tls-peer-alert-normalization). | Present only when needed to support an `alert` failure. |
 
 <a id="REQ-OBS-0022"></a>
 
@@ -403,6 +415,97 @@ The body content and computed body digest are not retained. A configured expecte
 **REQ-OBS-0031:**
 
 Header names, header values, expected strings, expected digests, actual body bytes, and actual digests are not retained.
+
+## Registered Normalized Vocabularies
+
+### Contract Selection and Producer Boundary
+
+<a id="REQ-OBS-0044"></a>
+
+**REQ-OBS-0044:**
+
+The vocabularies below are closed Barometer `0.1.0` vocabularies selected by the containing result/test contract. External registries and library upgrades do not expand them automatically; no runtime registry lookup is permitted. Adding a value requires public specification review and an explicit compatibility/version disposition. These definitions do not add serialized version fields or change permitted network operations, handshake profiles, targets, retries, or fallback paths.
+
+<a id="REQ-OBS-0045"></a>
+
+**REQ-OBS-0045:**
+
+Normalization applies to safely observed protocol/platform data before constructing an observation. Decoders of serialized observations must reject values outside the closed vocabulary, including aliases, incorrect case, numeric strings and raw library messages; they must not repair them into `OTHER`, `other`, `unknown` or `inconclusive`. A coarse marker is valid only where explicitly listed. Missing evidence, malformed protocol data and a directly observed value outside the retained subset are distinct cases.
+
+### DNS Response-Code Normalization
+
+The numeric meanings of the initial six codes follow the [IANA DNS RCODE registry](https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-6). Barometer's retained subset and the `OTHER` marker are project choices, not an automatic adoption of that external registry.
+
+<a id="REQ-OBS-0046"></a>
+
+**REQ-OBS-0046:**
+
+For a safely parsed, matching DNS response with a reliable effective response code, producers must use this exact mapping:
+
+| Observed effective code | Retained `rcode` |
+|---|---|
+| 0 | `NOERROR` |
+| 1 | `FORMERR` |
+| 2 | `SERVFAIL` |
+| 3 | `NXDOMAIN` |
+| 4 | `NOTIMP` |
+| 5 | `REFUSED` |
+| Any other valid effective code | `OTHER` |
+
+The effective code includes safely parsed extended response-code bits when present; producers must not misreport the low header bits as the complete code. If the resolver API does not expose a reliable code, omit that response record rather than inventing a code or using `OTHER`. Malformed or nonmatching messages do not become valid responses through this mapping. Raw numeric codes, private-use labels and additional diagnostic strings must not be retained.
+
+<a id="REQ-OBS-0047"></a>
+
+**REQ-OBS-0047:**
+
+`OTHER` records a directly observed code outside the retained subset; it does not mean success, no response, malformed response or censorship. Existing `NXDOMAIN`, `SERVFAIL`, `REFUSED` and no-data outcome rules remain applicable. A valid nonzero code without a more specific registered failure maps conservatively to `inconclusive`; it must not be converted to `NOERROR` or `no_data`. This mapping does not change response order, answer retention, collection bounds or test-specific outcome precedence.
+
+### TLS Negotiated Properties
+
+TLS 1.2 and 1.3 are defined by [RFC 5246](https://www.rfc-editor.org/rfc/rfc5246.html) and [RFC 8446](https://www.rfc-editor.org/rfc/rfc8446.html). The selected ALPN identifiers appear in the [IANA ALPN registry](https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids); Barometer deliberately retains a fixed subset.
+
+<a id="REQ-OBS-0048"></a>
+
+**REQ-OBS-0048:**
+
+When negotiation produced a reliably exposed version, producers must retain `TLS1.2` for negotiated version `0x0303`, `TLS1.3` for `0x0304`, and `unknown` for another safely established negotiated version. When no version was negotiated or the API does not expose a reliable negotiated value, `tls_version` must be absent. A record-layer legacy version or offered version is not evidence of the negotiated version. Retaining `unknown` does not authorize offering obsolete versions, insecure verification, version forcing or a retry with another handshake profile.
+
+<a id="REQ-OBS-0049"></a>
+
+**REQ-OBS-0049:**
+
+The initial registered offered ALPN identifiers are exactly the case-sensitive ASCII strings `http/1.1`, `h2` and `dot`. Tasks must not offer `unknown`, `h2c`, arbitrary application-specific identifiers or other external registry entries. The existing eight-entry and 32-byte ceilings remain upper bounds; duplicate rejection and stricter test/target/local-policy rules still apply. This registration permits no application payload, additional test, QUIC operation or implicit ALPN offer.
+
+When a protocol was actually negotiated, the retained `alpn` is its exact identifier if it is one of those three, or `unknown` for another safely exposed negotiated identifier. If none was negotiated, `alpn` must be absent, including when a platform cannot expose the value. A peer selecting an unoffered identifier is not a successful valid negotiation; a coarse retained marker must not override protocol validation or a registered failure. Do not copy the original unregistered identifier into another field or diagnostic.
+
+### TLS Peer-Alert Normalization
+
+The protocol alert descriptions are specified in [RFC 8446, section 6](https://www.rfc-editor.org/rfc/rfc8446.html#section-6). The following groups are Barometer classifications; they are not raw TLS alert names or locally generated error classes.
+
+<a id="REQ-OBS-0050"></a>
+
+**REQ-OBS-0050:**
+
+When a directly received peer alert is the evidence for `status: failed`, `failure: alert`, a producer that safely exposes its description code must use this exact coarse mapping if it retains `details.alert`:
+
+| Peer description codes | Retained class |
+|---|---|
+| 40, 71, 86, 120 | `handshake_failure` |
+| 42, 43, 44, 45, 46, 48, 113, 116 | `certificate_error` |
+| 10, 20, 22, 47, 50, 51, 70, 109, 110 | `protocol_error` |
+| 49, 112, 115 | `access_denied` |
+| 80 | `internal_error` |
+| Any other directly received description code | `other` |
+
+If alert reception is known but the description is unavailable, omit `details.alert`; do not guess a class. Absence of evidence that a peer alert was received does not establish `failure: alert`. Raw bytes, numeric codes, severity levels and raw library error text must not be serialized. A normal closure after successful handshake does not retroactively make the handshake fail. A local cancellation, deadline, certificate-validation failure or locally sent alert is not a received peer alert. A peer's certificate-related alert does not establish the local `certificate_validation` result; preserve that separate local observation. A more specific registered failure such as `alpn_no_overlap` follows the test's outcome rules and does not carry `details.alert` under this format.
+
+### Incomplete Observations
+
+<a id="REQ-OBS-0051"></a>
+
+**REQ-OBS-0051:**
+
+Version `0.1.0` registers no `failure` value for `status: incomplete` for any of its four observation types. Producers must omit that field and decoders must reject its presence, including `null`, an empty string or an otherwise registered failed-operation value. Cross-cutting termination remains in `execution.reason`, and registered-test rules still determine whether partial observations may be retained at all.
 
 ## Validation and Bounds
 

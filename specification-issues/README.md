@@ -8,6 +8,8 @@ This is development guidance, not a runtime contract. It introduces no serialize
 
 ## Directory Index
 
+- [`observation-vocabularies.md`](observation-vocabularies.md) — approved closed DNS/TLS wording, coarse unknown handling, incomplete-field clarification and ordered adoption; public merge and adoption pending.
+
 - [`strict-json-decoding.md`](strict-json-decoding.md) — approved strict runtime JSON wording and version disposition, synthetic evidence, compatibility limits, and pending merge/downstream adoption.
 - [`template.md`](template.md) — portable record covering evidence, impact, alternatives, public review, ordering, and adoption.
 

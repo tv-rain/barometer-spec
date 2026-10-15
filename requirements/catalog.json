@@ -277,10 +277,12 @@
     },
     {
       "id": "REQ-OBS-0011",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/measurement-observations.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-OBS-0042"
+      ],
+      "reason": "Replaced by an explicit normalized-value table with closed vocabularies and coarse markers; proposed under GO-SPEC-ISSUE-002."
     },
     {
       "id": "REQ-OBS-0012",
@@ -347,10 +349,12 @@
     },
     {
       "id": "REQ-OBS-0021",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/measurement-observations.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-OBS-0043"
+      ],
+      "reason": "Replaced by an explicit normalized-value table with closed vocabularies and coarse markers; proposed under GO-SPEC-ISSUE-002."
     },
     {
       "id": "REQ-OBS-0022",
@@ -6810,6 +6814,76 @@
       "id": "REQ-HTTP-01-0050",
       "status": "active",
       "source": "tests/http-01.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0042",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0043",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0044",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0045",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0046",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0047",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0048",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0049",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0050",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0051",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
       "successors": [],
       "reason": ""
     }
