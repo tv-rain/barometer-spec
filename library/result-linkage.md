@@ -9,6 +9,10 @@ Runtime JSON values follow the shared [strict decoding contract](../data-formats
 
 Barometer can optionally correlate Result Bundles produced by the same library installation during a limited rotation epoch. It does this with a random installation secret held in non-synchronizing platform-protected storage and a token derived locally from that secret.
 
+<a id="REQ-LINKAGE-0001"></a>
+
+**REQ-LINKAGE-0001:**
+
 This mechanism is pseudonymous, not anonymous. It deliberately does not identify a person, host application account, device, or access network. The default mode is no cross-bundle linkage.
 
 The serialized bundle representation is defined in [`data-formats/result-bundle.md`](../data-formats/result-bundle.md).
@@ -22,6 +26,10 @@ The mechanism supports:
 - rotation that prevents ordinary correlation across epochs;
 - explicit deletion through Barometer and host application clear-data behavior;
 - Flutter integration using plain serializable initialization values and simple methods.
+
+<a id="REQ-LINKAGE-0002"></a>
+
+**REQ-LINKAGE-0002:**
 
 The mechanism does not support:
 
@@ -45,21 +53,45 @@ The host may enable rotating installation linkage with an ordinary serializable 
 }
 ```
 
+<a id="REQ-LINKAGE-0003"></a>
+
+**REQ-LINKAGE-0003:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `mode` | string | Yes | `none` or `rotating_installation` | Whether separate bundles can be correlated within an epoch. |
 | `scope` | string | Conditional | Required for `rotating_installation`; 1–128 lowercase ASCII letters, digits, `.`, `_`, or `-`; fixed for the deployment and not user-specific. | Domain separator preventing cross-deployment token equality. |
 | `rotation_period_seconds` | integer | Conditional | Required for `rotating_installation`; 86,400 through 604,800. | Length of a linkage epoch. |
 
+<a id="REQ-LINKAGE-0004"></a>
+
+**REQ-LINKAGE-0004:**
+
 If `result_linkage` is absent, Barometer behaves as if `mode` were `none`. In `none` mode, `scope` and `rotation_period_seconds` are rejected.
 
+<a id="REQ-LINKAGE-0005"></a>
+
+**REQ-LINKAGE-0005:**
+
 The scope identifies a reviewed Barometer deployment, such as one application environment. It must not contain or be derived from a user, account, installation, device, access network, proxy endpoint, experiment participant, or other high-cardinality value.
+
+<a id="REQ-LINKAGE-0006"></a>
+
+**REQ-LINKAGE-0006:**
 
 The first version does not permit tasks, server responses, or runtime task configuration to enable linkage, change its scope, or lengthen its rotation. A host configuration change requires library reinitialization. Local safety policy may disable linkage regardless of initialization input.
 
 ## Installation Secret
 
+<a id="REQ-LINKAGE-0007"></a>
+
+**REQ-LINKAGE-0007:**
+
 When rotating linkage is enabled and no valid key exists, the platform storage implementation creates a new cryptographically random 256-bit installation secret. The secret:
+
+<a id="REQ-LINKAGE-0008"></a>
+
+**REQ-LINKAGE-0008:**
 
 - is owned exclusively by Barometer's private-state subsystem;
 - is never returned through the Go, gomobile, Flutter, Dart, host application, task, result, logging, analytics, or diagnostic APIs;
@@ -68,9 +100,17 @@ When rotating linkage is enabled and no valid key exists, the platform storage i
 - is excluded from backup, restore, migration, and cloud synchronization;
 - is deleted by explicit Barometer data clearing and by the platform clear-data lifecycle defined below.
 
+<a id="REQ-LINKAGE-0009"></a>
+
+**REQ-LINKAGE-0009:**
+
 Barometer must generate a new secret rather than deriving one from an advertising ID, vendor ID, device serial, hardware property, push token, application account, operating-system account, SIM, phone number, email address, pre-existing analytics identifier, or host-provided value.
 
 ## Token Derivation
+
+<a id="REQ-LINKAGE-0010"></a>
+
+**REQ-LINKAGE-0010:**
 
 For a bundle created in rotation epoch `E`, Barometer derives:
 
@@ -82,23 +122,55 @@ message = "barometer-result-linkage-v1" || 0x00 ||
 token = HMAC-SHA-256(installation_secret, message)
 ```
 
+<a id="REQ-LINKAGE-0011"></a>
+
+**REQ-LINKAGE-0011:**
+
 `E` is the non-negative integer obtained by dividing trusted wall-clock Unix time by `rotation_period_seconds` and taking the floor. The encoded epoch in the result is the same integer used in the HMAC input.
+
+<a id="REQ-LINKAGE-0012"></a>
+
+**REQ-LINKAGE-0012:**
 
 The fixed purpose string and separators provide domain separation. Tokens derived for different scopes or epochs are different even when the installation secret is unchanged.
 
+<a id="REQ-LINKAGE-0013"></a>
+
+**REQ-LINKAGE-0013:**
+
 The 32-byte token is encoded as unpadded base64url. The secret and intermediate HMAC state must be cleared from ordinary process memory where the implementation and platform allow it.
+
+<a id="REQ-LINKAGE-0014"></a>
+
+**REQ-LINKAGE-0014:**
 
 If the platform clock is unavailable, outside supported bounds, or moves backwards into an earlier epoch during one initialized library lifetime, Barometer omits linkage until it can establish a non-decreasing valid epoch. It must not reuse an earlier emitted epoch to extend tracking.
 
 ## Rotation Semantics
 
+<a id="REQ-LINKAGE-0015"></a>
+
+**REQ-LINKAGE-0015:**
+
 All bundles created in the same scope and epoch have the same token. Bundles created after the epoch changes use the newly derived token.
 
+<a id="REQ-LINKAGE-0016"></a>
+
+**REQ-LINKAGE-0016:**
+
 The collector can correlate bundles only within an epoch unless it possesses other identifying data. Barometer must not send a mapping between old and new tokens. The collector must not ask the library to prove continuity across epochs.
+
+<a id="REQ-LINKAGE-0017"></a>
+
+**REQ-LINKAGE-0017:**
 
 Rotation period selection is a deployment privacy decision. It must be from 86,400 through 604,800 seconds and should be no longer than the shortest period needed for the documented analysis. Linkage must not be silently extended for operational convenience.
 
 ## Go Core and Mobile Binding Architecture
+
+<a id="REQ-LINKAGE-0018"></a>
+
+**REQ-LINKAGE-0018:**
 
 Barometer's measurement and bundle logic remains in Go. Platform-protected storage is exposed to the Go core through a small internal capability, conceptually:
 
@@ -109,7 +181,15 @@ type LinkageKeyStore interface {
 }
 ```
 
+<a id="REQ-LINKAGE-0019"></a>
+
+**REQ-LINKAGE-0019:**
+
 The interface is internal to the Barometer implementation. It must not be accepted from Flutter or from the host application, and the raw installation secret is not part of the interface. `DeriveHMACSHA256` creates the protected key when necessary and performs derivation without exporting it when supported.
+
+<a id="REQ-LINKAGE-0020"></a>
+
+**REQ-LINKAGE-0020:**
 
 The Android and Apple library bindings own the concrete storage adapter and connect it to the Go core during native initialization. A Flutter-facing package passes only the plain `result_linkage` configuration object and exposes lifecycle methods such as:
 
@@ -125,11 +205,23 @@ await Barometer.initialize({
 await Barometer.clearMeasurementData();
 ```
 
+<a id="REQ-LINKAGE-0021"></a>
+
+**REQ-LINKAGE-0021:**
+
 The exact exported method names may follow binding conventions, but the semantics must be equivalent. Flutter does not pass a callback, native interface, key handle, byte array containing the secret, or platform storage object.
+
+<a id="REQ-LINKAGE-0022"></a>
+
+**REQ-LINKAGE-0022:**
 
 Desktop and test builds may provide an explicitly marked ephemeral in-memory implementation. Such an implementation loses linkage on process exit and must not be used as an unnoticed fallback on mobile.
 
 ## Clear-data Contract
+
+<a id="REQ-LINKAGE-0023"></a>
+
+**REQ-LINKAGE-0023:**
 
 `clearMeasurementData` is a privacy operation. It must:
 
@@ -142,19 +234,47 @@ Desktop and test builds may provide an explicitly marked ephemeral in-memory imp
 7. return only after deletion succeeds or return an explicit error identifying incomplete clearing;
 8. create no replacement secret until a later operation actually requires linkage.
 
+<a id="REQ-LINKAGE-0024"></a>
+
+**REQ-LINKAGE-0024:**
+
 The method must be safe to call repeatedly. It must not upload pending results before deletion, and clearing must not itself send a network request.
 
+<a id="REQ-LINKAGE-0025"></a>
+
+**REQ-LINKAGE-0025:**
+
 The host application must connect every user-visible “clear local data,” “reset privacy data,” “delete downloaded/offline data,” or equivalent action that promises to remove Barometer data to `clearMeasurementData`. Logging out of a host account should call it when the product describes logout as removing local user data. Barometer must not infer account semantics itself.
+
+<a id="REQ-LINKAGE-0026"></a>
+
+**REQ-LINKAGE-0026:**
 
 If the host deletes its storage without first calling Barometer, platform lifecycle behavior must still remove or invalidate the secret as described below. The integration guide and release validation must test both the explicit API and operating-system data clearing.
 
 ## Android Storage
 
+<a id="REQ-LINKAGE-0027"></a>
+
+**REQ-LINKAGE-0027:**
+
 The Android binding should use an application-scoped Android Keystore HMAC-SHA-256 key that is non-exportable where supported. Associated non-secret state must be stored in the application's no-backup private directory, such as `Context.getNoBackupFilesDir()`, and must not be stored in shared preferences or files eligible for Auto Backup, device-to-device transfer, external storage, or host analytics storage.
+
+<a id="REQ-LINKAGE-0028"></a>
+
+**REQ-LINKAGE-0028:**
 
 The binding must not enable cloud or cross-device synchronization for Barometer private state. Backup rules should explicitly exclude all Barometer state even when it is already placed in the no-backup directory, providing defense in depth.
 
+<a id="REQ-LINKAGE-0029"></a>
+
+**REQ-LINKAGE-0029:**
+
 Android application data clearing and uninstall normally remove application-private data and application-scoped Keystore entries. The binding must verify on initialization that its no-backup state and protected key belong to the same Barometer state generation. If one exists without the other, it deletes any orphaned material and creates a new secret only when linkage is next required.
+
+<a id="REQ-LINKAGE-0030"></a>
+
+**REQ-LINKAGE-0030:**
 
 The Android implementation must test at minimum:
 
@@ -165,11 +285,23 @@ The Android implementation must test at minimum:
 - device-to-device migration;
 - interrupted deletion and orphaned-key recovery.
 
+<a id="REQ-LINKAGE-0031"></a>
+
+**REQ-LINKAGE-0031:**
+
 No test may rely on a stable token surviving any of these reset, restore, or migration cases.
 
 ## Apple Platform Storage
 
+<a id="REQ-LINKAGE-0032"></a>
+
+**REQ-LINKAGE-0032:**
+
 The Apple binding should store the installation secret as a Keychain item with `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` when background derivation is required, set `kSecAttrSynchronizable` to false, and use an application-private access group. An integration that never derives tokens in the background may use the more restrictive `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`. The item must not be shared with unrelated applications, extensions, analytics components, or host account services.
+
+<a id="REQ-LINKAGE-0033"></a>
+
+**REQ-LINKAGE-0033:**
 
 `ThisDeviceOnly` prevents migration through backups, but Keychain items can survive application uninstall. Therefore the binding must also maintain a non-secret reinstall sentinel in the application's ordinary sandbox container. On initialization:
 
@@ -177,7 +309,15 @@ The Apple binding should store the installation secret as a Keychain item with `
 2. if the sentinel is absent, the binding treats the application as newly installed, deletes any surviving Barometer Keychain item, creates the sentinel, and creates a new secret only when linkage is required;
 3. if the sentinel exists but the Keychain item is absent or invalid, the binding removes inconsistent linkage state and creates a new secret only when required.
 
+<a id="REQ-LINKAGE-0034"></a>
+
+**REQ-LINKAGE-0034:**
+
 The sentinel must not be placed in Keychain, iCloud key-value storage, CloudKit, a shared app group, `NSUbiquitousKeyValueStore`, or another synchronizing store. Backup and restore behavior must be tested so a restored sentinel cannot cause an old or migrated Keychain identity to be accepted. If the target platform cannot reliably distinguish a restored container from the original installation, the integration must prefer resetting linkage over preserving it.
+
+<a id="REQ-LINKAGE-0035"></a>
+
+**REQ-LINKAGE-0035:**
 
 The Apple implementation must test at minimum:
 
@@ -188,11 +328,23 @@ The Apple implementation must test at minimum:
 - iCloud Keychain enabled and disabled;
 - missing sentinel, missing Keychain item, and interrupted deletion.
 
+<a id="REQ-LINKAGE-0036"></a>
+
+**REQ-LINKAGE-0036:**
+
 No test may rely on a stable token surviving reinstall, restore, or migration.
 
 ## Storage Failure
 
+<a id="REQ-LINKAGE-0037"></a>
+
+**REQ-LINKAGE-0037:**
+
 If protected, non-synchronizing storage is unavailable, locked beyond the bounded operation, inconsistent, or fails validation, Barometer must omit the `linkage` object and continue with single-use `bundle_id` grouping when local policy permits. It must not:
+
+<a id="REQ-LINKAGE-0038"></a>
+
+**REQ-LINKAGE-0038:**
 
 - fall back to an exported secret in ordinary preferences or files;
 - ask Flutter or the host to persist the secret;
@@ -200,11 +352,23 @@ If protected, non-synchronizing storage is unavailable, locked beyond the bounde
 - retain one constant token in memory indefinitely;
 - block result deletion.
 
+<a id="REQ-LINKAGE-0039"></a>
+
+**REQ-LINKAGE-0039:**
+
 The library may expose a coarse local diagnostic such as `linkage_unavailable`. The diagnostic must not contain key aliases, platform account information, token material, or persistent identifiers, and it is not evidence of censorship.
 
 ## Ingestion Separation
 
+<a id="REQ-LINKAGE-0040"></a>
+
+**REQ-LINKAGE-0040:**
+
 Linkage safety depends on the complete delivery path, not only token derivation. Collectors should separate the network-facing ingress component from research storage so transport metadata is removed before a bundle reaches analysis.
+
+<a id="REQ-LINKAGE-0041"></a>
+
+**REQ-LINKAGE-0041:**
 
 The ingress component should:
 
@@ -214,19 +378,72 @@ The ingress component should:
 - retain `bundle_id` only as long as required for idempotency and retry handling;
 - enforce size, rate, and schema limits without building a persistent device profile.
 
+<a id="REQ-LINKAGE-0042"></a>
+
+**REQ-LINKAGE-0042:**
+
 If the host delivers bundles through an API already authenticated to a user account, rotating linkage does not prevent the backend from associating results with that account. Such an integration requires a separate privacy and safety review and must not be described as anonymous.
 
 ## Privacy and Safety Requirements
 
+<a id="REQ-LINKAGE-0043"></a>
+
+**REQ-LINKAGE-0043:**
+
 - Linkage is disabled by default.
+
+<a id="REQ-LINKAGE-0044"></a>
+
+**REQ-LINKAGE-0044:**
+
 - Enabling linkage is trusted local deployment policy, not task-controlled behavior.
+
+<a id="REQ-LINKAGE-0045"></a>
+
+**REQ-LINKAGE-0045:**
+
 - The token is installation-scoped and must never be called a user identifier.
+
+<a id="REQ-LINKAGE-0046"></a>
+
+**REQ-LINKAGE-0046:**
+
 - Raw secrets and tokens must not be logged, placed in crash reports, or exposed to analytics.
+
+<a id="REQ-LINKAGE-0047"></a>
+
+**REQ-LINKAGE-0047:**
+
 - Linkage must not be used for per-installation task selection, retaliation, access control, advertising, product analytics, or account enforcement.
+
+<a id="REQ-LINKAGE-0048"></a>
+
+**REQ-LINKAGE-0048:**
+
 - Network Context acquisition must never receive `bundle_id`, scope, epoch, or token.
+
+<a id="REQ-LINKAGE-0049"></a>
+
+**REQ-LINKAGE-0049:**
+
 - Measurement targets and proxies must never receive linkage material.
+
+<a id="REQ-LINKAGE-0050"></a>
+
+**REQ-LINKAGE-0050:**
+
 - Raw token retention must be bounded to the documented research need.
+
+<a id="REQ-LINKAGE-0051"></a>
+
+**REQ-LINKAGE-0051:**
+
 - Combining a token with precise timestamps, source IP addresses, rare ASN and region combinations, or host account data increases re-identification risk and must be prevented or separately reviewed.
+
+<a id="REQ-LINKAGE-0052"></a>
+
+**REQ-LINKAGE-0052:**
+
 - The host must provide an explicit reset path wherever linkage is enabled.
 
 ## Known Limitations

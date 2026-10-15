@@ -11,6 +11,10 @@ A **Task** is a concrete instruction sent to a probe to execute a specific measu
 
 A task references a registered measurement (`test_id`) and provides the input, execution constraints, scheduling policy, and safety requirements needed to perform one or more measurement runs.
 
+<a id="REQ-TASK-0002"></a>
+
+**REQ-TASK-0002:**
+
 A task does not contain measurement results. Results are produced separately after execution.
 
 Task provenance, issuer authorization, replay protection, target registration, and local-policy lifecycle are defined in [`library/task-trust.md`](../library/task-trust.md). Numeric bounds are defined in [`library/registered-limits.md`](../library/registered-limits.md).
@@ -51,6 +55,10 @@ Task provenance, issuer authorization, replay protection, target registration, a
 
 # Top-level Fields
 
+<a id="REQ-TASK-0003"></a>
+
+**REQ-TASK-0003:**
+
 | Field | Required | Description |
 |--------|----------|-------------|
 | `schema_version` | Yes | Version of the Task schema. |
@@ -70,12 +78,24 @@ Task provenance, issuer authorization, replay protection, target registration, a
 
 Unknown top-level fields are rejected.
 
+<a id="REQ-TASK-0004"></a>
+
+**REQ-TASK-0004:**
+
 `task_id` is 1–128 bytes matching `^[a-z0-9][a-z0-9._-]{0,127}$`. It must be identical for every installation receiving the same task definition and must not contain or derive from a person, account, installation, device, advertising ID, push token, linkage token, IP address, or other participant-specific value.
+
+<a id="REQ-TASK-0005"></a>
+
+**REQ-TASK-0005:**
 
 The complete serialized task must not exceed 65,536 UTF-8 bytes.
 
 ## Design Principles
 
 ### Stable Structure
+
+<a id="REQ-TASK-0006"></a>
+
+**REQ-TASK-0006:**
 
 The top-level schema should change rarely. Most future extensions should be added inside nested objects instead of introducing new top-level fields.

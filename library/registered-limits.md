@@ -7,13 +7,29 @@ Runtime JSON values follow the shared [strict decoding contract](../data-formats
 
 ## Purpose
 
+<a id="REQ-LIMIT-0001"></a>
+
+**REQ-LIMIT-0001:**
+
 This document is the canonical numeric limit registry for Barometer version `0.1.0`. Public schemas and test specifications use these values unless they define a stricter value.
 
+<a id="REQ-LIMIT-0002"></a>
+
+**REQ-LIMIT-0002:**
+
 A host or implementation may enforce stricter limits. It must reject a task that requests more than a registered or local limit; it must not silently clamp the task because that would change measurement semantics.
+
+<a id="REQ-LIMIT-0003"></a>
+
+**REQ-LIMIT-0003:**
 
 All byte limits refer to UTF-8 or encoded application data as stated. They are not exact on-wire limits: operating-system, DNS, TCP, TLS, HTTP, and proxy layers may transmit or buffer protocol overhead before cancellation takes effect.
 
 ## Task and Identifier Limits
+
+<a id="REQ-LIMIT-0004"></a>
+
+**REQ-LIMIT-0004:**
 
 | Item | Default | Maximum |
 |---|---:|---:|
@@ -24,11 +40,19 @@ All byte limits refer to UTF-8 or encoded application data as stated. They are n
 | Labels | — | 16 entries and 2,048 encoded bytes |
 | Generic identifier not otherwise constrained | — | 64 ASCII bytes |
 
+<a id="REQ-LIMIT-0005"></a>
+
+**REQ-LIMIT-0005:**
+
 Unknown fields remain rejected and count toward the size limit before rejection. Parsing must stop when the complete-task limit is exceeded.
 
 ## Attempt Limits
 
 The `execution.limits` object uses:
+
+<a id="REQ-LIMIT-0006"></a>
+
+**REQ-LIMIT-0006:**
 
 | Field | Default | Maximum | Meaning |
 |---|---:|---:|---|
@@ -37,15 +61,35 @@ The `execution.limits` object uses:
 | `max_bytes_received` | 131,072 | 262,144 | Application bytes accepted from network APIs before parsing stops. |
 | `max_connections` | 8 | 12 | TCP connections or HTTP CONNECT tunnels opened by the attempt. |
 
+<a id="REQ-LIMIT-0007"></a>
+
+**REQ-LIMIT-0007:**
+
 Every accepted remote-network task must have effective values for all four fields. Omitted task fields receive the registered defaults before local policy applies. NET-01 emits no network traffic and uses zero for the byte and connection limits.
+
+<a id="REQ-LIMIT-0008"></a>
+
+**REQ-LIMIT-0008:**
 
 One protocol operation may use at most 15,000 ms. A test may define a lower timeout. Cleanup after cancellation must stop within 2,000 ms of the attempt deadline; failure to clean up is an internal diagnostic and must not extend network activity intentionally.
 
 ## Schedule and Retry Limits
 
+<a id="REQ-LIMIT-0009"></a>
+
+**REQ-LIMIT-0009:**
+
 Every remote task requires `not_after`. It must be later than acceptance and no more than 604,800 seconds (7 days) after authenticated issuance or acceptance, whichever is earlier.
 
+<a id="REQ-LIMIT-0010"></a>
+
+**REQ-LIMIT-0010:**
+
 Authenticated `issued_at` may be at most 300 seconds later than the trusted device time. A larger future offset or unavailable trusted time fails remote-task admission.
+
+<a id="REQ-LIMIT-0011"></a>
+
+**REQ-LIMIT-0011:**
 
 | Item | Minimum | Maximum | Default |
 |---|---:|---:|---:|
@@ -59,11 +103,23 @@ Authenticated `issued_at` may be at most 300 seconds later than the trusted devi
 | Retry jitter | 0 ms | 60,000 ms | 10,000 ms |
 | Exponential multiplier | 2 | 2 | 2 |
 
+<a id="REQ-LIMIT-0012"></a>
+
+**REQ-LIMIT-0012:**
+
 Retries are permitted only for registered cross-cutting execution reasons. Measurement outcomes, including DNS, TCP, TLS, HTTP, validation, and target-unavailable outcomes, are never retry reasons in version `0.1.0`.
+
+<a id="REQ-LIMIT-0013"></a>
+
+**REQ-LIMIT-0013:**
 
 An embedded one-time task may omit `not_after` only when release review fixes it to one run and the host does not persist it across application updates. Repeating embedded tasks use the same lifetime, cadence, run, and jitter limits as remote tasks.
 
 ## DNS Limits
+
+<a id="REQ-LIMIT-0014"></a>
+
+**REQ-LIMIT-0014:**
 
 | Item | Default | Maximum |
 |---|---:|---:|
@@ -76,9 +132,17 @@ An embedded one-time task may omit `not_after` only when release review fixes it
 | Intervening CNAME entries within answer limit | — | 8 |
 | Encoded normalized DNS observation | — | 16,384 bytes |
 
+<a id="REQ-LIMIT-0015"></a>
+
+**REQ-LIMIT-0015:**
+
 Answers beyond the retention limit are not partially appended. The result records the applicable limit outcome. Raw DNS messages, TTLs, unrelated sections, and unrequested record types remain prohibited.
 
 ## HTTP and Validation Limits
+
+<a id="REQ-LIMIT-0016"></a>
+
+**REQ-LIMIT-0016:**
 
 | Item | Default | Maximum |
 |---|---:|---:|
@@ -94,11 +158,23 @@ Answers beyond the retention limit are not partially appended. The result record
 | ALPN protocol entries | 0 | 8 |
 | One ALPN protocol identifier | — | 32 ASCII bytes |
 
+<a id="REQ-LIMIT-0017"></a>
+
+**REQ-LIMIT-0017:**
+
 HTTP-01 requests identity encoding. Unsupported encoding, an oversized header block, or a body that reaches its bound before a configured check is decidable produces the registered bounded outcome.
+
+<a id="REQ-LIMIT-0018"></a>
+
+**REQ-LIMIT-0018:**
 
 NET-03 never follows redirects. It retains only the minimized redirect class.
 
 ## NET-05 Composite Limits
+
+<a id="REQ-LIMIT-0019"></a>
+
+**REQ-LIMIT-0019:**
 
 | Item | Maximum |
 |---|---:|
@@ -110,9 +186,17 @@ NET-03 never follows redirects. It retains only the minimized redirect class.
 | Aggregate application bytes received | 262,144 bytes |
 | Composite attempt duration | 60,000 ms |
 
+<a id="REQ-LIMIT-0020"></a>
+
+**REQ-LIMIT-0020:**
+
 Every nested primitive must also satisfy its own limit. The complete profile is rejected before network activity if the sum of declared maxima cannot fit within the outer limits.
 
 ## Result and Bundle Limits
+
+<a id="REQ-LIMIT-0021"></a>
+
+**REQ-LIMIT-0021:**
 
 | Item | Maximum |
 |---|---:|
@@ -123,9 +207,17 @@ Every nested primitive must also satisfy its own limit. The complete profile is 
 | Locally pending bundles | 32 |
 | Aggregate pending bundle storage | 4,194,304 bytes |
 
+<a id="REQ-LIMIT-0022"></a>
+
+**REQ-LIMIT-0022:**
+
 When a new valid result cannot fit without exceeding a limit, the library must create another bundle or reject local persistence with a bounded operational error. It must not truncate a valid result or discard fields required for interpretation.
 
 ## Context, Linkage, and Retention Limits
+
+<a id="REQ-LIMIT-0023"></a>
+
+**REQ-LIMIT-0023:**
 
 | Item | Minimum | Maximum | Default |
 |---|---:|---:|---:|
@@ -136,15 +228,52 @@ When a new valid result cannot fit without exceeding a limit, the library must c
 | Unacknowledged local bundle retention | — | 86,400 seconds | 86,400 seconds |
 | Accepted-task replay state | — | Task validity plus 86,400 seconds, capped at 691,200 seconds | — |
 
+<a id="REQ-LIMIT-0024"></a>
+
+**REQ-LIMIT-0024:**
+
 Acknowledged bundles are deleted immediately after durable acknowledgement processing. Expired pending bundles are deleted rather than uploaded late. Barometer-owned measurement results must not be retained elsewhere by the library after acknowledgement.
+
+<a id="REQ-LIMIT-0025"></a>
+
+**REQ-LIMIT-0025:**
 
 Collector, host analytics, crash reporting, and research-storage retention are deployment concerns and require explicit documented periods. They must not inherit the local maximum as permission to retain data for that duration or longer.
 
 ## Limit Handling
 
+<a id="REQ-LIMIT-0026"></a>
+
+**REQ-LIMIT-0026:**
+
 - Task, input, option, profile, schedule, and declared execution-limit violations are rejected before measurement traffic.
+
+<a id="REQ-LIMIT-0027"></a>
+
+**REQ-LIMIT-0027:**
+
 - A limit reached during execution stops the active operation and produces the registered measurement or common execution state.
+
+<a id="REQ-LIMIT-0028"></a>
+
+**REQ-LIMIT-0028:**
+
 - Limit handling must close sockets, bodies, timers, callbacks, and temporary files.
+
+<a id="REQ-LIMIT-0029"></a>
+
+**REQ-LIMIT-0029:**
+
 - Limit values and raw counters are not added to results unless the applicable result schema defines them.
+
+<a id="REQ-LIMIT-0030"></a>
+
+**REQ-LIMIT-0030:**
+
 - A remote task cannot increase a limit through labels, input, options, schedule, execution, safety, or an unknown field.
+
+<a id="REQ-LIMIT-0031"></a>
+
+**REQ-LIMIT-0031:**
+
 - Increasing any maximum requires a new reviewed public specification version and threat-model review.
