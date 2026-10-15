@@ -156,6 +156,8 @@ Invalid input must prevent measurement execution and must not produce a measurem
 |---|---|:---:|---|---|---|
 | `alpn_protocols` | array of strings | No | Empty list | At most 8 registered ASCII protocol identifiers of 1–32 bytes; duplicates rejected. | ALPN protocols offered in order. |
 
+The exact registered offered identifiers and negotiated-output normalization are defined in [TLS negotiated properties](../data-formats/measurement-observations.md#tls-negotiated-properties). The coarse output marker `unknown` is not a protocol that a task may offer. The same shared observation document defines [peer-alert classes](../data-formats/measurement-observations.md#tls-peer-alert-normalization); those classes do not change this test's failure/outcome precedence.
+
 <a id="REQ-TLS-01-0017"></a>
 
 **REQ-TLS-01-0017:**
