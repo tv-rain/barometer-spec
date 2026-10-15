@@ -18,21 +18,47 @@ Can the probe establish an authenticated DNS-over-TLS session with the configure
 
 ### Non-goals
 
+<a id="REQ-DNS-04-0001"></a>
+
+**REQ-DNS-04-0001:**
+
 - The test does not configure DoT for the device or host application.
+
+<a id="REQ-DNS-04-0002"></a>
+
+**REQ-DNS-04-0002:**
+
 - The test does not establish that the resolver's answer is authoritative or correct.
+
+<a id="REQ-DNS-04-0003"></a>
+
+**REQ-DNS-04-0003:**
+
 - Failure on the standard DoT port does not prove intentional blocking.
 
 ## Measurement Method
 
 ### Target
 
+<a id="REQ-DNS-04-0004"></a>
+
+**REQ-DNS-04-0004:**
+
 One explicitly configured DoT resolver, normally reached on TCP port 853, and one reviewed, non-sensitive query name. Non-standard ports require explicit registered support and safety review.
 
 ### Operation
 
+<a id="REQ-DNS-04-0005"></a>
+
+**REQ-DNS-04-0005:**
+
 The probe resolves or uses an approved bootstrap address for the resolver, opens one TCP connection, authenticates TLS for the configured resolver name, and exchanges one length-prefixed DNS query and bounded response. It does not fall back to cleartext DNS or another resolver.
 
 ### Procedure
+
+<a id="REQ-DNS-04-0006"></a>
+
+**REQ-DNS-04-0006:**
 
 1. Validate the resolver name, port, optional bootstrap address, query name, and record type.
 2. Resolve the resolver name with the system resolver unless an approved bootstrap address was supplied.
@@ -43,9 +69,17 @@ The probe resolves or uses an approved bootstrap address for the resolver, opens
 
 ### Success Condition
 
+<a id="REQ-DNS-04-0007"></a>
+
+**REQ-DNS-04-0007:**
+
 An authenticated TLS session returns a syntactically valid DNS message that matches the submitted query. The response may still contain `NXDOMAIN`, `SERVFAIL`, `REFUSED`, or an empty answer.
 
 ### Failure Conditions
+
+<a id="REQ-DNS-04-0008"></a>
+
+**REQ-DNS-04-0008:**
 
 | Failure class | Required observation |
 |---|---|
@@ -65,6 +99,10 @@ An authenticated TLS session returns a syntactically valid DNS message that matc
 
 ## Inputs
 
+<a id="REQ-DNS-04-0009"></a>
+
+**REQ-DNS-04-0009:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `resolver_name` | string | Yes | Valid normalized DNS name, maximum 253 ASCII bytes after IDNA normalization, in a locally registered resolver profile. | Name used for bootstrap and TLS authentication. |
@@ -75,32 +113,95 @@ An authenticated TLS session returns a syntactically valid DNS message that matc
 
 ### Input Validation
 
+<a id="REQ-DNS-04-0010"></a>
+
+**REQ-DNS-04-0010:**
+
 - Resolver name, port, and optional bootstrap address must match a locally available, reviewed resolver profile.
+
+<a id="REQ-DNS-04-0011"></a>
+
+**REQ-DNS-04-0011:**
+
 - TLS must authenticate `resolver_name` even when a bootstrap IP is supplied.
+
+<a id="REQ-DNS-04-0012"></a>
+
+**REQ-DNS-04-0012:**
+
 - Cleartext DNS on the configured DoT connection is never permitted.
+
+<a id="REQ-DNS-04-0013"></a>
+
+**REQ-DNS-04-0013:**
+
 - Local, loopback, link-local, private, interpolated, or unknown targets are rejected by default.
+
+<a id="REQ-DNS-04-0014"></a>
+
+**REQ-DNS-04-0014:**
+
 - Unknown fields are rejected.
+
+<a id="REQ-DNS-04-0015"></a>
+
+**REQ-DNS-04-0015:**
 
 Invalid input must prevent measurement execution and must not produce a measurement result that could be interpreted as network interference.
 
 ## Options
 
+<a id="REQ-DNS-04-0016"></a>
+
+**REQ-DNS-04-0016:**
+
 | Option | Type | Required | Default | Constraints | Description |
 |---|---|:---:|---|---|---|
 | `address_family` | string | No | `auto` | `auto`, `ipv4`, or `ipv6`; must be compatible with `bootstrap_ip` when present. | Selects the resolver connection family. |
+
+<a id="REQ-DNS-04-0017"></a>
+
+**REQ-DNS-04-0017:**
 
 Opportunistic authentication, cleartext fallback, connection reuse across runs, and alternate resolver fallback are not supported in this version.
 
 ## Preconditions
 
+<a id="REQ-DNS-04-0018"></a>
+
+**REQ-DNS-04-0018:**
+
 - The resolver and query name must have completed technical, privacy, and safety review.
+
+<a id="REQ-DNS-04-0019"></a>
+
+**REQ-DNS-04-0019:**
+
 - The registered resolver profile must be available locally.
+
+<a id="REQ-DNS-04-0020"></a>
+
+**REQ-DNS-04-0020:**
+
 - The test must run only under explicit reviewed host configuration or as an approved anomaly-triggered diagnostic.
+
+<a id="REQ-DNS-04-0021"></a>
+
+**REQ-DNS-04-0021:**
+
 - A stable network generation and execution deadline must be available.
+
+<a id="REQ-DNS-04-0022"></a>
+
+**REQ-DNS-04-0022:**
 
 Task execution constraints and local probe policy may impose stricter preconditions.
 
 ## Resource Bounds
+
+<a id="REQ-DNS-04-0023"></a>
+
+**REQ-DNS-04-0023:**
 
 | Resource | Baseline limit | Behavior when reached |
 |---|---|---|
@@ -112,14 +213,26 @@ Task execution constraints and local probe policy may impose stricter preconditi
 
 ## Output
 
+<a id="REQ-DNS-04-0024"></a>
+
+**REQ-DNS-04-0024:**
+
 The test uses Measurement Result `schema_version: 0.1.0` and `test.result_version: 0.1.0`.
 
 The result contains the ordered observations that actually began:
+
+<a id="REQ-DNS-04-0025"></a>
+
+**REQ-DNS-04-0025:**
 
 1. a system `dns_query` when bootstrap resolution was required;
 2. `tcp_connect`;
 3. `tls_handshake`;
 4. a `dot` `dns_query` representing the length-prefixed DNS exchange.
+
+<a id="REQ-DNS-04-0026"></a>
+
+**REQ-DNS-04-0026:**
 
 When `bootstrap_ip` is used, the first observation is omitted. The final DNS observation retains bounded normalized answers as defined by the common [DNS Query](../data-formats/measurement-observations.md#dns-query) format.
 
@@ -172,6 +285,10 @@ Example:
 
 ### Outcomes
 
+<a id="REQ-DNS-04-0027"></a>
+
+**REQ-DNS-04-0027:**
+
 | Outcome | Required terminal observation |
 |---|---|
 | `response` | The DoT DNS observation succeeded with a matching valid response and no DNS failure code. |
@@ -188,7 +305,15 @@ Example:
 | `timeout` | A post-connect TLS or DNS observation failed with `timeout`; observation order identifies the stage. |
 | `inconclusive` | The terminal observation failed with `inconclusive`. |
 
+<a id="REQ-DNS-04-0028"></a>
+
+**REQ-DNS-04-0028:**
+
 `network_changed`, cancellation, the outer attempt deadline, proxy failure or reconfiguration, and platform suspension produce an incomplete common execution state and no `measurement` object.
+
+<a id="REQ-DNS-04-0029"></a>
+
+**REQ-DNS-04-0029:**
 
 The result must not contain `resolver_name`, resolver address or port, `bootstrap_ip`, query hostname, raw DNS message, TLS certificate data, query framing bytes, or raw errors.
 
@@ -198,29 +323,50 @@ The cross-cutting [Measurement Limitations](../measurement-limitations.md) apply
 
 ### Supported Interpretation
 
+<a id="REQ-DNS-04-0030"></a>
+
+**REQ-DNS-04-0030:**
+
 One execution can establish whether each observed bootstrap, TCP, TLS, and DNS stage completed for the configured resolver and query.
 
 ### Alternative Explanations
 
 - Resolver, authoritative DNS, certificate, or routing outage.
+
 - Bootstrap DNS failure unrelated to the DoT service.
+
 - Resolver rate limiting, policy refusal, overload, or maintenance.
+
 - Port-specific firewall behavior unrelated to censorship.
+
 - VPN, captive portal, enterprise policy, or local security software.
+
 - IPv4/IPv6 path differences or stale resolver configuration.
 
 ### Evidence Needed for Stronger Interpretation
+
+<a id="REQ-DNS-04-0031"></a>
+
+**REQ-DNS-04-0031:**
 
 - Repeated DoT results on a stable network without aggressive retries.
 - `DNS-01` and `DNS-03` results for the same safe query.
 - A `TCP-01` and `TLS-01` observation for the approved resolver endpoint.
 - Independent observations from comparable times and network contexts.
 
+<a id="REQ-DNS-04-0032"></a>
+
+**REQ-DNS-04-0032:**
+
 A difference between DNS transports supports a transport-specific observation, not a conclusion about censor intent.
 
 ## Privacy and Safety
 
 ### Baseline Risk
+
+<a id="REQ-DNS-04-0033"></a>
+
+**REQ-DNS-04-0033:**
 
 | Field | Value |
 |---|---|
@@ -230,6 +376,10 @@ A difference between DNS transports supports a transport-specific observation, n
 `medium` reflects the recognizable resolver destination and dedicated DoT transport.
 
 ### Risk Factors
+
+<a id="REQ-DNS-04-0034"></a>
+
+**REQ-DNS-04-0034:**
 
 | Type | Level | Rationale and mitigation |
 |---|---|---|
@@ -241,11 +391,36 @@ A difference between DNS transports supports a transport-specific observation, n
 
 ### Safety Analysis
 
+<a id="REQ-DNS-04-0035"></a>
+
+**REQ-DNS-04-0035:**
+
 - **Data minimization:** Retain only stage outcomes, coarse timing, and the minimal DNS properties required for interpretation.
+
+<a id="REQ-DNS-04-0036"></a>
+
+**REQ-DNS-04-0036:**
+
 - **Traffic distinctiveness:** Perform one standard exchange without probing port ranges, TLS variants, or fallback behavior.
+
+<a id="REQ-DNS-04-0037"></a>
+
+**REQ-DNS-04-0037:**
+
 - **User-identification risk:** Do not send identifiers, authentication, or unrelated application data.
+
+<a id="REQ-DNS-04-0038"></a>
+
+**REQ-DNS-04-0038:**
+
 - **Target risk:** Resolver endpoints and query names must be locally registered and reviewed.
+
 - **Repeated-execution risk:** Repeated use of a dedicated port can create a recognizable pattern.
+
 - **Residual risks:** The resolver sees the query and source network; the access network sees the resolver destination and transport.
+
+<a id="REQ-DNS-04-0039"></a>
+
+**REQ-DNS-04-0039:**
 
 The probe retains final authority to delay, skip, or reject execution. A task may increase the effective risk but must never lower this registered baseline.

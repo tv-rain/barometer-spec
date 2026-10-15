@@ -18,21 +18,47 @@ Can the probe establish an authenticated TLS session with the configured endpoin
 
 ### Non-goals
 
+<a id="REQ-TLS-01-0001"></a>
+
+**REQ-TLS-01-0001:**
+
 - The test does not perform an HTTP request or validate application content.
+
+<a id="REQ-TLS-01-0002"></a>
+
+**REQ-TLS-01-0002:**
+
 - The test does not compare different SNI values within one run.
+
+<a id="REQ-TLS-01-0003"></a>
+
+**REQ-TLS-01-0003:**
+
 - A handshake failure does not by itself establish TLS or SNI filtering.
 
 ## Measurement Method
 
 ### Target
 
+<a id="REQ-TLS-01-0004"></a>
+
+**REQ-TLS-01-0004:**
+
 One approved public IP address, TCP port, and DNS server name representing a service expected to present a publicly trusted certificate for that name.
 
 ### Operation
 
+<a id="REQ-TLS-01-0005"></a>
+
+**REQ-TLS-01-0005:**
+
 The probe opens one TCP connection to the explicit IP address, sends a standards-compliant TLS ClientHello containing the configured server name and registered ALPN list, validates the peer certificate with the implementation's documented trust store, records negotiated properties, and closes without sending application data.
 
 ### Procedure
+
+<a id="REQ-TLS-01-0006"></a>
+
+**REQ-TLS-01-0006:**
 
 1. Validate the IP address, port, server name, and optional ALPN list.
 2. Confirm a stable network generation and compatible address family.
@@ -43,9 +69,17 @@ The probe opens one TCP connection to the explicit IP address, sends a standards
 
 ### Success Condition
 
+<a id="REQ-TLS-01-0007"></a>
+
+**REQ-TLS-01-0007:**
+
 The TLS handshake completes, the certificate chain is accepted by the documented trust policy, and the certificate is valid for `server_name`.
 
 ### Failure Conditions
+
+<a id="REQ-TLS-01-0008"></a>
+
+**REQ-TLS-01-0008:**
 
 | Failure class | Required observation |
 |---|---|
@@ -64,6 +98,10 @@ The TLS handshake completes, the certificate chain is accepted by the documented
 
 ## Inputs
 
+<a id="REQ-TLS-01-0009"></a>
+
+**REQ-TLS-01-0009:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `ip_address` | string | Yes | Canonical public IPv4 or IPv6 address approved by local policy. | TCP destination, avoiding implicit DNS resolution. |
@@ -72,32 +110,95 @@ The TLS handshake completes, the certificate chain is accepted by the documented
 
 ### Input Validation
 
+<a id="REQ-TLS-01-0010"></a>
+
+**REQ-TLS-01-0010:**
+
 - The address, port, and server name must form a locally reviewed target.
+
+<a id="REQ-TLS-01-0011"></a>
+
+**REQ-TLS-01-0011:**
+
 - Loopback, private, link-local, special-purpose, interpolated, and unknown targets are rejected by default.
+
+<a id="REQ-TLS-01-0012"></a>
+
+**REQ-TLS-01-0012:**
+
 - `server_name` must not be silently derived from the address.
+
+<a id="REQ-TLS-01-0013"></a>
+
+**REQ-TLS-01-0013:**
+
 - The implementation must not disable certificate or hostname validation.
+
+<a id="REQ-TLS-01-0014"></a>
+
+**REQ-TLS-01-0014:**
+
 - Unknown fields are rejected.
+
+<a id="REQ-TLS-01-0015"></a>
+
+**REQ-TLS-01-0015:**
 
 Invalid input must prevent measurement execution and must not produce a measurement result that could be interpreted as network interference.
 
 ## Options
 
+<a id="REQ-TLS-01-0016"></a>
+
+**REQ-TLS-01-0016:**
+
 | Option | Type | Required | Default | Constraints | Description |
 |---|---|:---:|---|---|---|
 | `alpn_protocols` | array of strings | No | Empty list | At most 8 registered ASCII protocol identifiers of 1–32 bytes; duplicates rejected. | ALPN protocols offered in order. |
+
+<a id="REQ-TLS-01-0017"></a>
+
+**REQ-TLS-01-0017:**
 
 Custom cipher lists, TLS-version forcing, invalid certificates, alternate SNI values, client certificates, session resumption, and insecure verification are not supported in this version.
 
 ## Preconditions
 
+<a id="REQ-TLS-01-0018"></a>
+
+**REQ-TLS-01-0018:**
+
 - A stable network generation and execution deadline must be available.
+
+<a id="REQ-TLS-01-0019"></a>
+
+**REQ-TLS-01-0019:**
+
 - The target must be expected to support normal publicly authenticated TLS.
+
+<a id="REQ-TLS-01-0020"></a>
+
+**REQ-TLS-01-0020:**
+
 - The implementation trust policy and time source must be documented.
+
+<a id="REQ-TLS-01-0021"></a>
+
+**REQ-TLS-01-0021:**
+
 - The test must not run if the target requires client authentication, credentials, or sensitive server names.
+
+<a id="REQ-TLS-01-0022"></a>
+
+**REQ-TLS-01-0022:**
 
 Task execution constraints and local probe policy may impose stricter preconditions.
 
 ## Resource Bounds
+
+<a id="REQ-TLS-01-0023"></a>
+
+**REQ-TLS-01-0023:**
 
 | Resource | Baseline limit | Behavior when reached |
 |---|---|---|
@@ -109,7 +210,15 @@ Task execution constraints and local probe policy may impose stricter preconditi
 
 ## Output
 
+<a id="REQ-TLS-01-0024"></a>
+
+**REQ-TLS-01-0024:**
+
 The test uses Measurement Result `schema_version: 0.1.0` and `test.result_version: 0.1.0`.
+
+<a id="REQ-TLS-01-0025"></a>
+
+**REQ-TLS-01-0025:**
 
 A completed result contains one [`tcp_connect` observation](../data-formats/measurement-observations.md#tcp-connect) and, when TLS activity began, one [`tls_handshake` observation](../data-formats/measurement-observations.md#tls-handshake). Observations appear in execution order.
 
@@ -144,6 +253,10 @@ Example:
 
 ### Outcomes
 
+<a id="REQ-TLS-01-0026"></a>
+
+**REQ-TLS-01-0026:**
+
 | Outcome | Required terminal observation |
 |---|---|
 | `handshake_succeeded` | TLS succeeded with `certificate_validation: trusted`. |
@@ -159,7 +272,15 @@ Example:
 | `alpn_no_overlap` | TLS failed with `alpn_no_overlap`. |
 | `inconclusive` | The terminal TCP or TLS observation failed with `inconclusive`. |
 
+<a id="REQ-TLS-01-0027"></a>
+
+**REQ-TLS-01-0027:**
+
 `network_changed`, cancellation, the outer attempt deadline, proxy failure or reconfiguration, and platform suspension produce an incomplete common execution state. They are not TLS outcomes.
+
+<a id="REQ-TLS-01-0028"></a>
+
+**REQ-TLS-01-0028:**
 
 The result must not contain the destination address or port, `server_name`, certificate or certificate-chain data, certificate names or fingerprints, raw alerts, ClientHello or ServerHello fields, offered cipher suites, negotiated cipher suite, session identifiers, TLS secrets, or raw library errors.
 
@@ -169,23 +290,40 @@ The cross-cutting [Measurement Limitations](../measurement-limitations.md) apply
 
 ### Supported Interpretation
 
+<a id="REQ-TLS-01-0029"></a>
+
+**REQ-TLS-01-0029:**
+
 One execution can establish whether TCP and normal authenticated TLS completed for the configured address, port, server name, and ALPN offer.
 
 ### Alternative Explanations
 
 - Target, load balancer, CDN, certificate, or trust-store misconfiguration.
+
 - Expired certificate or incorrect device time.
+
 - Routing, packet loss, mobile handover, VPN, firewall, or proxy behavior.
+
 - Unsupported TLS version, algorithm, or ALPN configuration.
+
 - Stale address-to-name mapping.
+
 - Server-side rate limiting or overload.
 
 ### Evidence Needed for Stronger Interpretation
+
+<a id="REQ-TLS-01-0030"></a>
+
+**REQ-TLS-01-0030:**
 
 - A `TCP-01` result for the same address and port.
 - Repeated TLS observations under a stable network generation.
 - Successful control handshakes using comparable infrastructure.
 - `HTTP-01` results and independent observations from comparable contexts.
+
+<a id="REQ-TLS-01-0031"></a>
+
+**REQ-TLS-01-0031:**
 
 Comparison of different SNI values is outside this test and would require a separately reviewed measurement because it changes traffic distinctiveness and interpretation.
 
@@ -193,12 +331,20 @@ Comparison of different SNI values is outside this test and would require a sepa
 
 ### Baseline Risk
 
+<a id="REQ-TLS-01-0032"></a>
+
+**REQ-TLS-01-0032:**
+
 | Field | Value |
 |---|---|
 | Risk level | `low` |
 | Requires user consent | `false`, subject to host and local policy |
 
 ### Risk Factors
+
+<a id="REQ-TLS-01-0033"></a>
+
+**REQ-TLS-01-0033:**
 
 | Type | Level | Rationale and mitigation |
 |---|---|---|
@@ -210,11 +356,36 @@ Comparison of different SNI values is outside this test and would require a sepa
 
 ### Safety Analysis
 
+<a id="REQ-TLS-01-0034"></a>
+
+**REQ-TLS-01-0034:**
+
 - **Data minimization:** Do not retain full certificate chains, raw ClientHello/ServerHello messages, session keys, or packet traces.
+
+<a id="REQ-TLS-01-0035"></a>
+
+**REQ-TLS-01-0035:**
+
 - **Traffic distinctiveness:** Use platform-typical TLS behavior and avoid malformed or comparative handshakes.
+
+<a id="REQ-TLS-01-0036"></a>
+
+**REQ-TLS-01-0036:**
+
 - **User-identification risk:** Do not send client certificates, identifiers, cookies, or application data.
+
+<a id="REQ-TLS-01-0037"></a>
+
+**REQ-TLS-01-0037:**
+
 - **Target risk:** Permit only reviewed address, port, and server-name tuples.
+
 - **Repeated-execution risk:** Repeated bare handshakes can form a recognizable pattern.
+
 - **Residual risks:** Network observers may see the destination and SNI; platform TLS fingerprints may differ from the host application's traffic.
+
+<a id="REQ-TLS-01-0038"></a>
+
+**REQ-TLS-01-0038:**
 
 The probe retains final authority to delay, skip, or reject execution. A task may increase the effective risk but must never lower this registered baseline.

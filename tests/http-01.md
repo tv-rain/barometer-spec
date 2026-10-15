@@ -18,23 +18,53 @@ Does the configured HTTPS endpoint return its expected bounded response through 
 
 ### Non-goals
 
+<a id="REQ-HTTP-01-0001"></a>
+
+**REQ-HTTP-01-0001:**
+
 - The test does not browse or render a web page.
+
+<a id="REQ-HTTP-01-0002"></a>
+
+**REQ-HTTP-01-0002:**
+
 - The test does not authenticate, submit user data, or execute scripts.
+
+<a id="REQ-HTTP-01-0003"></a>
+
+**REQ-HTTP-01-0003:**
+
 - An unexpected response does not by itself establish a block page or intentional manipulation.
 
 ## Measurement Method
 
 ### Target
 
+<a id="REQ-HTTP-01-0004"></a>
+
+**REQ-HTTP-01-0004:**
+
 One reviewed HTTPS URL with a stable, non-sensitive, bounded response. The endpoint must not require credentials, cookies, application identity, or user-specific query parameters.
 
 ### Operation
 
+<a id="REQ-HTTP-01-0005"></a>
+
+**REQ-HTTP-01-0005:**
+
 The probe uses the documented HTTP stack to resolve the hostname, establish TCP and authenticated TLS, and issue one ordinary `GET` request. Redirects may be followed only when explicitly enabled and each next target passes validation. Only configured header checks and body checks are evaluated. Body processing stops at the configured byte limit.
+
+<a id="REQ-HTTP-01-0006"></a>
+
+**REQ-HTTP-01-0006:**
 
 The test limits application body bytes rather than network packets. HTTP/TLS buffering and multiplexed transports do not provide a portable packet-count limit at this layer.
 
 ### Procedure
+
+<a id="REQ-HTTP-01-0007"></a>
+
+**REQ-HTTP-01-0007:**
 
 1. Validate the HTTPS URL, redirect policy, byte limit, and optional response checks.
 2. Confirm a stable network generation.
@@ -48,9 +78,17 @@ The test limits application body bytes rather than network packets. HTTP/TLS buf
 
 ### Success Condition
 
+<a id="REQ-HTTP-01-0008"></a>
+
+**REQ-HTTP-01-0008:**
+
 The endpoint, or the terminal approved redirect target, returns an HTTPS response on the same network generation. All configured status, header, and body checks must match for the outcome to be classified as the expected response.
 
 ### Failure Conditions
+
+<a id="REQ-HTTP-01-0009"></a>
+
+**REQ-HTTP-01-0009:**
 
 | Failure class | Required observation |
 |---|---|
@@ -72,6 +110,10 @@ The endpoint, or the terminal approved redirect target, returns an HTTPS respons
 
 ## Inputs
 
+<a id="REQ-HTTP-01-0010"></a>
+
+**REQ-HTTP-01-0010:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `url` | string | Yes | Absolute `https` URL, maximum 2,048 UTF-8 bytes; no credentials or fragment; target must pass local policy. | Endpoint to request. |
@@ -81,14 +123,26 @@ The endpoint, or the terminal approved redirect target, returns an HTTPS respons
 
 Each `body_checks` entry has:
 
+<a id="REQ-HTTP-01-0011"></a>
+
+**REQ-HTTP-01-0011:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `type` | string | Yes | `contains`, `prefix`, `suffix`, or `sha256`. | Body comparison operation. |
 | `value` | string | Yes | Non-empty UTF-8 literal of at most 256 bytes for string checks or lowercase SHA-256 hex for `sha256`. | Expected value. |
 
+<a id="REQ-HTTP-01-0012"></a>
+
+**REQ-HTTP-01-0012:**
+
 Body string checks are case-sensitive and operate on body bytes interpreted as UTF-8. All configured body checks must match. Regular expressions are not supported in this version.
 
 Each `header_checks` entry has:
+
+<a id="REQ-HTTP-01-0013"></a>
+
+**REQ-HTTP-01-0013:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
@@ -96,22 +150,73 @@ Each `header_checks` entry has:
 | `type` | string | Yes | `present`, `absent`, `equals`, or `contains`. | Header comparison operation. |
 | `value` | string | Conditional | Required for `equals` and `contains`; prohibited otherwise; non-empty UTF-8 value of at most 256 bytes. | Expected header value or substring. |
 
+<a id="REQ-HTTP-01-0014"></a>
+
+**REQ-HTTP-01-0014:**
+
 For a multi-valued header, `equals` or `contains` succeeds when at least one field value matches. All configured header checks must match. Results retain check outcomes, not raw header values.
 
 ### Input Validation
 
+<a id="REQ-HTTP-01-0015"></a>
+
+**REQ-HTTP-01-0015:**
+
 - Only `https` is supported in this test version.
+
+<a id="REQ-HTTP-01-0016"></a>
+
+**REQ-HTTP-01-0016:**
+
 - URLs containing credentials, local/private targets, runtime interpolation, or user-specific identifiers are rejected.
+
+<a id="REQ-HTTP-01-0017"></a>
+
+**REQ-HTTP-01-0017:**
+
 - Query parameters are permitted only when part of a locally registered static target and must not contain secrets.
+
+<a id="REQ-HTTP-01-0018"></a>
+
+**REQ-HTTP-01-0018:**
+
 - Every redirect destination must pass the same URL and target-safety validation before contact. Approval of the initial URL does not authorize a redirect target.
+
+<a id="REQ-HTTP-01-0019"></a>
+
+**REQ-HTTP-01-0019:**
+
 - Redirects to a non-HTTPS scheme, embedded credentials, local or prohibited addresses, or unregistered targets are rejected.
+
+<a id="REQ-HTTP-01-0020"></a>
+
+**REQ-HTTP-01-0020:**
+
 - Body and header check arrays and values must satisfy registered count and length bounds.
+
+<a id="REQ-HTTP-01-0021"></a>
+
+**REQ-HTTP-01-0021:**
+
 - Sensitive headers, including authentication and cookie headers, cannot be configured for value matching or retained in results.
+
+<a id="REQ-HTTP-01-0022"></a>
+
+**REQ-HTTP-01-0022:**
+
 - Unknown fields are rejected.
+
+<a id="REQ-HTTP-01-0023"></a>
+
+**REQ-HTTP-01-0023:**
 
 Invalid input must prevent measurement execution and must not produce a measurement result that could be interpreted as network interference.
 
 ## Options
+
+<a id="REQ-HTTP-01-0024"></a>
+
+**REQ-HTTP-01-0024:**
 
 | Option | Type | Required | Default | Constraints | Description |
 |---|---|:---:|---|---|---|
@@ -120,19 +225,55 @@ Invalid input must prevent measurement execution and must not produce a measurem
 | `follow_redirects` | boolean | No | `false` | — | Whether approved HTTPS redirects may be followed. |
 | `max_redirects` | integer | Conditional | — | Required when `follow_redirects` is `true`; `1` or `2`. | Maximum redirects contacted before stopping. |
 
+<a id="REQ-HTTP-01-0025"></a>
+
+**REQ-HTTP-01-0025:**
+
 `max_redirects` must be absent when redirect following is disabled. Custom methods, request headers, request bodies, cookies, credentials, proxy selection, compression negotiation, and TLS-validation overrides are not supported in this version.
 
 ## Preconditions
 
+<a id="REQ-HTTP-01-0026"></a>
+
+**REQ-HTTP-01-0026:**
+
 - The URL and any expected response properties must be locally registered and current.
+
+<a id="REQ-HTTP-01-0027"></a>
+
+**REQ-HTTP-01-0027:**
+
 - A stable network generation and task execution deadline must be available.
+
+<a id="REQ-HTTP-01-0028"></a>
+
+**REQ-HTTP-01-0028:**
+
 - The endpoint must provide a small response suitable for bounded mobile measurement.
+
+<a id="REQ-HTTP-01-0029"></a>
+
+**REQ-HTTP-01-0029:**
+
 - Every permitted redirect target and response check must be locally registered with the measurement target.
+
+<a id="REQ-HTTP-01-0030"></a>
+
+**REQ-HTTP-01-0030:**
+
 - The test must not run if application or platform defaults would attach credentials, cookies, or identifying headers that cannot be disabled.
+
+<a id="REQ-HTTP-01-0031"></a>
+
+**REQ-HTTP-01-0031:**
 
 Task execution constraints and local probe policy may impose stricter preconditions.
 
 ## Resource Bounds
+
+<a id="REQ-HTTP-01-0032"></a>
+
+**REQ-HTTP-01-0032:**
 
 | Resource | Baseline limit | Behavior when reached |
 |---|---|---|
@@ -144,9 +285,21 @@ Task execution constraints and local probe policy may impose stricter preconditi
 
 ## Output
 
+<a id="REQ-HTTP-01-0033"></a>
+
+**REQ-HTTP-01-0033:**
+
 The test uses Measurement Result `schema_version: 0.1.0` and `test.result_version: 0.1.0`.
 
+<a id="REQ-HTTP-01-0034"></a>
+
+**REQ-HTTP-01-0034:**
+
 The result contains ordered DNS, TCP, TLS, and HTTP observations for operations that began. Redirects may add another bounded DNS, TCP, TLS, and HTTP sequence. An operation that reused an established connection emits only the observations actually performed.
+
+<a id="REQ-HTTP-01-0035"></a>
+
+**REQ-HTTP-01-0035:**
 
 The terminal [`http_exchange` observation](../data-formats/measurement-observations.md#http-exchange) retains status, a minimized redirect class, bounded body-processing metadata, and indexed check outcomes. It does not retain request or response content.
 
@@ -218,6 +371,10 @@ Example:
 
 ### Outcomes
 
+<a id="REQ-HTTP-01-0036"></a>
+
+**REQ-HTTP-01-0036:**
+
 | Outcome | Required terminal observation |
 |---|---|
 | `expected_response` | The terminal HTTP response satisfied every configured check. |
@@ -236,9 +393,21 @@ Example:
 | `unsupported_content_encoding` | HTTP failed with `unsupported_content_encoding`; `content_encoding` is `unsupported`. |
 | `inconclusive` | The terminal observation failed with `inconclusive`. |
 
+<a id="REQ-HTTP-01-0037"></a>
+
+**REQ-HTTP-01-0037:**
+
 When multiple checks are configured, the result retains the outcome of each check that was decidable before termination. It must not invent outcomes for checks that were not evaluated.
 
+<a id="REQ-HTTP-01-0038"></a>
+
+**REQ-HTTP-01-0038:**
+
 `network_changed`, cancellation, the outer attempt deadline, proxy failure or reconfiguration, and platform suspension produce an incomplete common execution state. They are not HTTP outcomes.
+
+<a id="REQ-HTTP-01-0039"></a>
+
+**REQ-HTTP-01-0039:**
 
 The result must not contain the requested or redirect URL, hostname, path, query, destination address, request headers, response header names or values, request or response body, expected or observed body digest, matched strings, cookies, credentials, certificate data, cache contents, or raw protocol errors.
 
@@ -248,26 +417,48 @@ The cross-cutting [Measurement Limitations](../measurement-limitations.md) apply
 
 ### Supported Interpretation
 
+<a id="REQ-HTTP-01-0040"></a>
+
+**REQ-HTTP-01-0040:**
+
 One execution can establish whether the configured endpoint or an approved terminal redirect target returned a response and whether its bounded status, header, and body properties matched the registered expectations through the observed DNS, TCP, TLS, and HTTP path.
+
+<a id="REQ-HTTP-01-0041"></a>
+
+**REQ-HTTP-01-0041:**
 
 `max_body_bytes` limits bytes processed by the application. It is not an exact on-wire limit because the HTTP, TLS, and socket layers may buffer additional data before the body is closed.
 
 ### Alternative Explanations
 
 - Origin, CDN, DNS, routing, certificate, or deployment failure.
+
 - Intentional application redirect or changed response content.
+
 - Captive portal, enterprise proxy, VPN, antivirus, or local filtering.
+
 - Server-side geolocation, rate limiting, load balancing, or maintenance.
+
 - IPv4/IPv6 differences or transient mobile-network behavior.
+
 - Stale expected status, body pattern, digest, or header expectation.
+
 - Legitimate redirect-chain changes.
 
 ### Evidence Needed for Stronger Interpretation
+
+<a id="REQ-HTTP-01-0042"></a>
+
+**REQ-HTTP-01-0042:**
 
 - `DNS-01`, `TCP-01`, and `TLS-01` observations for related approved targets.
 - A `NET-03` result excluding obvious validation or captive-portal problems.
 - Repeated observations under a stable network generation.
 - Suitable control endpoints and independent reference signals.
+
+<a id="REQ-HTTP-01-0043"></a>
+
+**REQ-HTTP-01-0043:**
 
 Response differences and redirects require manual or separately reviewed classification before they can support a stronger blocking interpretation.
 
@@ -275,12 +466,20 @@ Response differences and redirects require manual or separately reviewed classif
 
 ### Baseline Risk
 
+<a id="REQ-HTTP-01-0044"></a>
+
+**REQ-HTTP-01-0044:**
+
 | Field | Value |
 |---|---|
 | Risk level | `low` |
 | Requires user consent | `false`, subject to host and local policy |
 
 ### Risk Factors
+
+<a id="REQ-HTTP-01-0045"></a>
+
+**REQ-HTTP-01-0045:**
 
 | Type | Level | Rationale and mitigation |
 |---|---|---|
@@ -292,11 +491,36 @@ Response differences and redirects require manual or separately reviewed classif
 
 ### Safety Analysis
 
+<a id="REQ-HTTP-01-0046"></a>
+
+**REQ-HTTP-01-0046:**
+
 - **Data minimization:** Do not retain response bodies, full headers, matched strings, cookies, full redirect URLs, or unrelated certificate metadata.
+
+<a id="REQ-HTTP-01-0047"></a>
+
+**REQ-HTTP-01-0047:**
+
 - **Traffic distinctiveness:** Use an ordinary request without measurement identifiers, unusual headers, or repeated redirect chains.
+
+<a id="REQ-HTTP-01-0048"></a>
+
+**REQ-HTTP-01-0048:**
+
 - **User-identification risk:** Disable cookies, credentials, caches containing user state, and application-specific identifiers.
+
+<a id="REQ-HTTP-01-0049"></a>
+
+**REQ-HTTP-01-0049:**
+
 - **Target risk:** Only static, non-sensitive, reviewed URLs and separately validated redirect targets may be contacted.
+
 - **Repeated-execution risk:** Repeated requests to a fixed validation path can become recognizable.
+
 - **Residual risks:** Each redirect target sees the source network and request fingerprint; TLS behavior may differ from native host traffic, and the stack may receive more bytes on the wire than the application processes.
+
+<a id="REQ-HTTP-01-0050"></a>
+
+**REQ-HTTP-01-0050:**
 
 The probe retains final authority to delay, skip, or reject execution. A task may increase the effective risk but must never lower this registered baseline.
