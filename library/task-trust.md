@@ -7,7 +7,15 @@ Runtime JSON values follow the shared [strict decoding contract](../data-formats
 
 ## Overview
 
+<a id="REQ-TRUST-0002"></a>
+
+**REQ-TRUST-0002:**
+
 Barometer accepts a task only after the host establishes its provenance and the library validates it against immutable trusted local policy, registered measurement behavior, and [Registered Initial Limits](registered-limits.md).
+
+<a id="REQ-TRUST-0003"></a>
+
+**REQ-TRUST-0003:**
 
 Task fields are untrusted input. A task cannot authenticate itself, authorize its targets, declare itself safe, update local policy, or establish that its identifier is non-user-specific.
 
@@ -17,10 +25,18 @@ This contract does not require one scheduler, backend, TLS profile, or signature
 
 Version `0.1.0` supports two origins:
 
+<a id="REQ-TRUST-0004"></a>
+
+**REQ-TRUST-0004:**
+
 | Origin | Trust requirement |
 |---|---|
 | `embedded` | The exact task is packaged with a reviewed host deployment and covered by that deployment's release review. |
 | `remote` | The host authenticates the issuer and verifies task integrity through a reviewed mechanism before passing the task to Barometer. |
+
+<a id="REQ-TRUST-0005"></a>
+
+**REQ-TRUST-0005:**
 
 Examples of a remote mechanism include an authenticated, integrity-protected channel or a verified signed task package. Transport encryption without authenticated issuer authorization is insufficient.
 
@@ -32,7 +48,15 @@ Barometer must not accept a remote task when authentication, integrity verificat
 
 ## Trusted Source Context
 
+<a id="REQ-TRUST-0006"></a>
+
+**REQ-TRUST-0006:**
+
 The host supplies source context through an internal initialization or admission boundary separate from serialized task fields:
+
+<a id="REQ-TRUST-0007"></a>
+
+**REQ-TRUST-0007:**
 
 | Property | Required | Constraints | Meaning |
 |---|:---:|---|---|
@@ -42,11 +66,23 @@ The host supplies source context through an internal initialization or admission
 | `authenticated` | Yes | `true` for `remote`; `false` for reviewed `embedded` origin | Whether remote issuer authentication and integrity verification were required and succeeded. |
 | `issued_at` | Conditional | RFC 3339 UTC timestamp required for `remote`; absent for `embedded`; no more than 300 seconds in the future | Authenticated issuance time used to bound task validity. |
 
+<a id="REQ-TRUST-0008"></a>
+
+**REQ-TRUST-0008:**
+
 These properties are not task labels, do not appear in measurement traffic, and are not copied to Measurement Results. A task, server response, collector, target, or proxy cannot supply or override them through the public task object.
+
+<a id="REQ-TRUST-0009"></a>
+
+**REQ-TRUST-0009:**
 
 The concrete Go, native, or Flutter API may represent this context differently, but it must preserve the same trust boundary. Flutter applications must not be asked to provide raw verification keys or mark arbitrary task data authenticated.
 
 ## Issuer Authorization
+
+<a id="REQ-TRUST-0010"></a>
+
+**REQ-TRUST-0010:**
 
 Trusted local policy maps each `issuer_id` to the behavior it may request. Authorization is an intersection, not a union:
 
@@ -59,6 +95,10 @@ effective authority =
     intersect task-declared restrictions
 ```
 
+<a id="REQ-TRUST-0011"></a>
+
+**REQ-TRUST-0011:**
+
 Issuer authorization must bound:
 
 - permitted test IDs and exact versions;
@@ -69,11 +109,23 @@ Issuer authorization must bound:
 - whether medium-risk tests and NET-05 are enabled;
 - permitted task label namespaces, if any.
 
+<a id="REQ-TRUST-0012"></a>
+
+**REQ-TRUST-0012:**
+
 A remote task may narrow these values. It cannot add authority or raise a limit.
 
 ## Target Registration
 
+<a id="REQ-TRUST-0013"></a>
+
+**REQ-TRUST-0013:**
+
 Every remote destination or name must match a locally available registration before task acceptance. A registration identifies the complete safety-relevant tuple for the applicable test, including as needed:
+
+<a id="REQ-TRUST-0014"></a>
+
+**REQ-TRUST-0014:**
 
 - normalized hostname, URL, IP address, port, and scheme;
 - resolver name and approved bootstrap addresses;
@@ -83,11 +135,23 @@ Every remote destination or name must match a locally available registration bef
 - allowed direct or proxy paths;
 - baseline risk, owner, purpose, review generation, and expiry.
 
+<a id="REQ-TRUST-0015"></a>
+
+**REQ-TRUST-0015:**
+
 Registrations must use stable non-user-specific identifiers and contain no credentials, participant data, runtime interpolation, or secret endpoints. Matching must occur on normalized typed values rather than substring or suffix rules that could authorize unintended targets.
+
+<a id="REQ-TRUST-0016"></a>
+
+**REQ-TRUST-0016:**
 
 DNS resolution or a redirect does not extend authority. Every address or redirect target must still satisfy the registered test and local address policy immediately before contact.
 
 ## Admission Procedure
+
+<a id="REQ-TRUST-0017"></a>
+
+**REQ-TRUST-0017:**
 
 Barometer performs the following steps before a task is scheduled:
 
@@ -103,9 +167,17 @@ Barometer performs the following steps before a task is scheduled:
 10. Apply replay and conflicting-reuse checks.
 11. Accept the task idempotently or return a bounded non-measurement admission error.
 
+<a id="REQ-TRUST-0018"></a>
+
+**REQ-TRUST-0018:**
+
 No network measurement may begin during admission. Context lookup used only for later execution eligibility must not be performed to make an invalid task acceptable.
 
 ## Task Identifier Rules
+
+<a id="REQ-TRUST-0019"></a>
+
+**REQ-TRUST-0019:**
 
 `task_id` must:
 
@@ -115,20 +187,40 @@ No network measurement may begin during admission. Context lookup used only for 
 - not contain or derive from a person, account, installation, device, advertising ID, push token, linkage token, IP address, or other participant-specific value;
 - not be used to select an individual installation or reconstruct cross-bundle linkage.
 
+<a id="REQ-TRUST-0020"></a>
+
+**REQ-TRUST-0020:**
+
 The effective replay key is `(issuer_id, task_id)`.
 
 ## Replay, Duplicate, and Rollback Handling
 
+<a id="REQ-TRUST-0021"></a>
+
+**REQ-TRUST-0021:**
+
 For the validity of an accepted task plus the replay-retention period, Barometer stores a bounded local record containing:
+
+<a id="REQ-TRUST-0022"></a>
+
+**REQ-TRUST-0022:**
 
 - the effective replay key;
 - a SHA-256 digest of the exact accepted task bytes;
 - the accepted policy generation;
 - acceptance and expiry classes needed for cleanup.
 
+<a id="REQ-TRUST-0023"></a>
+
+**REQ-TRUST-0023:**
+
 The record contains no task input, target, label, participant identifier, or result.
 
 Handling is:
+
+<a id="REQ-TRUST-0024"></a>
+
+**REQ-TRUST-0024:**
 
 | Condition | Behavior |
 |---|---|
@@ -139,9 +231,17 @@ Handling is:
 | Expired task | Reject as `task_expired`; never reactivate it. |
 | Replay state unavailable or invalid for a remote task | Fail closed with `task_trust_unavailable`. |
 
+<a id="REQ-TRUST-0025"></a>
+
+**REQ-TRUST-0025:**
+
 Reinstallation or explicit Barometer data clearing removes replay state. A remote task redelivered after that reset is evaluated as new, which is residual exposure and must remain bounded by task expiry and schedule limits.
 
 ## Targeted Delivery
+
+<a id="REQ-TRUST-0026"></a>
+
+**REQ-TRUST-0026:**
 
 The baseline version prohibits selecting task recipients using:
 
@@ -151,13 +251,29 @@ The baseline version prohibits selecting task recipients using:
 - exact IP address or precise location;
 - prior per-installation measurement outcomes.
 
+<a id="REQ-TRUST-0027"></a>
+
+**REQ-TRUST-0027:**
+
 Broad deployment, application-version, consented cohort, country, or network eligibility may be applied only by reviewed host policy using non-user-specific criteria and sufficiently broad groups. A task cannot request local interpolation of those values into its identifiers, labels, targets, or payload.
+
+<a id="REQ-TRUST-0028"></a>
+
+**REQ-TRUST-0028:**
 
 Result linkage must not affect task selection. A deployment that needs participant-specific longitudinal research requires a new specification, explicit consent and ethics/privacy/safety review, and cannot claim compliance with this baseline.
 
 ## Local Policy Lifecycle
 
+<a id="REQ-TRUST-0029"></a>
+
+**REQ-TRUST-0029:**
+
 Trusted local policy and target registrations are loaded during initialization and remain immutable for that initialized library instance.
+
+<a id="REQ-TRUST-0030"></a>
+
+**REQ-TRUST-0030:**
 
 An update requires:
 
@@ -168,13 +284,29 @@ An update requires:
 5. invalidation of policy-dependent caches;
 6. library reinitialization before new-policy tasks run.
 
+<a id="REQ-TRUST-0031"></a>
+
+**REQ-TRUST-0031:**
+
 Failure during update leaves the previous complete policy active or leaves Barometer uninitialized. Partial activation and rollback to an earlier generation are prohibited.
+
+<a id="REQ-TRUST-0032"></a>
+
+**REQ-TRUST-0032:**
 
 Remote tasks, collector responses, measurement targets, proxies, and context endpoints cannot update policy.
 
 ## Admission Errors
 
+<a id="REQ-TRUST-0033"></a>
+
+**REQ-TRUST-0033:**
+
 Task trust and validation errors are bounded operational states, not Measurement Results and not evidence of censorship. Initial error classes include:
+
+<a id="REQ-TRUST-0034"></a>
+
+**REQ-TRUST-0034:**
 
 - `task_source_unauthenticated`
 - `task_issuer_not_authorized`
@@ -186,6 +318,10 @@ Task trust and validation errors are bounded operational states, not Measurement
 - `target_not_registered`
 - `task_limit_exceeded`
 - `task_schema_invalid`
+
+<a id="REQ-TRUST-0035"></a>
+
+**REQ-TRUST-0035:**
 
 Errors must not include task payloads, target values, credentials, verification keys, signatures, participant data, or raw platform errors.
 

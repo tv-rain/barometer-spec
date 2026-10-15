@@ -7,13 +7,25 @@ Runtime JSON values follow the shared [strict decoding contract](json-decoding.m
 
 The `execution` object defines the selected network path, runtime constraints, and environmental requirements for a measurement run.
 
+<a id="REQ-EXECUTION-0001"></a>
+
+**REQ-EXECUTION-0001:**
+
 Execution constraints are evaluated immediately before a run starts. If one or more constraints are not satisfied, the probe may delay or skip execution according to the task schedule.
+
+<a id="REQ-EXECUTION-0002"></a>
+
+**REQ-EXECUTION-0002:**
 
 The selected network path changes how connections are established but does not change the registered protocol operation performed by the test. Other test-specific behavior belongs to the `options` object.
 
 Canonical defaults and maxima are defined in [`Registered Initial Limits`](../library/registered-limits.md#attempt-limits).
 
 ## Execution Model
+
+<a id="REQ-EXECUTION-0003"></a>
+
+**REQ-EXECUTION-0003:**
 
 Execution constraints are evaluated for every execution attempt.
 
@@ -36,6 +48,10 @@ Evaluate execution constraints
             ▼
     	Delay or skip execution
 ```
+
+<a id="REQ-EXECUTION-0004"></a>
+
+**REQ-EXECUTION-0004:**
 
 Execution constraints never create new runs.
 
@@ -60,6 +76,10 @@ Execution constraints never create new runs.
 
 ## Fields
 
+<a id="REQ-EXECUTION-0005"></a>
+
+**REQ-EXECUTION-0005:**
+
 | Field | Required | Description |
 |--------|:--------:|-------------|
 | `network_path` | No | Network path used for the attempt. Default: `direct`. |
@@ -74,6 +94,10 @@ Execution constraints never create new runs.
 
 Supported values:
 
+<a id="REQ-EXECUTION-0006"></a>
+
+**REQ-EXECUTION-0006:**
+
 | Value | Description |
 |---|---|
 | `direct` | Establish test connections without the host-configured proxy. This is the default. |
@@ -87,7 +111,15 @@ Example:
 }
 ```
 
+<a id="REQ-EXECUTION-0007"></a>
+
+**REQ-EXECUTION-0007:**
+
 The task selects only `direct` or `proxy`. It cannot provide a proxy endpoint, `connection_code`, credentials, proxy identifier, or fallback behavior. Host configuration and proxy lifecycle are defined in [`library/proxy.md`](../library/proxy.md).
+
+<a id="REQ-EXECUTION-0008"></a>
+
+**REQ-EXECUTION-0008:**
 
 Before a proxy attempt starts, the probe must confirm that:
 
@@ -96,11 +128,23 @@ Before a proxy attempt starts, the probe must confirm that:
 - the test and its concrete input and options are compatible with HTTP CONNECT;
 - the proxy configuration can be held stable for the attempt.
 
+<a id="REQ-EXECUTION-0009"></a>
+
+**REQ-EXECUTION-0009:**
+
 The probe snapshots the selected path and current proxy configuration when the attempt starts. Every compatible network operation in that attempt must use the snapshot. A `NET-05` run must use one snapshot for all steps.
+
+<a id="REQ-EXECUTION-0010"></a>
+
+**REQ-EXECUTION-0010:**
 
 The probe must never silently fall back from `proxy` to `direct`. An absent, invalid, incompatible, unavailable, rejected, or reconfigured proxy produces an explicit non-censorship execution state.
 
 ### Limits
+
+<a id="REQ-EXECUTION-0011"></a>
+
+**REQ-EXECUTION-0011:**
 
 Runtime limits apply to a single execution attempt.
 
@@ -119,6 +163,10 @@ Example:
 
 #### Fields
 
+<a id="REQ-EXECUTION-0012"></a>
+
+**REQ-EXECUTION-0012:**
+
 | Field | Required | Description |
 |--------|:--------:|-------------|
 | `max_duration_ms` | No | Maximum runtime for one execution attempt; default 30,000 and maximum 60,000. |
@@ -126,13 +174,25 @@ Example:
 | `max_bytes_received` | No | Maximum application bytes accepted from network APIs; default 131,072 and maximum 262,144. |
 | `max_connections` | No | Maximum TCP connections or HTTP CONNECT tunnels opened; default 8 and maximum 12. |
 
+<a id="REQ-EXECUTION-0013"></a>
+
+**REQ-EXECUTION-0013:**
+
 Omitted fields receive the registered defaults. A task may request lower positive values. Values above a registered or stricter local limit are rejected rather than clamped.
+
+<a id="REQ-EXECUTION-0014"></a>
+
+**REQ-EXECUTION-0014:**
 
 The byte limits exclude DNS, TCP, TLS, HTTP, proxy, and operating-system framing that the application cannot count portably. Implementations must still stop reads and writes promptly at the application boundary and document buffering limitations.
 
 ### Network
 
 Defines required network conditions.
+
+<a id="REQ-EXECUTION-0015"></a>
+
+**REQ-EXECUTION-0015:**
 
 Network conditions may not always be detectable, depending on the platform. In such cases, the task may not run.
 
@@ -161,6 +221,10 @@ Example:
 
 #### Fields
 
+<a id="REQ-EXECUTION-0016"></a>
+
+**REQ-EXECUTION-0016:**
+
 | Field | Required | Description |
 |--------|:--------:|-------------|
 | `allowed_transports` | No | Base network transports on which the task may execute. |
@@ -170,12 +234,20 @@ Example:
 
 Initial network transports:
 
+<a id="REQ-EXECUTION-0017"></a>
+
+**REQ-EXECUTION-0017:**
+
 - wifi
 - cellular
 
 ##### VPN Policy
 
 Supported values:
+
+<a id="REQ-EXECUTION-0018"></a>
+
+**REQ-EXECUTION-0018:**
 
 | Value | Description |
 |---|---|
@@ -191,9 +263,17 @@ not_detected
 unknown
 ```
 
+<a id="REQ-EXECUTION-0019"></a>
+
+**REQ-EXECUTION-0019:**
+
 An unknown state must not be treated as `not_detected`.
 
 VPN eligibility is evaluated as follows:
+
+<a id="REQ-EXECUTION-0020"></a>
+
+**REQ-EXECUTION-0020:**
 
 | VPN policy | Detected | Not detected | Unknown |
 |---|:---:|:---:|:---:|
@@ -221,12 +301,24 @@ Example:
 }
 ```
 
+<a id="REQ-EXECUTION-0021"></a>
+
+**REQ-EXECUTION-0021:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `required_fields` | array of strings | No | Unique values from `country_code`, `region_code`, and `asn`. | Egress fields that must be available before execution. |
 | `allowed_country_codes` | array of strings | No | Non-empty, unique ISO 3166-1 alpha-2 uppercase codes. | Execute only when the selected path's egress country is in the list. |
 
+<a id="REQ-EXECUTION-0022"></a>
+
+**REQ-EXECUTION-0022:**
+
 Requirements always apply to the same `network_path` selected for the measurement. Tasks cannot request a context lookup through another path or configure the primary or fallback endpoint.
+
+<a id="REQ-EXECUTION-0023"></a>
+
+**REQ-EXECUTION-0023:**
 
 Evaluation rules:
 
@@ -236,6 +328,10 @@ Evaluation rules:
 - Endpoint failure after bounded cache and fallback handling records `network_context_unavailable` when a required field cannot be satisfied; it is not evidence of censorship.
 - Region, ASN, provider, and operator allowlists are not supported in the initial task format.
 - Local deployment policy may impose stricter eligibility and always retains the final decision.
+
+<a id="REQ-EXECUTION-0024"></a>
+
+**REQ-EXECUTION-0024:**
 
 When `context` is absent, failure to obtain egress context does not by itself block the measurement. The result records the unavailable context if local policy permits execution.
 
@@ -256,10 +352,18 @@ Example:
 
 #### Fields
 
+<a id="REQ-EXECUTION-0025"></a>
+
+**REQ-EXECUTION-0025:**
+
 | Field | Required | Description |
 |--------|:--------:|-------------|
 | `minimum_battery_percent` | No | Minimum battery level required. |
 | `allow_charging_only` | No | Execute only while charging. |
+
+<a id="REQ-EXECUTION-0026"></a>
+
+**REQ-EXECUTION-0026:**
 
 The probe may enforce stricter local policies.
 
@@ -279,6 +383,10 @@ Example:
 
 Supported modes:
 
+<a id="REQ-EXECUTION-0027"></a>
+
+**REQ-EXECUTION-0027:**
+
 | Mode | Description |
 |------|-------------|
 | `shared` | May execute with other measurements. |
@@ -287,6 +395,10 @@ Supported modes:
 Exclusive execution is useful for measurements whose timing or bandwidth would be affected by other network activity.
 
 ## Constraint Evaluation
+
+<a id="REQ-EXECUTION-0028"></a>
+
+**REQ-EXECUTION-0028:**
 
 A run may start only if all execution constraints are satisfied.
 
@@ -301,7 +413,15 @@ AND runtime limits available
 AND concurrency rules satisfied
 ```
 
+<a id="REQ-EXECUTION-0029"></a>
+
+**REQ-EXECUTION-0029:**
+
 The probe always has the final decision.
+
+<a id="REQ-EXECUTION-0030"></a>
+
+**REQ-EXECUTION-0030:**
 
 It may reject execution because of additional local policy, operating-system restrictions, or user preferences.
 

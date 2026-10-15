@@ -13,6 +13,10 @@ A Measurement Result records one execution attempt for one scheduled task run. I
 - whether the attempt completed independently of what the network operation observed;
 - the test-specific measurement outcome and bounded observations.
 
+<a id="REQ-RESULT-0001"></a>
+
+**REQ-RESULT-0001:**
+
 A negative network observation such as DNS `NXDOMAIN`, TCP timeout, TLS certificate failure, or an unexpected HTTP response is a completed measurement outcome. It is not automatically an execution failure and must not be retried unless a future registered test explicitly defines otherwise.
 
 Measurement Results are delivered in the [`Result Bundle`](result-bundle.md). The bundle provides delivery idempotency and optional rotating linkage; the Measurement Result provides attempt and measurement semantics.
@@ -80,6 +84,10 @@ The encoded result and observation-count maxima are defined in [`Registered Init
 
 ## Top-level Fields
 
+<a id="REQ-RESULT-0002"></a>
+
+**REQ-RESULT-0002:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `schema_version` | string | Yes | `0.1.0` | Version of the common Measurement Result envelope. |
@@ -93,23 +101,55 @@ The encoded result and observation-count maxima are defined in [`Registered Init
 | `network_context` | object | Conditional | Normalized [`Network Context`](network-context.md). | Context used by the attempt when one was captured. |
 | `measurement` | object | Conditional | Must comply with the registered test Output schema. | Test-specific outcome and observations. |
 
+<a id="REQ-RESULT-0003"></a>
+
+**REQ-RESULT-0003:**
+
 Unknown top-level fields are rejected.
 
+<a id="REQ-RESULT-0004"></a>
+
+**REQ-RESULT-0004:**
+
 The complete encoded Measurement Result must not exceed 65,536 bytes. A non-composite result contains at most 16 observations. NET-05 uses its separately bounded step structure and must still fit the encoded-result maximum.
+
+<a id="REQ-RESULT-0005"></a>
+
+**REQ-RESULT-0005:**
 
 Task `input`, `options`, `schedule`, `execution`, `safety`, and `labels` are not copied automatically. A collector resolves them through `task_id` when authorized to do so. Results must not add an input digest as a substitute for this rule because small target spaces make such digests reversible by enumeration.
 
 ## Run and Attempt Identity
 
+<a id="REQ-RESULT-0006"></a>
+
+**REQ-RESULT-0006:**
+
 Barometer generates `run_id` from a cryptographically secure random source when a scheduled run is created. A task source, collector, host account, target, or proxy must not supply or influence it.
+
+<a id="REQ-RESULT-0007"></a>
+
+**REQ-RESULT-0007:**
 
 All retry attempts for the same scheduled run retain the same `run_id` and increment `attempt`. A repeated run receives a new random `run_id` and starts again at `attempt: 1`.
 
+<a id="REQ-RESULT-0008"></a>
+
+**REQ-RESULT-0008:**
+
 `run_id` is scoped to one task run. It must not be reused across tasks, repeated runs, or installations and must not be included in measurement traffic, Network Context requests, application analytics, or logs.
+
+<a id="REQ-RESULT-0009"></a>
+
+**REQ-RESULT-0009:**
 
 The tuple of `task_id`, `run_id`, and `attempt` identifies one logical attempt inside submitted results. Bundle retransmission uses the unchanged bundle and does not create another attempt.
 
 ## Test Object
+
+<a id="REQ-RESULT-0010"></a>
+
+**REQ-RESULT-0010:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
@@ -117,22 +157,46 @@ The tuple of `task_id`, `run_id`, and `attempt` identifies one logical attempt i
 | `version` | string | Yes | Exact supported test version. | Version of measurement behavior that executed. |
 | `result_version` | string | Yes | Exact supported Output schema version. | Version used to validate `measurement`. |
 
+<a id="REQ-RESULT-0011"></a>
+
+**REQ-RESULT-0011:**
+
 The test behavior version and result version are independent. A compatible implementation may support more than one result version for the same test behavior, but it must emit exactly one registered combination.
+
+<a id="REQ-RESULT-0012"></a>
+
+**REQ-RESULT-0012:**
 
 Unknown test fields are rejected.
 
 ## Implementation Object
+
+<a id="REQ-RESULT-0013"></a>
+
+**REQ-RESULT-0013:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `library_version` | string | Yes | Bounded released Barometer version. | Implementation version that produced the result. |
 | `platform` | string | Yes | `android` or `ios` in the initial version. | Coarse platform family used to interpret documented platform differences. |
 
+<a id="REQ-RESULT-0014"></a>
+
+**REQ-RESULT-0014:**
+
 The object must not contain the host application version, application identifier, device model, operating-system version, CPU architecture, Go version, source revision, build timestamp, locale, timezone, or a host-supplied annotation.
+
+<a id="REQ-RESULT-0015"></a>
+
+**REQ-RESULT-0015:**
 
 Unknown implementation fields are rejected.
 
 ## Time Object
+
+<a id="REQ-RESULT-0016"></a>
+
+**REQ-RESULT-0016:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
@@ -141,11 +205,23 @@ Unknown implementation fields are rejected.
 | `duration_ms` | integer | Yes | Non-negative multiple of 250; rounded up except that zero remains zero. | Quantized elapsed attempt time, excluding bundle delivery. |
 | `duration_capped` | boolean | No | Present and `true` only when the actual duration exceeded the largest representable or locally retained value. | Indicates that `duration_ms` is a lower bound rather than the quantized duration. |
 
+<a id="REQ-RESULT-0017"></a>
+
+**REQ-RESULT-0017:**
+
 Stage observation durations use the same quantization. The sum of stage durations need not equal the attempt duration because operations may overlap, platform APIs may hide internal work, and quantization rounds each value independently.
+
+<a id="REQ-RESULT-0018"></a>
+
+**REQ-RESULT-0018:**
 
 Implementations must use a monotonic clock for durations. Wall-clock changes during an attempt must not produce a negative or excessively large duration.
 
 ## Execution Object
+
+<a id="REQ-RESULT-0019"></a>
+
+**REQ-RESULT-0019:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
@@ -153,6 +229,10 @@ Implementations must use a monotonic clock for durations. Wall-clock changes dur
 | `reason` | string | Conditional | Required for `incomplete` and `not_run`; prohibited for `completed`. | Cross-cutting reason why a terminal measurement outcome was not produced. |
 
 Initial reasons are:
+
+<a id="REQ-RESULT-0020"></a>
+
+**REQ-RESULT-0020:**
 
 | Reason | Meaning |
 |---|---|
@@ -172,6 +252,10 @@ Initial reasons are:
 | `proxy_reconfigured` | The host replaced or cleared the proxy during the attempt. |
 | `internal_error` | An implementation failure prevented a reliable measurement outcome. |
 
+<a id="REQ-RESULT-0021"></a>
+
+**REQ-RESULT-0021:**
+
 State rules:
 
 - `completed` requires `measurement`.
@@ -181,33 +265,69 @@ State rules:
 - `reason` must describe only the first cross-cutting termination condition that prevented completion;
 - detailed policy, battery, scheduler, proxy endpoint, platform error text, and stack traces are not retained.
 
+<a id="REQ-RESULT-0022"></a>
+
+**REQ-RESULT-0022:**
+
 Invalid task input, unsupported task versions, and malformed tasks are task-validation failures. They are not Measurement Results and must be reported through a separate bounded operational interface, if one exists.
 
 ## Network Context
 
+<a id="REQ-RESULT-0023"></a>
+
+**REQ-RESULT-0023:**
+
 Completed and incomplete remote-network tests require the normalized Network Context snapshot used for execution. An unavailable egress classification is represented by `egress.status: unavailable`; it does not justify omitting the whole object.
+
+<a id="REQ-RESULT-0024"></a>
+
+**REQ-RESULT-0024:**
 
 `network_context` may be omitted only when:
 
 - the attempt reached `not_run` before a context snapshot was captured; or
 - the registered test explicitly defines another representation, as `NET-01` does for its access-only zero-traffic output.
 
+<a id="REQ-RESULT-0025"></a>
+
+**REQ-RESULT-0025:**
+
 The result must not add a public or local IP address, resolver address, proxy endpoint, network generation, interface name, provider name, carrier name, or persistent context identifier.
 
 ## Measurement Object
+
+<a id="REQ-RESULT-0026"></a>
+
+**REQ-RESULT-0026:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `outcome` | string | Yes | Value registered by the test Output schema. | Terminal test-specific observation or composite completion class. |
 | `observations` | array | Yes | Ordered, bounded, and compliant with [`measurement-observations.md`](measurement-observations.md). | Protocol and platform observations made during the test. |
 
+<a id="REQ-RESULT-0027"></a>
+
+**REQ-RESULT-0027:**
+
 Unknown measurement fields are rejected unless the test Output schema defines additional named fields, as `NET-05` does for profile and step information.
+
+<a id="REQ-RESULT-0028"></a>
+
+**REQ-RESULT-0028:**
 
 `outcome` is not a generic censorship, blocking, anomaly, or success verdict. Its meaning is limited to the applicable test specification. Test Output schemas must define one positive terminal value and every retained negative or inconclusive value.
 
 ## Partial Results
 
+<a id="REQ-RESULT-0029"></a>
+
+**REQ-RESULT-0029:**
+
 The initial test set permits a partial `measurement` only for `NET-05`, which can retain terminal results from steps completed before an outer interruption. Other incomplete attempts omit `measurement`; their `execution.reason` and any available Network Context provide the bounded operational record.
+
+<a id="REQ-RESULT-0030"></a>
+
+**REQ-RESULT-0030:**
 
 A future test may permit partial output only when its public Output schema defines:
 
@@ -218,6 +338,10 @@ A future test may permit partial output only when its public Output schema defin
 
 ## Versioning and Extension
 
+<a id="REQ-RESULT-0031"></a>
+
+**REQ-RESULT-0031:**
+
 The envelope and test payloads evolve explicitly:
 
 - `schema_version` versions common fields and execution semantics;
@@ -226,29 +350,120 @@ The envelope and test payloads evolve explicitly:
 - new adopted tests receive a registered test ID and result schema;
 - shared observation types can be reused without copying raw protocol data.
 
+<a id="REQ-RESULT-0032"></a>
+
+**REQ-RESULT-0032:**
+
 Unknown fields are rejected within a known version. Unsupported schema, test, or result versions must not be interpreted best-effort as a known format. A receiver may retain the opaque bounded object in a quarantine path, but it must not silently discard unknown fields and analyze the remainder.
+
+<a id="REQ-RESULT-0033"></a>
+
+**REQ-RESULT-0033:**
 
 The initial format has no arbitrary annotations or extension map. A future extension mechanism requires a new envelope version, registered names, explicit field bounds, and privacy and safety review. Tasks and host applications must not inject result extensions.
 
 ## Validation
 
+<a id="REQ-RESULT-0034"></a>
+
+**REQ-RESULT-0034:**
+
 - All required fields and conditional relationships must hold.
+
+<a id="REQ-RESULT-0036"></a>
+
+**REQ-RESULT-0036:**
+
 - `run_id` must decode to exactly 128 bits and must not be all zeroes.
+
+<a id="REQ-RESULT-0037"></a>
+
+**REQ-RESULT-0037:**
+
 - `attempt` must not exceed the accepted task retry bound.
+
+<a id="REQ-RESULT-0038"></a>
+
+**REQ-RESULT-0038:**
+
 - Test and result versions must be supported as an exact registered combination.
+
+<a id="REQ-RESULT-0039"></a>
+
+**REQ-RESULT-0039:**
+
 - `started_at` seconds must be `00` and the timezone must be `Z`.
+
+<a id="REQ-RESULT-0040"></a>
+
+**REQ-RESULT-0040:**
+
 - Durations must use the registered quantization and remain within the execution bound, except when `duration_capped` is present.
+
+<a id="REQ-RESULT-0041"></a>
+
+**REQ-RESULT-0041:**
+
 - Completed results must contain a valid terminal measurement outcome.
+
+<a id="REQ-RESULT-0042"></a>
+
+**REQ-RESULT-0042:**
+
 - Incomplete and not-run results must contain an allowed execution reason.
+
+<a id="REQ-RESULT-0043"></a>
+
+**REQ-RESULT-0043:**
+
 - Every observation must comply with the selected test result schema.
+
+<a id="REQ-RESULT-0044"></a>
+
+**REQ-RESULT-0044:**
+
 - Unknown fields, raw platform errors, and prohibited data invalidate the result before bundling.
 
 ## Privacy, Safety, and Interpretation
 
+<a id="REQ-RESULT-0035"></a>
+
+**REQ-RESULT-0035:**
+
 - Results must contain no person, account, application-user, advertising, device, SIM, subscriber, push, or stable installation identifier.
+
+<a id="REQ-RESULT-0045"></a>
+
+**REQ-RESULT-0045:**
+
 - Task inputs and labels are not copied automatically.
+
+<a id="REQ-RESULT-0046"></a>
+
+**REQ-RESULT-0046:**
+
 - Results must not retain raw packets, HTTP bodies, HTTP header values, certificate chains, cookies, credentials, system logs, stack traces, or unrelated resolver state.
+
+<a id="REQ-RESULT-0047"></a>
+
+**REQ-RESULT-0047:**
+
 - Coarse platform, time, Network Context, connection code, task, and run metadata can become identifying in combination and require bounded retention and aggregate reporting.
+
+<a id="REQ-RESULT-0048"></a>
+
+**REQ-RESULT-0048:**
+
 - A matching task or run identifier establishes only measurement workflow membership, not that results belong to one person.
+
+<a id="REQ-RESULT-0049"></a>
+
+**REQ-RESULT-0049:**
+
 - A completed negative outcome is one observation on one path and context. It does not prove censorship or identify intent.
+
+<a id="REQ-RESULT-0050"></a>
+
+**REQ-RESULT-0050:**
+
 - Derived anomaly or interference analysis must remain separate from this source result, identify its method and version, and preserve links to the source observations.
