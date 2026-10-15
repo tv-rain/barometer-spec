@@ -6,6 +6,8 @@ Every test defines its test-specific Output object inside the common [`Measureme
 
 The cross-cutting [`Measurement Limitations`](../measurement-limitations.md) apply to every test and derived analysis.
 
+The [measurement requirement allocation](../requirements/measurement-allocation.md) records stable IDs, unit boundaries, informative dispositions, and reused contracts for these nine Draft specifications. Allocation is development metadata and does not establish supported behavior.
+
 ## Directory Index
 
 - [`dns-01.md`](dns-01.md) — system or direct DNS resolution with bounded response observation.

@@ -18,21 +18,47 @@ Can the probe complete a DNS-over-HTTPS exchange with the configured resolver, a
 
 ### Non-goals
 
+<a id="REQ-DNS-03-0001"></a>
+
+**REQ-DNS-03-0001:**
+
 - The test does not configure DoH for the device or host application.
+
+<a id="REQ-DNS-03-0002"></a>
+
+**REQ-DNS-03-0002:**
+
 - The test does not establish that a DoH result is authoritative or correct.
+
+<a id="REQ-DNS-03-0003"></a>
+
+**REQ-DNS-03-0003:**
+
 - A difference from system DNS does not by itself establish interference.
 
 ## Measurement Method
 
 ### Target
 
+<a id="REQ-DNS-03-0004"></a>
+
+**REQ-DNS-03-0004:**
+
 One explicitly configured HTTPS resolver endpoint and one reviewed, non-sensitive query name. The resolver and query name must independently pass local safety policy.
 
 ### Operation
 
+<a id="REQ-DNS-03-0005"></a>
+
+**REQ-DNS-03-0005:**
+
 The probe resolves or uses an approved bootstrap address for the resolver, establishes TCP and authenticated TLS, and sends one RFC 8484 DNS wire-format query using HTTPS `POST`.
 
 ### Procedure
+
+<a id="REQ-DNS-03-0006"></a>
+
+**REQ-DNS-03-0006:**
 
 1. Validate the resolver URL, optional bootstrap address, query name, and record type.
 2. Resolve the resolver hostname with the system resolver, unless an approved bootstrap address was supplied.
@@ -43,9 +69,17 @@ The probe resolves or uses an approved bootstrap address for the resolver, estab
 
 ### Success Condition
 
+<a id="REQ-DNS-03-0007"></a>
+
+**REQ-DNS-03-0007:**
+
 An authenticated HTTPS exchange returns a syntactically valid DNS message that matches the query identifier, name, and record type. The DNS response code and answer may still represent `NXDOMAIN`, `SERVFAIL`, or another DNS outcome.
 
 ### Failure Conditions
+
+<a id="REQ-DNS-03-0008"></a>
+
+**REQ-DNS-03-0008:**
 
 | Failure class | Required observation |
 |---|---|
@@ -65,6 +99,10 @@ An authenticated HTTPS exchange returns a syntactically valid DNS message that m
 
 ## Inputs
 
+<a id="REQ-DNS-03-0009"></a>
+
+**REQ-DNS-03-0009:**
+
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `resolver_url` | string | Yes | Absolute `https` URL, maximum 2,048 UTF-8 bytes; no credentials, fragment, or user-specific query parameters. | Approved RFC 8484 resolver endpoint. |
@@ -74,32 +112,95 @@ An authenticated HTTPS exchange returns a syntactically valid DNS message that m
 
 ### Input Validation
 
+<a id="REQ-DNS-03-0010"></a>
+
+**REQ-DNS-03-0010:**
+
 - The resolver URL and optional bootstrap address must match a locally registered resolver configuration.
+
+<a id="REQ-DNS-03-0011"></a>
+
+**REQ-DNS-03-0011:**
+
 - The resolver certificate must be authenticated for the URL hostname even when `bootstrap_ip` is used.
+
+<a id="REQ-DNS-03-0012"></a>
+
+**REQ-DNS-03-0012:**
+
 - Redirect targets must not be contacted.
+
+<a id="REQ-DNS-03-0013"></a>
+
+**REQ-DNS-03-0013:**
+
 - Local, loopback, link-local, private, credential-bearing, or interpolated targets are rejected by default.
+
+<a id="REQ-DNS-03-0014"></a>
+
+**REQ-DNS-03-0014:**
+
 - Unknown fields are rejected.
+
+<a id="REQ-DNS-03-0015"></a>
+
+**REQ-DNS-03-0015:**
 
 Invalid input must prevent measurement execution and must not produce a measurement result that could be interpreted as network interference.
 
 ## Options
 
+<a id="REQ-DNS-03-0016"></a>
+
+**REQ-DNS-03-0016:**
+
 | Option | Type | Required | Default | Constraints | Description |
 |---|---|:---:|---|---|---|
 | `address_family` | string | No | `auto` | `auto`, `ipv4`, or `ipv6`; must be compatible with `bootstrap_ip` when present. | Selects the resolver connection family. |
+
+<a id="REQ-DNS-03-0017"></a>
+
+**REQ-DNS-03-0017:**
 
 GET requests, HTTP redirects, alternate endpoints, custom headers, credentials, cookies, and proxy configuration are not supported in this version.
 
 ## Preconditions
 
+<a id="REQ-DNS-03-0018"></a>
+
+**REQ-DNS-03-0018:**
+
 - The resolver and query name must have completed technical, privacy, and safety review.
+
+<a id="REQ-DNS-03-0019"></a>
+
+**REQ-DNS-03-0019:**
+
 - The configured resolver profile must be locally available; execution must not depend on downloading configuration.
+
+<a id="REQ-DNS-03-0020"></a>
+
+**REQ-DNS-03-0020:**
+
 - The test must run only under explicit reviewed host configuration or as an approved anomaly-triggered diagnostic.
+
+<a id="REQ-DNS-03-0021"></a>
+
+**REQ-DNS-03-0021:**
+
 - A stable network generation and an execution deadline must be available.
+
+<a id="REQ-DNS-03-0022"></a>
+
+**REQ-DNS-03-0022:**
 
 Task execution constraints and local probe policy may impose stricter preconditions.
 
 ## Resource Bounds
+
+<a id="REQ-DNS-03-0023"></a>
+
+**REQ-DNS-03-0023:**
 
 | Resource | Baseline limit | Behavior when reached |
 |---|---|---|
@@ -111,15 +212,27 @@ Task execution constraints and local probe policy may impose stricter preconditi
 
 ## Output
 
+<a id="REQ-DNS-03-0024"></a>
+
+**REQ-DNS-03-0024:**
+
 The test uses Measurement Result `schema_version: 0.1.0` and `test.result_version: 0.1.0`.
 
 The result contains the ordered observations that actually began:
+
+<a id="REQ-DNS-03-0025"></a>
+
+**REQ-DNS-03-0025:**
 
 1. a system `dns_query` when bootstrap resolution was required;
 2. `tcp_connect`;
 3. `tls_handshake`;
 4. `http_exchange`;
 5. a `doh` `dns_query` representing the DNS message returned by the authenticated HTTPS exchange.
+
+<a id="REQ-DNS-03-0026"></a>
+
+**REQ-DNS-03-0026:**
 
 When `bootstrap_ip` is used, the first observation is omitted. The final DNS observation retains bounded normalized answers as defined by the common [DNS Query](../data-formats/measurement-observations.md#dns-query) format.
 
@@ -192,6 +305,10 @@ Example:
 
 ### Outcomes
 
+<a id="REQ-DNS-03-0027"></a>
+
+**REQ-DNS-03-0027:**
+
 | Outcome | Required terminal observation |
 |---|---|
 | `response` | The DoH DNS observation succeeded with a matching valid response and no DNS failure code. |
@@ -208,7 +325,15 @@ Example:
 | `timeout` | The terminal DNS, TCP, TLS, or HTTP observation failed with its registered timeout; observation order identifies the stage. |
 | `inconclusive` | The terminal observation failed with `inconclusive`. |
 
+<a id="REQ-DNS-03-0028"></a>
+
+**REQ-DNS-03-0028:**
+
 `network_changed`, cancellation, the outer attempt deadline, proxy failure or reconfiguration, and platform suspension produce an incomplete common execution state and no `measurement` object.
+
+<a id="REQ-DNS-03-0029"></a>
+
+**REQ-DNS-03-0029:**
 
 The result must not contain `resolver_url`, resolver hostname or address, `bootstrap_ip`, query hostname, raw DNS message, HTTP headers or body, certificate data, cookies, or raw errors.
 
@@ -218,29 +343,50 @@ The cross-cutting [Measurement Limitations](../measurement-limitations.md) apply
 
 ### Supported Interpretation
 
+<a id="REQ-DNS-03-0030"></a>
+
+**REQ-DNS-03-0030:**
+
 One execution can establish whether each observed bootstrap, TCP, TLS, HTTP, and DNS stage completed for the configured resolver and query.
 
 ### Alternative Explanations
 
 - Resolver, authoritative DNS, CDN, or certificate outage.
+
 - Bootstrap DNS failure unrelated to the DoH service.
+
 - Resolver rate limiting, policy refusal, maintenance, or overload.
+
 - VPN, proxy, captive portal, enterprise policy, or local firewall behavior.
+
 - IPv4/IPv6 routing differences or transient packet loss.
+
 - Stale or incorrect registered resolver configuration.
 
 ### Evidence Needed for Stronger Interpretation
+
+<a id="REQ-DNS-03-0031"></a>
+
+**REQ-DNS-03-0031:**
 
 - Repeated DoH results on a stable network without aggressive retries.
 - `DNS-01` and `DNS-04` results for the same safe query.
 - Layer-specific TCP, TLS, and HTTPS checks against approved endpoints.
 - Independent observations from comparable times and network contexts.
 
+<a id="REQ-DNS-03-0032"></a>
+
+**REQ-DNS-03-0032:**
+
 DoH is built on several layers; a failure must be attributed to the directly observed stage rather than summarized automatically as “DoH blocking.”
 
 ## Privacy and Safety
 
 ### Baseline Risk
+
+<a id="REQ-DNS-03-0033"></a>
+
+**REQ-DNS-03-0033:**
 
 | Field | Value |
 |---|---|
@@ -250,6 +396,10 @@ DoH is built on several layers; a failure must be attributed to the directly obs
 `medium` reflects the recognizable resolver destination and the possibility that encrypted DNS use is sensitive in the deployment environment.
 
 ### Risk Factors
+
+<a id="REQ-DNS-03-0034"></a>
+
+**REQ-DNS-03-0034:**
 
 | Type | Level | Rationale and mitigation |
 |---|---|---|
@@ -261,11 +411,36 @@ DoH is built on several layers; a failure must be attributed to the directly obs
 
 ### Safety Analysis
 
+<a id="REQ-DNS-03-0035"></a>
+
+**REQ-DNS-03-0035:**
+
 - **Data minimization:** Do not retain response bodies, full headers, resolver cookies, or address lists beyond the minimized result need.
+
+<a id="REQ-DNS-03-0036"></a>
+
+**REQ-DNS-03-0036:**
+
 - **Traffic distinctiveness:** Use one ordinary RFC 8484 exchange and avoid unusual headers, padding experiments, or synchronized repetition.
+
+<a id="REQ-DNS-03-0037"></a>
+
+**REQ-DNS-03-0037:**
+
 - **User-identification risk:** Do not send cookies, authentication, installation identifiers, or application headers.
+
+<a id="REQ-DNS-03-0038"></a>
+
+**REQ-DNS-03-0038:**
+
 - **Target risk:** Resolver endpoints and query names must be explicitly reviewed and locally registered.
+
 - **Repeated-execution risk:** Repeated connections to a recognizable resolver can form a strong participation signal.
+
 - **Residual risks:** The resolver operator sees the query and source network; the access network sees the resolver destination.
+
+<a id="REQ-DNS-03-0039"></a>
+
+**REQ-DNS-03-0039:**
 
 The probe retains final authority to delay, skip, or reject execution. A task may increase the effective risk but must never lower this registered baseline.
