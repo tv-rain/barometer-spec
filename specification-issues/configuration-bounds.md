@@ -1,15 +1,15 @@
 # Proposal: Local Host-Configuration Decoding Bounds
 
-**Disposition:** Proposed; maintainer disposition pending
+**Disposition:** Closed: no-text-change clarification accepted under REQ-JSON-0009
 **Date:** October 16, 2026
 **Related task:** [DEV-571 — Close minor Foundation assessment gaps in barometer-go](https://app.clickup.com/t/124kk1zc521)
 
-This record asks public maintainers to dispose of local host-configuration decoding bounds selected by the Go implementation where the public contract registers no maximum. It proposes a no-text-change clarification that the bounds are explicitly local and non-normative under an existing rule. It introduces no normative limit, serialized field, version change or support claim. Opening this record does not accept its proposal.
+This record asks public maintainers to dispose of local host-configuration decoding bounds selected by the Go implementation where the public contract registers no maximum. It proposes a no-text-change clarification that the bounds are explicitly local and non-normative under an existing rule. It introduces no normative limit, serialized field, version change or support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-16-2026) below did. Sections before it are the proposal as reviewed.
 
 ## Identity and Ownership
 
-- Local finding: `GO-SPEC-ISSUE-003` in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md#go-spec-issue-003-local-host-configuration-decoding-bounds). That link resolves after the Go change merges; it is not immutable evidence.
-- Public identity: this Markdown record, reviewed through a human-created public PR. PR URL and responsible maintainer are pending.
+- Local finding: `GO-SPEC-ISSUE-003` in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md#go-spec-issue-003-local-host-configuration-decoding-bounds). The entry merged in Go [PR #32](https://github.com/tv-rain/barometer-go/pull/32) at [`1fa1e6edfa019e62e391191294e2fc81376a455c`](https://github.com/tv-rain/barometer-go/blob/1fa1e6edfa019e62e391191294e2fc81376a455c/docs/specification-issues.md#go-spec-issue-003-local-host-configuration-decoding-bounds).
+- Public identity: this Markdown record, merged through public [PR #10](https://github.com/tv-rain/barometer-spec/pull/10) at [`d3ed5cbcc02cecac371bc897598b903c70d0fcfc`](https://github.com/tv-rain/barometer-spec/commit/d3ed5cbcc02cecac371bc897598b903c70d0fcfc). Responsible maintainer: the project owner, Lev.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition; the Go implementation owner owns the local bounds and their documentation.
 - Duplicates: none found. The [strict JSON decoding](strict-json-decoding.md) proposal defines the bound rule cited below but does not choose host-configuration values.
 
@@ -47,7 +47,7 @@ Affected work: none is stopped. The Go decoder already enforces the bounds befor
 
 ## Alternatives and Proposed Public Resolution
 
-1. **No-text-change clarification (proposed).** Maintainers confirm that REQ-JSON-0009 already permits implementation-local finite bounds for models without a registered maximum, and that the Go values are local, non-normative and reviewed through the implementation's own records. Keeps the public contract minimal. Leaves cross-implementation size agreement to deployment integration.
+1. **No-text-change clarification (proposed; accepted).** Maintainers confirm that REQ-JSON-0009 already permits implementation-local finite bounds for models without a registered maximum, and that the Go values are local, non-normative and reviewed through the implementation's own records. Keeps the public contract minimal. Leaves cross-implementation size agreement to deployment integration.
 2. Register public host-configuration maxima, such as a complete-input byte limit, in the public contract. Gives hosts a portable guarantee. Requires choosing values, a version/compatibility decision and requirement-ID allocation. It may constrain future configuration sections.
 3. Retain the current text without disposition. Leaves the "reviewed" status of the Go bounds unresolved.
 
@@ -57,10 +57,21 @@ Proposed wording: none; alternative 1 cites the existing REQ-JSON-0009 rule. No 
 
 - Coordination decision: not needed; no architecture or responsibility boundary changes.
 - Order: merge this public record first, then the Go `GO-SPEC-ISSUE-003` entry and configuration-model link. If maintainers choose alternative 2, the wording change follows its own reviewed public PR. Go adoption, internal alignment if required, and binding/host updates follow that merge.
-- Maintainer disposition, rationale and date: pending.
+- Maintainer disposition, rationale and date: see [Maintainer Disposition](#maintainer-disposition--october-16-2026).
 
 ## Adoption and Closure Evidence
 
 - Alternative 1: closure requires the maintainer disposition citing REQ-JSON-0009 and the Go record linking it. Existing Go bound tests in `internal/config` are synthetic regression evidence only.
 - Alternative 2: closure requires the merged public revision, version decision, Go adoption and conformance cases at the registered maxima.
-- Pending: disposition, PR link and responsible roles.
+- Alternative 1 was accepted; see the disposition below.
+
+## Maintainer Disposition — October 16, 2026
+
+The project owner and public maintainer, Lev, accepted alternative 1 on October 16, 2026.
+
+- **Decision:** no-text-change clarification. Under the existing [REQ-JSON-0009](https://github.com/tv-rain/barometer-spec/blob/83d0b10cffb37a53de120b56825b42eb226568d9/data-formats/json-decoding.md#REQ-JSON-0009) rule, an implementation may select finite local input bounds for a model that has no registered complete-input maximum, provided it documents and reviews them. The Go host-configuration bounds listed above are such local, non-normative bounds. They are not public maxima, and hosts must not rely on them as portable guarantees.
+- **Rationale:** the existing rule already states the obligation; the closed configuration sections are small; registering public maxima would require a version and compatibility decision without identified interoperability evidence. Cross-implementation size agreement remains a deployment-integration concern.
+- **Effect:** no public text, requirement ID, schema or version change. Draft `0.1.0` remains authoritative at its existing revisions. No Go behavior change follows. Specialist mobile-resource review is not required, because no public maxima are registered.
+- **Reopening:** if host interoperability evidence shows that portable maxima are needed, open a new specification issue for alternative 2 and link it here.
+
+Downstream evidence: the Go record `GO-SPEC-ISSUE-003` is updated to cite this disposition, under [DEV-571](https://app.clickup.com/t/124kk1zc521). Existing `internal/config` bound tests remain synthetic regression evidence only.

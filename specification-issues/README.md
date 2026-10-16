@@ -8,7 +8,7 @@ This is development guidance, not a runtime contract. It introduces no serialize
 
 ## Directory Index
 
-- [`configuration-bounds.md`](configuration-bounds.md) — proposed no-text-change disposition for implementation-local host-configuration decoding bounds under REQ-JSON-0009; maintainer disposition pending.
+- [`configuration-bounds.md`](configuration-bounds.md) — accepted no-text-change clarification that implementation-local host-configuration decoding bounds are permitted under REQ-JSON-0009; closed October 16, 2026.
 - [`observation-vocabularies.md`](observation-vocabularies.md) — approved closed DNS/TLS wording, coarse unknown handling, incomplete-field clarification and ordered adoption; merged at `a944ed6`, downstream adoption pending.
 
 - [`strict-json-decoding.md`](strict-json-decoding.md) — approved strict runtime JSON wording and version disposition, synthetic evidence, compatibility limits, and ordered adoption; merged at `05c1364`, downstream adoption pending.
