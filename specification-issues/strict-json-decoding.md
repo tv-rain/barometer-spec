@@ -1,6 +1,6 @@
 # Resolution: Strict Runtime JSON Decoding
 
-**Disposition:** Accepted wording; public merge and downstream adoption pending
+**Disposition:** Accepted wording; merged at `05c1364af4f9a604b617fca45f060949b557d265`; downstream adoption pending
 **Date:** October 13, 2026
 **Related task:** [DEV-477 — Implement shared strict-decoding infrastructure](https://app.clickup.com/t/86cbb8f0x)
 
@@ -124,6 +124,8 @@ Public schema/version maintainers must review acceptance narrowing and requireme
 No new coordination ADR is proposed: responsibility boundaries and long-lived architecture remain unchanged. The accepted issue workflow governs this clarification. Merge reviewed public wording/version decisions first, align required internal reviews, implement Go on its own task branch against the immutable accepted baseline, then validate applicable bindings and producer/host migration. Each repository retains independent commits/reviews. No release or support promotion is authorized.
 
 **Public disposition:** Wording and retention of Draft 0.1.0 approved by the project owner, Lev, on October 13, 2026, in the DEV-477 task review. The contract and eleven new requirement allocations are prepared for final change review. Commit/push approval, public PR, merged immutable revision, required internal alignment, Go implementation/conformance, binding/producer validation, migration/release order, and closure evidence remain pending. No specialist review is represented as completed. If later review changes the resolution, preserve this disposition history and reassess downstream adoption. GO-SPEC-ISSUE-001 is not closed until applicable downstream evidence or explicit non-applicability is recorded.
+
+**Merge record:** The approved wording, Draft `0.1.0` retention and requirement allocations were merged on October 13, 2026 through [public PR #5](https://github.com/tv-rain/barometer-spec/pull/5) as immutable revision `05c1364af4f9a604b617fca45f060949b557d265` (head `16001c30af7bef4b651e18b9750e71f3647715ca`). Downstream adoption selects that revision explicitly. The merge does not close the finding; applicable downstream evidence or reviewed non-applicability remains pending, and no specialist review is represented as completed.
 
 ## Validation
 

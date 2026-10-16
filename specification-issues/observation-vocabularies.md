@@ -1,6 +1,6 @@
 # Proposal: Registered Observation Vocabularies
 
-**Disposition:** Wording approved; public merge and adoption pending
+**Disposition:** Wording approved; merged at `a944ed6c389fec9f0d089f0044ead6fe845328b1`; downstream adoption pending
 **Date:** October 15, 2026
 **Related task:** [DEV-481 — Implement observation and Network Context models](https://app.clickup.com/t/86cbb8f2n)
 
@@ -88,6 +88,8 @@ These are review expectations, not executed implementation/conformance results.
 No coordination ADR is proposed because ownership, trust boundaries and architecture remain unchanged. If maintainer review identifies such an effect, resolve it first. Review/approve the exact public wording and compatibility/version decision, then commit/push under separate final approval; the human creates and merges the public PR. Record its immutable merge revision. The corresponding internal review branch is a dependent draft prepared against this exact public proposal; it must be reconciled to the accepted merge revision before internal merge and Go adoption. Complete Go DNS/TLS models/tests only after those gates, then validate applicable bindings, producers and analysis consumers in the documented compatibility order.
 
 **Public disposition:** The initial October 15 authorization covered preparation. Following review of the prepared specifications, the project owner, Lev, approved the wording, requirement lifecycle, retention of Draft `0.1.0` and specification commit/push on October 15, 2026. Public PR and immutable merge revision, required internal reconciliation to that revision, specialist review evidence, DNS/TLS implementation and applicable migration evidence remain pending. GO-SPEC-ISSUE-002 remains open.
+
+**Merge record:** The approved wording, requirement lifecycle and Draft `0.1.0` retention were merged on October 15, 2026 through [public PR #8](https://github.com/tv-rain/barometer-spec/pull/8) as immutable revision `a944ed6c389fec9f0d089f0044ead6fe845328b1` (head `5869bc314c877e2ccd3426b82aadcd9c92414f02`). Downstream adoption selects that revision explicitly. A public merge alone is insufficient for closure; GO-SPEC-ISSUE-002 remains open until the evidence listed below is recorded.
 
 ## Adoption and Closure Evidence
 
