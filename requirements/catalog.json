@@ -3402,6 +3402,27 @@
       "reason": ""
     },
     {
+      "id": "REQ-TRUST-0036",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0037",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0038",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-OBS-0034",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
