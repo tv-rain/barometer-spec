@@ -1918,6 +1918,13 @@
       "reason": ""
     },
     {
+      "id": "REQ-SAFETY-0031",
+      "status": "active",
+      "source": "data-formats/task-safety.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-SCHEDULE-0001",
       "status": "active",
       "source": "data-formats/task-schedule.md",
@@ -3865,6 +3872,13 @@
     },
     {
       "id": "REQ-SCHEDULE-0042",
+      "status": "active",
+      "source": "data-formats/task-schedule.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-SCHEDULE-0043",
       "status": "active",
       "source": "data-formats/task-schedule.md",
       "successors": [],

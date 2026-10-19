@@ -138,6 +138,12 @@ Risk levels are conservative classifications, not guarantees. A `low` risk level
 
 `risk_factors` is required when `risk_level` is `medium`, `high`, or `unknown`. It may be omitted for a `low`-risk task.
 
+<a id="REQ-SAFETY-0031"></a>
+
+**REQ-SAFETY-0031:**
+
+When `risk_level` is `medium`, `high`, or `unknown`, `risk_factors` must contain at least one risk factor. An empty array does not satisfy this requirement, and the task must be rejected.
+
 ### Risk Factor Fields
 
 <a id="REQ-SAFETY-0013"></a>
