@@ -237,6 +237,12 @@ Handling is:
 
 Reinstallation or explicit Barometer data clearing removes replay state. A remote task redelivered after that reset is evaluated as new, which is residual exposure and must remain bounded by task expiry and schedule limits.
 
+<a id="REQ-TRUST-0038"></a>
+
+**REQ-TRUST-0038:**
+
+Unavailable or invalid replay state also fails closed for an `embedded` task: Barometer rejects it with `task_trust_unavailable` and does not accept it without replay state.
+
 ## Targeted Delivery
 
 <a id="REQ-TRUST-0026"></a>
@@ -324,6 +330,37 @@ Task trust and validation errors are bounded operational states, not Measurement
 **REQ-TRUST-0035:**
 
 Errors must not include task payloads, target values, credentials, verification keys, signatures, participant data, or raw platform errors.
+
+<a id="REQ-TRUST-0036"></a>
+
+**REQ-TRUST-0036:**
+
+In addition to the classes in REQ-TRUST-0034, Barometer returns `task_unsupported` when a task is valid under the public task schema but requires something the implementation does not provide:
+
+- a well-formed `test_id` and `test_version` pair that the implementation does not register;
+- a risk factor `type` the implementation does not recognize, when the implementation rejects the task under [REQ-SAFETY-0017](../data-formats/task-safety.md#REQ-SAFETY-0017) instead of treating that factor's risk as `unknown`;
+- a capability that a valid task field requires, such as egress Network Context acquisition for `execution.context`.
+
+`task_unsupported` describes the implementation, not the task's validity or safety or the state of the network. An implementation that provides a capability does not return this class for it. Runtime unavailability of a provided capability remains an unsatisfied execution constraint under [REQ-CONTEXT-0026](network-context.md#REQ-CONTEXT-0026) and [REQ-CONTEXT-0028](network-context.md#REQ-CONTEXT-0028).
+
+<a id="REQ-TRUST-0037"></a>
+
+**REQ-TRUST-0037:**
+
+A rejected task receives exactly one class: the class of the first step, in [REQ-TRUST-0017](#REQ-TRUST-0017) order, that fails. Where another requirement names the class for a condition, that class applies. The following conditions use the listed class:
+
+| Step | Condition | Class |
+|---|---|---|
+| 1 | The exact presented task bytes are not bound to the supplied trusted source context, or that binding is missing or expired. | `task_source_unauthenticated` |
+| 3 | Trusted time needed for validity is unavailable. | `task_trust_unavailable` |
+| 3 | Remote `issued_at` is more than 300 seconds in the future. | `task_source_unauthenticated` |
+| 4 | The `test_id` and `test_version` pair is not registered by the implementation (REQ-TRUST-0036). | `task_unsupported` |
+| 5 | `task_id` exceeds 128 bytes. | `task_limit_exceeded` |
+| 6 | A risk factor type is rejected as unsupported, or a valid field requires a capability the implementation does not provide (REQ-TRUST-0036). | `task_unsupported` |
+| 7 | The source context `policy_generation` is greater than the active policy generation. | `task_policy_unavailable` |
+| 8 | A direct or proxy path is not permitted by issuer authority or local policy. | `task_issuer_not_authorized` |
+| 8 | A direct or proxy path is not permitted by the matched target registration. | `target_not_registered` |
+| 9 | Effective risk exceeds a local-policy bound, or is `unknown` without an explicit reviewed local policy permitting it. | `task_issuer_not_authorized` |
 
 ## Residual Risks
 
