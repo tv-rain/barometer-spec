@@ -1,10 +1,10 @@
 # Proposal: Admission Class for Proxy-Incompatible Task Parameters
 
-**Disposition:** In review; maintainer disposition pending
+**Disposition:** Accepted wording (alternative (a)); merge and downstream adoption pending
 **Date:** October 19, 2026
 **Related task:** [DEV-598 — Record GO-SPEC-ISSUE-009 and obtain public disposition for the proxy-compatibility admission class](https://app.clickup.com/t/124kk1zcbfb)
 
-This record asks public maintainers to decide what admission does with a task that selects `network_path: proxy` when its test, input or options cannot run through HTTP CONNECT. REQ-TRUST-0017 requires admission to validate proxy compatibility, but no requirement assigns an admission error class to a failure, and the execution states already define `proxy_path_unsupported` for the same condition. It proposes reusing `task_schema_invalid`. It adds no admission class or serialized field and makes no support claim. Opening this record does not accept its proposal, and no requirement text changes until a maintainer disposition is recorded.
+This record asks public maintainers to decide what admission does with a task that selects `network_path: proxy` when its test, input or options cannot run through HTTP CONNECT. REQ-TRUST-0017 requires admission to validate proxy compatibility, but no requirement assigns an admission error class to a failure, and the execution states already define `proxy_path_unsupported` for the same condition. It proposes reusing `task_schema_invalid`. It adds no admission class or serialized field and makes no support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-19-2026) below did. Sections before it are the proposal as reviewed. The accepted wording is included in the same public change as this disposition.
 
 ## Identity and Ownership
 
@@ -81,9 +81,25 @@ Expected cases: a DNS-01 task with `resolver_mode: system` and `network_path: pr
 - Coordination decision: not needed; no architecture or responsibility boundary changes.
 - Order: maintainer disposition; if text changes, merge the wording, catalog allocations and version decision together with this record's disposition in one public change. Then align the internal task-trust review if its validation plan names the class. Then update the Go `GO-SPEC-ISSUE-009` entry, admission design and case plans, and implement the check in DEV-599. Bindings and hosts follow.
 - Internal alignment: expected to be required, because the internal task-trust review validation plan covers the REQ-TRUST-0037 table; to be confirmed at disposition.
-- Maintainer disposition, rationale and date: pending.
+- Maintainer disposition, rationale and date: see [Maintainer Disposition](#maintainer-disposition--october-19-2026).
 
 ## Adoption and Closure Evidence
 
 - Closure requires: the maintainer disposition and, if text changes, the merged wording revision with its requirement allocations and version decision; internal review alignment or the reason it does not apply; Go adoption evidence (admission tests asserting the class, the intra-step order and NET-05 whole-profile rejection, and traceability citing them); and the Go record linking all of these.
 - Binding and host adoption are outside the current Go tasks and remain to be assessed when those components exist.
+
+## Maintainer Disposition — October 19, 2026
+
+The project owner and public maintainer, Lev, accepted alternative (a) on October 19, 2026, in the DEV-598 task review.
+
+- **Class:** a task with `network_path: proxy` whose test, input or options are not compatible with HTTP CONNECT under REQ-PROXY-0026, including a `NET-05` profile with any incompatible step, is rejected at admission step 8 with `task_schema_invalid`.
+- **Order within step 8:** proxy compatibility is evaluated after input and options and before path authority and target registration. No other intra-step order is set.
+- **`task_unsupported`:** remains the class for a combination REQ-PROXY-0026 permits but an implementation does not provide through the proxy (REQ-TRUST-0036).
+- **`proxy_path_unsupported`:** an incompatible task is not admitted to fail at execution. The execution state records an incompatibility that the pre-attempt check of REQ-EXECUTION-0008 finds in an admitted task, and execution then makes no contact.
+- **Rationale:** compatibility is a public rule over the task's own fields that every conforming implementation applies the same way, so an incompatible task is invalid for its selected path rather than unsupported by one implementation. Rejecting at admission matches REQ-TRUST-0017 step 8 and the rejection language of REQ-PROXY-0026 and REQ-PROXY-0027, and avoids scheduling attempts that cannot run.
+- **Wording:** accepted as proposed above. [REQ-TRUST-0039](../library/task-trust.md#REQ-TRUST-0039) follows REQ-TRUST-0037 in the Admission Errors section of `library/task-trust.md`, next to the condition-to-class table it extends, rather than after REQ-TRUST-0038 as first proposed; the text is unchanged. [REQ-PROXY-0042](../library/proxy.md#REQ-PROXY-0042) follows REQ-PROXY-0027 in `library/proxy.md`.
+- **Requirement IDs:** REQ-TRUST-0039 and REQ-PROXY-0042 are new allocations recorded in the [requirement catalog](../requirements/catalog.json). REQ-TRUST-0017, REQ-TRUST-0036, REQ-TRUST-0037, REQ-PROXY-0026 to REQ-PROXY-0028, REQ-RESULT-0020, REQ-EXECUTION-0008 and REQ-EXECUTION-0010 remain active and unchanged; no ID is retired or reused.
+- **Version:** Draft `0.1.0` is retained. No admission class, field, schema or test version value changes. Hosts that expected per-attempt `proxy_path_unsupported` for such tasks receive an admission rejection instead; external hosts, producers and stored tasks are unassessed. No release or runtime support claim is made.
+- **Related observation:** the class for a step-8 input or options failure is not addressed by this disposition and remains unmapped in the public text.
+- **Internal alignment:** required. The internal task-trust review validation plan covers every REQ-TRUST-0037 row and must cite the merged wording without adding private normative obligations.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption (DEV-599); it is recorded as evidence on DEV-598 after merge. The required safety review of the mapping is not represented as completed.

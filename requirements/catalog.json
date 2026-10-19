@@ -3423,6 +3423,13 @@
       "reason": ""
     },
     {
+      "id": "REQ-TRUST-0039",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-OBS-0034",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
@@ -4005,6 +4012,13 @@
     },
     {
       "id": "REQ-PROXY-0041",
+      "status": "active",
+      "source": "library/proxy.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-PROXY-0042",
       "status": "active",
       "source": "library/proxy.md",
       "successors": [],
