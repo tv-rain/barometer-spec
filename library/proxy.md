@@ -267,6 +267,12 @@ Failure to classify proxy egress is recorded as unavailable network context. It 
 
 Compatibility is validated before network activity. The library must not execute a compatible subset of an incompatible task or NET-05 profile.
 
+<a id="REQ-PROXY-0042"></a>
+
+**REQ-PROXY-0042:**
+
+An incompatible task is rejected at admission ([REQ-TRUST-0039](task-trust.md#REQ-TRUST-0039)) and is not admitted to fail at execution. `proxy_path_unsupported` records an incompatibility that the pre-attempt check of [REQ-EXECUTION-0008](../data-formats/task-execution.md#REQ-EXECUTION-0008) finds in an admitted task; execution then makes no contact.
+
 ## Execution States
 
 <a id="REQ-PROXY-0028"></a>

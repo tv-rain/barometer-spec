@@ -362,6 +362,12 @@ A rejected task receives exactly one class: the class of the first step, in [REQ
 | 8 | A direct or proxy path is not permitted by the matched target registration. | `target_not_registered` |
 | 9 | Effective risk exceeds a local-policy bound, or is `unknown` without an explicit reviewed local policy permitting it. | `task_issuer_not_authorized` |
 
+<a id="REQ-TRUST-0039"></a>
+
+**REQ-TRUST-0039:**
+
+At step 8 of [REQ-TRUST-0017](#REQ-TRUST-0017), a task with `network_path: proxy` whose test, input or options are not compatible with HTTP CONNECT under [REQ-PROXY-0026](proxy.md#REQ-PROXY-0026), including a `NET-05` profile with any incompatible step, is rejected with `task_schema_invalid`. Within step 8, proxy compatibility is evaluated after input and options and before path authority and target registration. A combination that REQ-PROXY-0026 permits but the implementation does not provide through the proxy is rejected with `task_unsupported` under [REQ-TRUST-0036](#REQ-TRUST-0036).
+
 ## Residual Risks
 
 - A compromised host, admitted issuer, operating system, or policy package can misuse authority available to it.
