@@ -165,6 +165,12 @@ The `time_window` object restricts run starts to specified local time ranges.
 
 `local` means the current timezone reported by the device.
 
+<a id="REQ-SCHEDULE-0043"></a>
+
+**REQ-SCHEDULE-0043:**
+
+In this version, `local` is the only defined `timezone` value. A task containing any other `timezone` value must be rejected.
+
 #### Range Fields
 
 <a id="REQ-SCHEDULE-0015"></a>
