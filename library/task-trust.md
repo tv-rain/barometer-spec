@@ -9,9 +9,15 @@ Runtime JSON values follow the shared [strict decoding contract](../data-formats
 
 <a id="REQ-TRUST-0002"></a>
 
-**REQ-TRUST-0002:**
+**REQ-TRUST-0002 (retired):**
 
-Barometer accepts a task only after the host establishes its provenance and the library validates it against immutable trusted local policy, registered measurement behavior, and [Registered Initial Limits](registered-limits.md).
+The historical overview required the host to establish task provenance. [REQ-TRUST-0040](#REQ-TRUST-0040) replaces it: Barometer verifies remote provenance itself; historical revisions remain available.
+
+<a id="REQ-TRUST-0040"></a>
+
+**REQ-TRUST-0040:**
+
+Barometer accepts a task only after its provenance is established, by reviewed embedded packaging or by Barometer's verification of a signed remote task package, and the library validates it against immutable trusted local policy, registered measurement behavior, and [Registered Initial Limits](registered-limits.md).
 
 <a id="REQ-TRUST-0003"></a>
 
@@ -19,7 +25,7 @@ Barometer accepts a task only after the host establishes its provenance and the 
 
 Task fields are untrusted input. A task cannot authenticate itself, authorize its targets, declare itself safe, update local policy, or establish that its identifier is non-user-specific.
 
-This contract does not require one scheduler, backend, TLS profile, or signature container. It defines the evidence the host must establish and the behavior the library must enforce.
+This contract does not require one scheduler, backend, or TLS profile. It defines the single signed package format Barometer verifies for remote origin and the behavior the library must enforce.
 
 ## Accepted Task Origins
 
@@ -27,44 +33,69 @@ Version `0.1.0` supports two origins:
 
 <a id="REQ-TRUST-0004"></a>
 
-**REQ-TRUST-0004:**
+**REQ-TRUST-0004 (retired):**
+
+The historical origins table trusted a `remote` task when the host authenticated the issuer and verified integrity. [REQ-TRUST-0041](#REQ-TRUST-0041) replaces it; historical revisions remain available.
+
+<a id="REQ-TRUST-0041"></a>
+
+**REQ-TRUST-0041:**
 
 | Origin | Trust requirement |
 |---|---|
 | `embedded` | The exact task is packaged with a reviewed host deployment and covered by that deployment's release review. |
-| `remote` | The host authenticates the issuer and verifies task integrity through a reviewed mechanism before passing the task to Barometer. |
+| `remote` | The task is delivered inside a [signed remote task package](#signed-remote-task-packages) that Barometer verifies against a trusted issuer key in trusted local policy. |
 
 <a id="REQ-TRUST-0005"></a>
 
-**REQ-TRUST-0005:**
+**REQ-TRUST-0005 (retired):**
 
-Examples of a remote mechanism include an authenticated, integrity-protected channel or a verified signed task package. Transport encryption without authenticated issuer authorization is insufficient.
+The historical text allowed a host-selected remote mechanism, such as an authenticated channel. [REQ-TRUST-0042](#REQ-TRUST-0042) replaces it; historical revisions remain available.
+
+<a id="REQ-TRUST-0042"></a>
+
+**REQ-TRUST-0042:**
+
+For `remote` origin the host is a transport. It passes the exact received signed package bytes to Barometer and does not perform or assert remote authentication. Host-performed verification, an authenticated channel reported by the host, and transport security between the issuer and the host establish nothing for admission.
 
 <a id="REQ-TRUST-0001"></a>
 
-**REQ-TRUST-0001:**
+**REQ-TRUST-0001 (retired):**
 
-Barometer must not accept a remote task when authentication, integrity verification, trusted time needed for validity, or source context is unavailable.
+The historical text referred to host authentication and integrity verification. [REQ-TRUST-0043](#REQ-TRUST-0043) replaces it; historical revisions remain available.
+
+<a id="REQ-TRUST-0043"></a>
+
+**REQ-TRUST-0043:**
+
+Barometer must not accept a remote task when signed package verification fails or cannot be performed, or when trusted local policy, trusted time needed for validity, or source context is unavailable.
 
 ## Trusted Source Context
 
 <a id="REQ-TRUST-0006"></a>
 
-**REQ-TRUST-0006:**
+**REQ-TRUST-0006 (retired):**
 
-The host supplies source context through an internal initialization or admission boundary separate from serialized task fields:
+The historical text had the host supply every source-context property. [REQ-TRUST-0044](#REQ-TRUST-0044) replaces it together with REQ-TRUST-0007; historical revisions remain available.
 
 <a id="REQ-TRUST-0007"></a>
 
-**REQ-TRUST-0007:**
+**REQ-TRUST-0007 (retired):**
+
+The historical source-context table included a host-asserted `authenticated` property and host-supplied remote `issuer_id` and `issued_at`. [REQ-TRUST-0044](#REQ-TRUST-0044) replaces it; historical revisions remain available.
+
+<a id="REQ-TRUST-0044"></a>
+
+**REQ-TRUST-0044:**
+
+Admission uses the following source context, kept separate from serialized task fields. The host supplies `origin` and `policy_generation` through an internal initialization or admission boundary. For `embedded` origin the host also supplies `issuer_id`. For `remote` origin, `issuer_id` and `issued_at` are taken only from a verified signed package; a host-supplied value for either is not accepted.
 
 | Property | Required | Constraints | Meaning |
 |---|:---:|---|---|
 | `origin` | Yes | `embedded` or `remote` | How provenance was established. |
 | `issuer_id` | Yes | 1–64 lowercase ASCII letters, digits, `.`, `_`, or `-`; deployment-scoped and non-user-specific | Stable policy principal authorized to submit the task. |
 | `policy_generation` | Yes | Positive monotonically increasing integer | Trusted local policy generation used for admission. |
-| `authenticated` | Yes | `true` for `remote`; `false` for reviewed `embedded` origin | Whether remote issuer authentication and integrity verification were required and succeeded. |
-| `issued_at` | Conditional | RFC 3339 UTC timestamp required for `remote`; absent for `embedded`; no more than 300 seconds in the future | Authenticated issuance time used to bound task validity. |
+| `issued_at` | Conditional | Required for `remote`, from the verified package; absent for `embedded`; no more than 300 seconds after the acceptance time | Authenticated issuance time used to bound task validity. |
 
 <a id="REQ-TRUST-0008"></a>
 
@@ -74,9 +105,100 @@ These properties are not task labels, do not appear in measurement traffic, and 
 
 <a id="REQ-TRUST-0009"></a>
 
-**REQ-TRUST-0009:**
+**REQ-TRUST-0009 (retired):**
 
-The concrete Go, native, or Flutter API may represent this context differently, but it must preserve the same trust boundary. Flutter applications must not be asked to provide raw verification keys or mark arbitrary task data authenticated.
+The historical binding-boundary text assumed host-supplied authentication context. [REQ-TRUST-0045](#REQ-TRUST-0045) replaces it; historical revisions remain available.
+
+<a id="REQ-TRUST-0045"></a>
+
+**REQ-TRUST-0045:**
+
+The concrete Go, native, or Flutter API may represent source context and signed packages differently, but it must preserve the same trust boundary. No binding accepts a verification key, a signature verdict, or an authentication flag for a task, and Flutter applications must not be asked to provide raw verification keys or mark task data authenticated. Trusted issuer keys enter Barometer only as part of the trusted local policy loaded at initialization.
+
+## Signed Remote Task Packages
+
+<a id="REQ-TRUST-0048"></a>
+
+**REQ-TRUST-0048:**
+
+A signed remote task package is one JSON object decoded under the [strict decoding contract](../data-formats/json-decoding.md). It has exactly the following members, all required, and rejects unknown members:
+
+| Member | Type | Constraints |
+|---|---|---|
+| `issuer_id` | string | 1–64 lowercase ASCII letters, digits, `.`, `_`, or `-`. |
+| `key_id` | string | 1–64 lowercase ASCII letters, digits, `.`, `_`, or `-`. |
+| `issued_at` | string | Exactly `YYYY-MM-DDTHH:MM:SSZ`: a valid UTC calendar date and time with whole seconds and the `Z` suffix; no fraction, numeric offset, lowercase letter, or leap second `60`. |
+| `task` | string | The exact task bytes, encoded as base64url without padding (RFC 4648 section 5). Only canonical encoding is accepted: no padding, whitespace, or nonzero unused trailing bits. Decodes to at least one byte. |
+| `signature` | string | The Ed25519 signature, encoded as canonical base64url without padding. Decodes to exactly 64 bytes. |
+
+The package carries no algorithm, version, or other selector. The decoded `task` bytes are the exact serialized task presented to the rest of admission.
+
+<a id="REQ-TRUST-0049"></a>
+
+**REQ-TRUST-0049:**
+
+The signature is pure Ed25519 as defined by RFC 8032 over the message `M`, where `LP(x)` is the length of `x` in bytes as a 4-byte unsigned big-endian integer followed by the bytes of `x`:
+
+```text
+M = LP("barometer-signed-task-v1")
+ || LP(key_id) || LP(issuer_id) || LP(issued_at) || LP(task bytes)
+```
+
+`key_id`, `issuer_id`, and `issued_at` contribute the ASCII bytes of their decoded string values, and `task bytes` are the decoded `task` bytes. Version `0.1.0` defines no other signature algorithm, context string, or message construction, and no package can select one.
+
+<a id="REQ-TRUST-0050"></a>
+
+**REQ-TRUST-0050:**
+
+Signature verification is cofactorless Ed25519 verification under RFC 8032 and rejects a signature when:
+
+- the scalar `S` is not less than the group order;
+- the encoding of `R` is not canonical;
+- the equation `[S]B = R + [k]A` does not hold, where `k` is computed from `R`, the public key encoding `A`, and `M` as defined by RFC 8032.
+
+These rules are set so that conforming implementations accept the same signatures; an implementation whose Ed25519 library verifies differently must add the missing checks.
+
+<a id="REQ-TRUST-0051"></a>
+
+**REQ-TRUST-0051:**
+
+Each trusted issuer key in trusted local policy contains:
+
+| Property | Constraints |
+|---|---|
+| `key_id` | 1–64 lowercase ASCII letters, digits, `.`, `_`, or `-`; unique across the policy. |
+| `issuer_id` | Exactly one issuer that the same policy authorizes. |
+| `public_key` | 32-byte Ed25519 public key in canonical encoding that decodes to a curve point not of small order. |
+| `not_before` | UTC time in the same fixed format as package `issued_at`. |
+| `not_after` | UTC time in the same format, later than `not_before`; the period from `not_before` to `not_after` does not exceed the registered maximum key validity. |
+
+Policy validation enforces these constraints and the registered key-count limits. A policy with an invalid key record fails complete validation and is not activated under [REQ-TRUST-0030](#REQ-TRUST-0030) and [REQ-TRUST-0031](#REQ-TRUST-0031). The concrete policy representation is implementation-defined. Remote tasks, signed packages, collector responses, and other delivered content cannot add, replace, or extend trusted keys.
+
+<a id="REQ-TRUST-0052"></a>
+
+**REQ-TRUST-0052:**
+
+At step 2 of [REQ-TRUST-0046](#REQ-TRUST-0046), Barometer verifies a remote package by the following checks in order. A rejected package receives the class of the first failing check:
+
+| Order | Check | Class on failure |
+|---|---|---|
+| 1 | The package does not exceed the registered signed-package byte limit; reading stops when the limit is exceeded. | `task_limit_exceeded` |
+| 2 | Trusted local policy is available. | `task_policy_unavailable` |
+| 3 | The package decodes under REQ-TRUST-0048 and every member meets its constraints. | `task_source_unauthenticated` |
+| 4 | `key_id` names a trusted key in the active policy. | `task_source_unauthenticated` |
+| 5 | That key's `issuer_id` equals the package `issuer_id`. | `task_source_unauthenticated` |
+| 6 | Trusted time is available; this reading is the acceptance time. | `task_trust_unavailable` |
+| 7 | Both the acceptance time and `issued_at` are no earlier than the key's `not_before` and no later than its `not_after`. | `task_source_unauthenticated` |
+| 8 | `issued_at` is no more than 300 seconds after the acceptance time. | `task_source_unauthenticated` |
+| 9 | The signature verifies over `M` with the key under REQ-TRUST-0049 and REQ-TRUST-0050. | `task_source_unauthenticated` |
+
+The task bytes are not parsed or evaluated before check 9 succeeds. The error does not indicate which check failed beyond its class and does not include the package, task, key identifier, key, signature, or issuer, consistent with [REQ-TRUST-0035](#REQ-TRUST-0035).
+
+<a id="REQ-TRUST-0053"></a>
+
+**REQ-TRUST-0053:**
+
+After admission, Barometer does not retain the signed package, its signature, or its key identifier, whether the task is accepted or rejected. The accepted task bytes and the replay record of [REQ-TRUST-0021](#REQ-TRUST-0021) to [REQ-TRUST-0023](#REQ-TRUST-0023) remain subject to their own requirements.
 
 ## Issuer Authorization
 
@@ -151,13 +273,19 @@ DNS resolution or a redirect does not extend authority. Every address or redirec
 
 <a id="REQ-TRUST-0017"></a>
 
-**REQ-TRUST-0017:**
+**REQ-TRUST-0017 (retired):**
+
+The historical procedure received host-supplied remote source context and required host-performed remote authentication at steps 1 to 3. [REQ-TRUST-0046](#REQ-TRUST-0046) replaces it; steps 4 to 11 are unchanged in substance. Historical revisions remain available.
+
+<a id="REQ-TRUST-0046"></a>
+
+**REQ-TRUST-0046:**
 
 Barometer performs the following steps before a task is scheduled:
 
-1. Receive the exact serialized task and trusted source context.
-2. Require valid remote authentication or reviewed embedded origin.
-3. Validate authenticated issuance time and parse within the registered task byte limit.
+1. Receive the exact presented bytes and trusted source context: for `embedded` origin, the exact serialized task; for `remote` origin, the exact signed remote task package.
+2. For `remote` origin, verify the signed package under [REQ-TRUST-0052](#REQ-TRUST-0052); for `embedded` origin, require reviewed embedded origin.
+3. For `remote` origin, take `issuer_id` and the authenticated `issued_at` from the verified package. Parse the task bytes within the registered task byte limit.
 4. Validate the complete top-level schema and exact versions.
 5. Validate `task_id` as campaign-scoped and non-user-specific.
 6. Validate expiry, schedule, retry, execution, safety, and all numeric limits.
@@ -302,6 +430,12 @@ Failure during update leaves the previous complete policy active or leaves Barom
 
 Remote tasks, collector responses, measurement targets, proxies, and context endpoints cannot update policy.
 
+<a id="REQ-TRUST-0054"></a>
+
+**REQ-TRUST-0054:**
+
+Trusted issuer keys, issuers, and target registrations are added, rotated, or removed only by a new reviewed local policy with a strictly greater `policy_generation`, shipped with an application release and activated under [REQ-TRUST-0029](#REQ-TRUST-0029) to [REQ-TRUST-0031](#REQ-TRUST-0031). When a replacement policy removes a key or issuer, no new task is admitted under it, and item 4 of REQ-TRUST-0030 applies to queued and running tasks that the new policy no longer permits. A task admitted while its signing key was trusted and valid is not re-verified when that key's validity period later ends; its own expiry still bounds it. Version `0.1.0` has no other key revocation or key update channel.
+
 ## Admission Errors
 
 <a id="REQ-TRUST-0033"></a>
@@ -345,15 +479,21 @@ In addition to the classes in REQ-TRUST-0034, Barometer returns `task_unsupporte
 
 <a id="REQ-TRUST-0037"></a>
 
-**REQ-TRUST-0037:**
+**REQ-TRUST-0037 (retired):**
 
-A rejected task receives exactly one class: the class of the first step, in [REQ-TRUST-0017](#REQ-TRUST-0017) order, that fails. Where another requirement names the class for a condition, that class applies. The following conditions use the listed class:
+The historical condition-to-class table ordered steps by REQ-TRUST-0017 and placed the remote `issued_at` check at step 3. [REQ-TRUST-0047](#REQ-TRUST-0047) replaces it; historical revisions remain available.
+
+<a id="REQ-TRUST-0047"></a>
+
+**REQ-TRUST-0047:**
+
+A rejected task receives exactly one class: the class of the first step, in [REQ-TRUST-0046](#REQ-TRUST-0046) order, that fails. Where another requirement names the class for a condition, that class applies. The following conditions use the listed class:
 
 | Step | Condition | Class |
 |---|---|---|
-| 1 | The exact presented task bytes are not bound to the supplied trusted source context, or that binding is missing or expired. | `task_source_unauthenticated` |
+| 1 | The exact presented bytes are not bound to the supplied trusted source context, or that binding is missing or expired. | `task_source_unauthenticated` |
+| 2 | A remote signed package fails a verification check. | The class of the first failing check in [REQ-TRUST-0052](#REQ-TRUST-0052) |
 | 3 | Trusted time needed for validity is unavailable. | `task_trust_unavailable` |
-| 3 | Remote `issued_at` is more than 300 seconds in the future. | `task_source_unauthenticated` |
 | 4 | The `test_id` and `test_version` pair is not registered by the implementation (REQ-TRUST-0036). | `task_unsupported` |
 | 5 | `task_id` exceeds 128 bytes. | `task_limit_exceeded` |
 | 6 | A risk factor type is rejected as unsupported, or a valid field requires a capability the implementation does not provide (REQ-TRUST-0036). | `task_unsupported` |
@@ -366,13 +506,16 @@ A rejected task receives exactly one class: the class of the first step, in [REQ
 
 **REQ-TRUST-0039:**
 
-At step 8 of [REQ-TRUST-0017](#REQ-TRUST-0017), a task with `network_path: proxy` whose test, input or options are not compatible with HTTP CONNECT under [REQ-PROXY-0026](proxy.md#REQ-PROXY-0026), including a `NET-05` profile with any incompatible step, is rejected with `task_schema_invalid`. Within step 8, proxy compatibility is evaluated after input and options and before path authority and target registration. A combination that REQ-PROXY-0026 permits but the implementation does not provide through the proxy is rejected with `task_unsupported` under [REQ-TRUST-0036](#REQ-TRUST-0036).
+At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task with `network_path: proxy` whose test, input or options are not compatible with HTTP CONNECT under [REQ-PROXY-0026](proxy.md#REQ-PROXY-0026), including a `NET-05` profile with any incompatible step, is rejected with `task_schema_invalid`. Within step 8, proxy compatibility is evaluated after input and options and before path authority and target registration. A combination that REQ-PROXY-0026 permits but the implementation does not provide through the proxy is rejected with `task_unsupported` under [REQ-TRUST-0036](#REQ-TRUST-0036).
 
 ## Residual Risks
 
 - A compromised host, admitted issuer, operating system, or policy package can misuse authority available to it.
-- Authentication establishes provenance, not that a task is safe; local policy remains mandatory.
-- Authenticated delivery infrastructure can observe recipient addresses and timing unless separately minimized.
+- A valid signature establishes which trusted issuer key signed the package, not that a task is safe; local policy remains mandatory.
+- A compromised issuer signing key remains usable until its validity period ends or until installations update to a policy that removes it. Its reach stays bounded by issuer authority, local policy, registered targets and limits, task expiry, and replay handling.
+- Key validity depends on trusted time. A wrong or manipulated device clock can make an expired key appear valid or a valid key appear expired.
+- A signed package is attributable to its issuer. Barometer does not retain it after admission, but a host or delivery infrastructure that retains received packages can reveal that a device received a measurement task.
+- Delivery infrastructure can observe recipient addresses and timing unless separately minimized.
 - Broad cohort delivery can still expose rare groups when combined with other data.
 - Local replay state cannot survive explicit data clearing by design.
 - Target ownership, infrastructure, and sensitivity can change after review; registrations therefore require bounded validity and operational review.
