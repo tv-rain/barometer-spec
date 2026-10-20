@@ -436,6 +436,12 @@ Remote tasks, collector responses, measurement targets, proxies, and context end
 
 Trusted issuer keys, issuers, and target registrations are added, rotated, or removed only by a new reviewed local policy with a strictly greater `policy_generation`, shipped with an application release and activated under [REQ-TRUST-0029](#REQ-TRUST-0029) to [REQ-TRUST-0031](#REQ-TRUST-0031). When a replacement policy removes a key or issuer, no new task is admitted under it, and item 4 of REQ-TRUST-0030 applies to queued and running tasks that the new policy no longer permits. A task admitted while its signing key was trusted and valid is not re-verified when that key's validity period later ends; its own expiry still bounds it. Version `0.1.0` has no other key revocation or key update channel.
 
+<a id="REQ-TRUST-0055"></a>
+
+**REQ-TRUST-0055:**
+
+The exemption from re-verification in [REQ-TRUST-0054](#REQ-TRUST-0054) applies only to an accepted task that the initialized library instance still holds. Every presentation of a remote package, including an exact redelivery under [REQ-TRUST-0024](#REQ-TRUST-0024) and a redelivery after policy replacement, library reinitialization, or data clearing, is verified under [REQ-TRUST-0052](#REQ-TRUST-0052) at its own acceptance time before replay handling. A presentation whose signing key is not trusted and valid at that time is rejected with `task_source_unauthenticated`, even when a replay record or a held acceptance exists for the same task; the rejection does not invalidate an acceptance the instance still holds. A task that the instance no longer holds after policy replacement, reinitialization, or data clearing runs again only if a package presenting it is admitted under this requirement. Barometer does not retain a package, signature, or key identifier to exempt a later presentation from verification.
+
 ## Admission Errors
 
 <a id="REQ-TRUST-0033"></a>
@@ -513,6 +519,7 @@ At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task with `network_path: proxy
 - A compromised host, admitted issuer, operating system, or policy package can misuse authority available to it.
 - A valid signature establishes which trusted issuer key signed the package, not that a task is safe; local policy remains mandatory.
 - A compromised issuer signing key remains usable until its validity period ends or until installations update to a policy that removes it. Its reach stays bounded by issuer authority, local policy, registered targets and limits, task expiry, and replay handling.
+- A remote task whose signing key's validity ends before the task is redelivered after policy replacement, reinitialization, or data clearing stops before its own expiry under [REQ-TRUST-0055](#REQ-TRUST-0055). An issuer can redeliver it in a package signed with a currently valid key; while a replay record exists for identical task bytes, that package is an exact redelivery under [REQ-TRUST-0024](#REQ-TRUST-0024).
 - Key validity depends on trusted time. A wrong or manipulated device clock can make an expired key appear valid or a valid key appear expired.
 - A signed package is attributable to its issuer. Barometer does not retain it after admission, but a host or delivery infrastructure that retains received packages can reveal that a device received a measurement task.
 - Delivery infrastructure can observe recipient addresses and timing unless separately minimized.

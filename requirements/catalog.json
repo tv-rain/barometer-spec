@@ -3553,6 +3553,13 @@
       "reason": ""
     },
     {
+      "id": "REQ-TRUST-0055",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-OBS-0034",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
