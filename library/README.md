@@ -6,6 +6,6 @@ Specifications for Barometer host integration, initialization, shared runtime fa
 
 - [`network-context.md`](network-context.md) — safe acquisition, caching, and lifecycle of network metadata shared by execution and results.
 - [`proxy.md`](proxy.md) — host-configured HTTP CONNECT proxy integration and task path selection.
-- [`registered-limits.md`](registered-limits.md) — canonical numeric version `0.1.0` limits for tasks, execution, schedules, measurements, results, bundles, linkage, and retention.
+- [`registered-limits.md`](registered-limits.md) — canonical numeric version `0.1.0` limits for tasks, signed remote task packages and trusted issuer keys, execution, schedules, measurements, results, bundles, linkage, and retention.
 - [`result-linkage.md`](result-linkage.md) — privacy-preserving result bundling linkage, protected platform storage, rotation, and clear-data lifecycle.
-- [`task-trust.md`](task-trust.md) — authenticated task provenance, issuer authority, target registration, replay handling, non-targeted delivery, and local-policy lifecycle.
+- [`task-trust.md`](task-trust.md) — task provenance, library-verified signed remote task packages and trusted issuer keys, issuer authority, target registration, replay handling, non-targeted delivery, and local-policy lifecycle.

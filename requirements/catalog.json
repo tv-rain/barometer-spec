@@ -116,10 +116,12 @@
     },
     {
       "id": "REQ-TRUST-0001",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0043"
+      ],
+      "reason": "Host authentication and integrity verification as remote acceptance conditions replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TCP-01-0001",
@@ -3165,10 +3167,12 @@
     },
     {
       "id": "REQ-TRUST-0002",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0040"
+      ],
+      "reason": "Host-established provenance replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0003",
@@ -3179,31 +3183,39 @@
     },
     {
       "id": "REQ-TRUST-0004",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0041"
+      ],
+      "reason": "Host-authenticated remote origin replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0005",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0042"
+      ],
+      "reason": "Host-selected remote mechanisms replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0006",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0044"
+      ],
+      "reason": "Host-supplied source context, merged with REQ-TRUST-0007 replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0007",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0044"
+      ],
+      "reason": "Source context with host-asserted authenticated, issuer_id and issued_at replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0008",
@@ -3214,10 +3226,12 @@
     },
     {
       "id": "REQ-TRUST-0009",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0045"
+      ],
+      "reason": "Binding boundary for host-supplied authentication context replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0010",
@@ -3270,10 +3284,12 @@
     },
     {
       "id": "REQ-TRUST-0017",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0046"
+      ],
+      "reason": "Admission steps 1 to 3 with host-performed remote authentication replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0018",
@@ -3410,10 +3426,12 @@
     },
     {
       "id": "REQ-TRUST-0037",
-      "status": "active",
+      "status": "retired",
       "source": "library/task-trust.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-TRUST-0047"
+      ],
+      "reason": "Class table ordered by REQ-TRUST-0017 with remote issued_at at step 3 replaced for library-verified signed remote task packages (specification-issues/signed-remote-task-packages.md)."
     },
     {
       "id": "REQ-TRUST-0038",
@@ -3424,6 +3442,111 @@
     },
     {
       "id": "REQ-TRUST-0039",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0040",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0041",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0042",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0043",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0044",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0045",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0046",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0047",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0048",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0049",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0050",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0051",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0052",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0053",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0054",
       "status": "active",
       "source": "library/task-trust.md",
       "successors": [],
@@ -4054,6 +4177,13 @@
     },
     {
       "id": "REQ-LIMIT-0031",
+      "status": "active",
+      "source": "library/registered-limits.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-LIMIT-0032",
       "status": "active",
       "source": "library/registered-limits.md",
       "successors": [],

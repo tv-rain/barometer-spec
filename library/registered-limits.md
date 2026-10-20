@@ -46,6 +46,22 @@ All byte limits refer to UTF-8 or encoded application data as stated. They are n
 
 Unknown fields remain rejected and count toward the size limit before rejection. Parsing must stop when the complete-task limit is exceeded.
 
+## Signed Remote Task and Trusted Key Limits
+
+<a id="REQ-LIMIT-0032"></a>
+
+**REQ-LIMIT-0032:**
+
+| Item | Default | Maximum |
+|---|---:|---:|
+| Complete [signed remote task package](task-trust.md#REQ-TRUST-0048) | — | 98,304 bytes |
+| `key_id` | — | 64 ASCII bytes |
+| Trusted issuer keys per issuer in one local policy | — | 4 |
+| Trusted issuer keys in one local policy | — | 32 |
+| Trusted issuer key validity period (`not_after` minus `not_before`) | — | 31,536,000 seconds (365 days) |
+
+The package maximum admits a complete task at its 65,536-byte maximum, which encodes to 87,382 base64url characters, together with the other package members. The decoded task remains subject to the complete-task limit. Four keys per issuer allow old and new keys to overlap while installations update to a release that rotates them. The validity maximum permits annual rotation through application releases; a shorter period would require more frequent releases and stop remote tasks on slowly updating installations sooner, and a longer one would extend the use of a compromised key and of installations that never update.
+
 ## Attempt Limits
 
 The `execution.limits` object uses:

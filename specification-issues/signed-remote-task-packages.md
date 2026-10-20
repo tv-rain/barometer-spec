@@ -1,10 +1,10 @@
 # Proposal: Library-Verified Signed Remote Task Packages
 
-**Disposition:** In review
+**Disposition:** Accepted wording; merge and downstream adoption pending
 **Date:** October 20, 2026
 **Related task:** [DEV-610 — Specify library-verified signed remote tasks in the public task-trust contract](https://app.clickup.com/t/124kk1zcexz)
 
-This record asks public maintainers to replace host-asserted authentication for `remote` task origin with a signed task package that Barometer verifies itself, as adopted by project coordination decision 0011 (DEV-609). That decision is recorded in a non-public coordination repository; its content needed for public review is summarized under [Finding and Reproduction](#finding-and-reproduction). It proposes the package encoding, the signed-message construction, trusted issuer keys in local policy, their numeric limits, the position of verification in admission, and the admission class of each verification failure. It does not change embedded-origin delivery. Opening this record does not accept its proposal, change the public contract, or authorize remote task delivery, which remains gated outside controlled development.
+This record asks public maintainers to replace host-asserted authentication for `remote` task origin with a signed task package that Barometer verifies itself, as adopted by project coordination decision 0011 (DEV-609). That decision is recorded in a non-public coordination repository; its content needed for public review is summarized under [Finding and Reproduction](#finding-and-reproduction). It proposes the package encoding, the signed-message construction, trusted issuer keys in local policy, their numeric limits, the position of verification in admission, and the admission class of each verification failure. It does not change embedded-origin delivery. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-20-2026) below did. Sections before it are the proposal as reviewed in [barometer-spec#17](https://github.com/tv-rain/barometer-spec/pull/17). The accepted wording is included in the same public change as this disposition. Acceptance does not authorize remote task delivery, which remains gated outside controlled development.
 
 ## Identity and Ownership
 
@@ -255,7 +255,7 @@ Boundary cases:
 
 - Coordination decision: project coordination decision 0011 (DEV-609), accepted October 20, 2026, and summarized in this record.
 - Order: maintainer disposition of this record; then one public change with the accepted wording, catalog allocations and retirements, the registered limits, the threat-model updates and this record's disposition. Then internal task-trust review alignment (DEV-611), then Go adoption (DEV-612), which must update `requirement-ref` comments citing retired identifiers. Bindings and host integration follow. Remote delivery remains gated by DEV-595 until that sequence and the required reviews are complete.
-- Public review/PR, maintainer disposition, rationale and date: pending.
+- Public review/PR, maintainer disposition, rationale and date: proposal reviewed in [barometer-spec#17](https://github.com/tv-rain/barometer-spec/pull/17); see [Maintainer Disposition](#maintainer-disposition--october-20-2026).
 
 ## Adoption and Closure Evidence
 
@@ -266,3 +266,21 @@ Boundary cases:
   - Go adoption evidence: package decoding, trusted-key validation, verification-order and class tests, and traceability citing them;
   - completed cryptographic and safety reviews, or their recorded status as gates that block field use.
 - Binding and host adoption are outside the current tasks and are assessed when those components exist.
+
+## Maintainer Disposition — October 20, 2026
+
+The project owner and public maintainer, Lev, accepted the proposal on October 20, 2026, in the DEV-610 task review, including alternatives (a) for package encoding, signed message and verification failure classes, and the proposed numeric limits.
+
+- **Package, message and algorithm:** accepted as proposed. [REQ-TRUST-0048](../library/task-trust.md#REQ-TRUST-0048) defines the package members and [REQ-TRUST-0049](../library/task-trust.md#REQ-TRUST-0049) the signed message and the single algorithm, pure Ed25519.
+- **Verification strictness:** the open question is resolved. Verification is cofactorless Ed25519 under RFC 8032; it rejects `S` not less than the group order and a non-canonical `R` encoding ([REQ-TRUST-0050](../library/task-trust.md#REQ-TRUST-0050)). A trusted public key must be canonically encoded and not of small order, checked at policy validation ([REQ-TRUST-0051](../library/task-trust.md#REQ-TRUST-0051)). This rule is provisional until the cryptographic review below; a change after review requires a new public change.
+- **Trusted keys:** accepted as proposed, with the record properties named `key_id`, `issuer_id`, `public_key`, `not_before` and `not_after` ([REQ-TRUST-0051](../library/task-trust.md#REQ-TRUST-0051)).
+- **Admission:** [REQ-TRUST-0046](../library/task-trust.md#REQ-TRUST-0046) replaces steps 1 to 3; [REQ-TRUST-0052](../library/task-trust.md#REQ-TRUST-0052) sets the nine checks and their classes; [REQ-TRUST-0047](../library/task-trust.md#REQ-TRUST-0047) replaces the class table, routing step 2 failures to REQ-TRUST-0052 and removing the step 3 row for remote `issued_at`, now check 8.
+- **Source context and host boundary:** [REQ-TRUST-0040](../library/task-trust.md#REQ-TRUST-0040) to [REQ-TRUST-0045](../library/task-trust.md#REQ-TRUST-0045). The `authenticated` property is removed. For `embedded` origin the host still supplies `issuer_id`.
+- **Retention, rotation and revocation:** [REQ-TRUST-0053](../library/task-trust.md#REQ-TRUST-0053) and [REQ-TRUST-0054](../library/task-trust.md#REQ-TRUST-0054), as proposed.
+- **Limits:** [REQ-LIMIT-0032](../library/registered-limits.md#REQ-LIMIT-0032) with the proposed values and their rationale.
+- **Threat model and residual risks:** [`threat-model.md`](../threat-model.md) and the Residual Risks section of `library/task-trust.md` are updated as proposed. The overview sentence of `library/task-trust.md` no longer says that no signature container is required.
+- **Requirement IDs:** REQ-TRUST-0001, REQ-TRUST-0002, REQ-TRUST-0004 to REQ-TRUST-0007, REQ-TRUST-0009, REQ-TRUST-0017 and REQ-TRUST-0037 are retired with the successors listed in the proposal; their anchors remain as historical records. REQ-TRUST-0040 to REQ-TRUST-0054 and REQ-LIMIT-0032 are new allocations in the [requirement catalog](../requirements/catalog.json). REQ-TRUST-0039 is unchanged except that its step reference now links to REQ-TRUST-0046; step 8 is unchanged. No ID is reused.
+- **Version:** Draft `0.1.0` is retained. The remote host boundary changes incompatibly; no external hosts, producers or stored packages are known, which is an assumption and not assessed deployment evidence. No release or runtime support claim is made.
+- **Downstream references:** references in the internal reviews and the Go repository that cite retired identifiers must be updated in their alignment and adoption tasks. Go continuous integration pins an earlier public revision and is not affected until it moves its pin.
+- **Required reviews:** the cryptographic review, the safety review of the residual exposure and the maximum key validity, and the host integration review remain required and are not represented as completed. They gate field use of remote delivery.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment (DEV-611) and Go adoption (DEV-612); it is recorded as evidence on DEV-610 after merge.

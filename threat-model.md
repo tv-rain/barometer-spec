@@ -30,15 +30,15 @@ Availability and measurement coverage are secondary to these safety objectives.
 ## System and Trust Boundaries
 
 ```text
-remote task service
+remote task issuer (signs packages with issuer keys)
         |
-        | authenticated and integrity-protected delivery
+        | signed task package over any host transport
         v
-trusted host integration ---- trusted local policy and target registrations
-        |
-        | admitted task plus non-task-controlled source context
+trusted host integration ---- trusted local policy, issuer public keys,
+        |                     and target registrations
+        | exact package or embedded task plus non-task-controlled source context
         v
-Barometer library
+Barometer library (verifies remote packages before admission)
    |          |             |
    | direct   | local proxy | context lookup
    v          v             v
@@ -57,7 +57,7 @@ target    proxy path     endpoint
         analysis and publication
 ```
 
-The trusted computing base for one deployment includes the Barometer library, its native bindings, the host integration that establishes task provenance, trusted local policy, registered target data, and the operating-system facilities used for storage, time, network selection, and cancellation.
+The trusted computing base for one deployment includes the Barometer library, its native bindings, the host integration that delivers tasks and packages embedded tasks, trusted local policy including issuer public keys, registered target data, and the operating-system facilities used for storage, time, network selection, and cancellation.
 
 Remote tasks, measurement targets, network intermediaries, context endpoint responses, proxy responses, collector input, and analysis input are untrusted data even when their operators are organizationally trusted.
 
@@ -104,7 +104,8 @@ Outages, congestion, routing changes, DNS caching, CDN behavior, certificate err
 
 ## Required Assumptions
 
-- The host establishes task authenticity and integrity as defined in [Task Trust and Local Policy](library/task-trust.md).
+- Barometer verifies remote task packages against issuer public keys in trusted local policy, and embedded tasks are covered by release review, as defined in [Task Trust and Local Policy](library/task-trust.md).
+- Issuers keep private signing keys outside the application, Barometer, and project repositories, and use each key only within its reviewed validity period.
 - Trusted local policy and target registrations are reviewed, non-user-specific, available before admission, and immutable for one initialized instance.
 - The implementation enforces the canonical [Registered Initial Limits](library/registered-limits.md) or stricter local limits.
 - The host does not add credentials, cookies, account identity, application telemetry, or stable identifiers to Barometer traffic.
@@ -118,7 +119,7 @@ If an assumption is absent or cannot be evaluated reliably, the affected operati
 
 | Threat | Required mitigations | Residual exposure |
 |---|---|---|
-| Unauthorized or modified task | Host-authenticated provenance; complete schema validation; trusted issuer authorization; local policy and target allowlists | A compromised admitted issuer or host can still request harmful behavior within its authority |
+| Unauthorized or modified task | Barometer-verified Ed25519 signature over the exact task bytes, issuer, issuance time, and key identifier; issuer-bound keys with bounded validity in trusted local policy; complete schema validation; trusted issuer authorization; local policy and target allowlists | A compromised admitted issuer, signing key, or host can still request harmful behavior within its authority; a compromised key remains usable until its validity ends or installations update to a policy that removes it |
 | Task replay or conflicting identifier reuse | Bounded validity; exact duplicate idempotency; reject same issuer and `task_id` with different content; bounded replay state | Restore, clock, or storage failure can make replay detection unavailable, which must fail closed for remote tasks |
 | Per-installation task targeting | Campaign-scoped non-user-specific task identifiers; prohibit delivery selection by installation, account, linkage token, or device property | Network delivery infrastructure may still observe source addresses unless separately minimized |
 | Excessive or distinctive measurement cadence | Required expiry and run count for repeated tasks; minimum interval; local jitter; no measurement-outcome retry; registered traffic limits | Even bounded repeated traffic and fixed endpoint sequences may be recognizable |
@@ -133,7 +134,10 @@ If an assumption is absent or cannot be evaluated reliably, the affected operati
 
 ## Abuse Cases That Must Be Tested
 
-- A validly shaped remote task arrives without authenticated source context.
+- A validly shaped remote task arrives without a signed package, or with a host-asserted authentication flag or issuer.
+- A signed package has an altered task byte, issuer, issuance time, or key identifier, or a signature that is not canonical.
+- A package is signed with an unknown key, with another issuer's key, or with a key outside its validity period.
+- A package is oversized, malformed, padded, or has an unknown or duplicate member.
 - An exact task is redelivered, followed by a task using the same issuer and `task_id` with different bytes.
 - A repeating task omits expiry, exceeds the maximum run count, requests too short an interval, or requests no jitter.
 - A task declares lower risk or consent requirements than the registered test.
@@ -167,6 +171,8 @@ Derived analysis must identify its method and version, preserve links to source 
 - Mobile platform APIs can hide retries, caches, routing, or failure detail and can terminate work without a protocol-level outcome.
 - Source IP and timing exist at network-facing services even when Barometer does not serialize them.
 - A valid low-risk classification is conditional on reviewed targets, cadence, deployment, platform behavior, and current local context.
+- Issuer key validity relies on device time, and revocation relies on installations updating; version `0.1.0` has no faster revocation path.
+- A signed package that a host or delivery system retains can attribute a delivered measurement task to its issuer.
 
 ## Review Triggers
 
@@ -176,6 +182,7 @@ The threat model and affected public requirements must be reviewed before adding
 - sensitive, political, circumvention, local-network, malformed, scanning, packet-capture, or high-volume targets;
 - a non-loopback proxy, proxy authentication, UDP proxying, or direct fallback;
 - remote policy updates without reinitialization;
+- a signature algorithm other than Ed25519, a key validity period above the registered maximum, or key revocation or key updates outside an application release;
 - participant-targeted task delivery;
 - stable linkage, longer linkage rotation, account-authenticated ingestion, or new retained identifiers;
 - precise location, operator, device, SIM, subscriber, or user information;
