@@ -1,6 +1,6 @@
 # Proposal: Re-verification of Redelivered Remote Tasks After Key Expiry
 
-**Disposition:** Accepted wording (alternative (a)); merged at `4743b636f29feb1f0f8d042866d04ccda3532938`; internal alignment recorded by DEV-625; Go adoption pending (DEV-624)
+**Disposition:** Closed: accepted wording (alternative (a)) merged at `4743b636f29feb1f0f8d042866d04ccda3532938`, aligned in the internal review by DEV-625 and adopted in Go by DEV-624; binding and host adoption not yet available
 **Date:** October 20, 2026
 **Related task:** [DEV-616 — Clarify whether REQ-TRUST-0054 tasks survive policy replacement without re-verification](https://app.clickup.com/t/124kk1zcf5d)
 
@@ -88,3 +88,11 @@ Recorded under DEV-625. The sections above keep their wording as historical evid
 - **Internal alignment:** the DEV-615 review cites REQ-TRUST-0055 in its scope. DEV-625 adds the REQ-TRUST-0055 validation-plan expectation to the internal task-trust review in its companion internal change, which together with the DEV-615 review completes the alignment step under [Ordering and Public Disposition](#ordering-and-public-disposition).
 - **Go adoption:** pending under DEV-624: the Go record closing its Open Interpretation Question by reference, and traceability citing REQ-TRUST-0055 to tests.
 - **Remaining before closure:** the Go adoption above; binding and host adoption are outside the current tasks (DEV-455). The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
+
+## Closure Addendum — October 21, 2026
+
+Recorded under DEV-626. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Internal alignment:** the REQ-TRUST-0055 alignment section and validation-plan expectation were merged into the internal task-trust review through internal review repository PR #9 at `de9b3da5484b88e045d180ad6913e24b22f57662`.
+- **Go adoption:** DEV-624 adopted REQ-TRUST-0055 in Go [PR #58](https://github.com/tv-rain/barometer-go/pull/58), merged at `2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67` (implementation commit `19b5810c80ba6dedc115d513cdc4ad51bfceec0b`). The Go record closes its interpretation question by reference ([Interpretation Question](https://github.com/tv-rain/barometer-go/blob/2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67/docs/specification-issues.md#interpretation-question)), and the cross-cutting traceability manifest at public `4743b63` maps REQ-TRUST-0055 to the existing key-rotation case, with two synthetic tests for redelivery after key expiry. No Go behavior changed. Evidence is synthetic only.
+- **Disposition:** closed October 21, 2026 by the public maintainer through this DEV-626 change; the evidence required under [Adoption and Closure Evidence](#adoption-and-closure-evidence) is linked above. Binding and host adoption are assessed when those components exist (DEV-455). No runtime, platform, field or release support is claimed.
