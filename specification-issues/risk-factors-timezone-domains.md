@@ -1,6 +1,6 @@
 # Proposal: `risk_factors` and `timezone` Value Domains
 
-**Disposition:** Accepted wording (alternative (a) for both questions); merge and downstream adoption pending
+**Disposition:** Closed: accepted wording (alternative (a) for both questions) merged at `5a37e82865a08922c4821c7318656286933421e5` and adopted in Go by DEV-582; binding and host adoption not yet assessed
 **Date:** October 19, 2026
 **Related task:** [DEV-581 — Obtain public disposition for GO-SPEC-ISSUE-007](https://app.clickup.com/t/124kk1zcaag)
 
@@ -92,3 +92,13 @@ The project owner and public maintainer, Lev, accepted alternative (a) for both 
 - **Version:** Draft `0.1.0` is retained as a restriction/clarification. Producers that emit `risk_factors: []` for `medium`, `high` or `unknown` tasks, or a `timezone` other than `local`, do not conform. External producers and stored tasks are unassessed. No schema, field or test version value changes, and no release or runtime support claim is made.
 - **Effect:** the merged immutable revision of this change becomes the accepted baseline for Go adoption; it is recorded as evidence on DEV-581 after merge. No specialist safety review is represented as completed.
 - **Reopening:** if a deployment needs zone-specific scheduling, open a new specification issue for a bounded timezone domain and link it here.
+
+## Closure Addendum — October 21, 2026
+
+Recorded under DEV-625. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Merged revision:** the accepted wording, the REQ-SAFETY-0031 and REQ-SCHEDULE-0043 allocations and the Draft `0.1.0` retention were merged on October 19, 2026 through [public PR #13](https://github.com/tv-rain/barometer-spec/pull/13) as immutable revision [`5a37e82865a08922c4821c7318656286933421e5`](https://github.com/tv-rain/barometer-spec/tree/5a37e82865a08922c4821c7318656286933421e5) (head `7ec57ee1aac7fcb9e7b0edb9b76b4716e744db09`).
+- **Internal alignment:** not required, as recorded under [Ordering and Public Disposition](#ordering-and-public-disposition).
+- **Go adoption:** [DEV-582](https://app.clickup.com/t/124kk1zcaah) adopted the disposition against `5a37e82` in Go [PR #38](https://github.com/tv-rain/barometer-go/pull/38), merged at `dea88adaa87e1191a745643478f8e0c02eddad3c` (implementation commit `4575079b503467bff83c1175329be6cfa64cfb71`). Go rejects `risk_factors: []` for `medium`, `high` and `unknown` risk; `timezone` validation needed no behavior change. Synthetic unit tests and conformance fixtures cover both domains, and traceability cites them, with the affected requirements `partial` and none `implemented`. The Go record's [adoption addendum](https://github.com/tv-rain/barometer-go/blob/dea88adaa87e1191a745643478f8e0c02eddad3c/docs/specification-issues.md#adoption-addendum--october-19-2026) links the merged revision and DEV-582.
+- **Disposition:** closed October 21, 2026 by the public maintainer through this DEV-625 change; the evidence required under [Adoption and Closure Evidence](#adoption-and-closure-evidence) is linked above.
+- **Remaining scope outside this closure:** the Go record keeps its local finding `GO-SPEC-ISSUE-007` open for admission-path evidence and the planned `CC-SAFETY-RISK-FACTORS` and `CC-SCHEDULE-SCHEDULING-MODEL-TIME-WINDOW-FIELDS` family cases. Binding and host adoption are unassessed because those components do not exist yet (DEV-455). External producers and stored tasks are unassessed. No specialist safety review and no runtime, platform, field or release support is claimed.

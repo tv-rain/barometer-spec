@@ -1,6 +1,6 @@
 # Proposal: Re-verification of Redelivered Remote Tasks After Key Expiry
 
-**Disposition:** Accepted wording (alternative (a)); merge and downstream adoption pending
+**Disposition:** Accepted wording (alternative (a)); merged at `4743b636f29feb1f0f8d042866d04ccda3532938`; internal alignment recorded by DEV-625; Go adoption pending (DEV-624)
 **Date:** October 20, 2026
 **Related task:** [DEV-616 — Clarify whether REQ-TRUST-0054 tasks survive policy replacement without re-verification](https://app.clickup.com/t/124kk1zcf5d)
 
@@ -78,3 +78,13 @@ The project owner and public maintainer, Lev, accepted alternative (a) on Octobe
 - **Requirement IDs:** REQ-TRUST-0055 is a new allocation recorded in the [requirement catalog](../requirements/catalog.json). REQ-TRUST-0054 remains active and unchanged; no ID is retired or reused.
 - **Version:** Draft `0.1.0` is retained. No schema, field, class or limit changes, and no release or runtime support claim is made.
 - **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption; it is recorded as evidence on DEV-616 after merge. The required safety review is not represented as completed.
+
+## Merge and Adoption Addendum — October 21, 2026
+
+Recorded under DEV-625. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Merged revision:** the accepted wording, the REQ-TRUST-0055 allocation and the Draft `0.1.0` retention were merged on October 20, 2026 through [public PR #19](https://github.com/tv-rain/barometer-spec/pull/19) as immutable revision [`4743b636f29feb1f0f8d042866d04ccda3532938`](https://github.com/tv-rain/barometer-spec/tree/4743b636f29feb1f0f8d042866d04ccda3532938) (head `a83447ddff338d05599ec6d3e7abb564aba79977`).
+- **Safety review:** the project maintainer's DEV-615 safety review of signed remote task packages was performed against `4743b63` and includes re-verification on redelivery (REQ-TRUST-0055); it passed with no findings (internal review repository PR #7, merged at `4522637fc91890acae9de6b4da9bd189d9f3318e`). Under the maintainer decision of October 21, 2026 recorded in [signed remote task packages](signed-remote-task-packages.md#closure-addendum--october-21-2026), that review satisfies the required review.
+- **Internal alignment:** the DEV-615 review cites REQ-TRUST-0055 in its scope. DEV-625 adds the REQ-TRUST-0055 validation-plan expectation to the internal task-trust review in its companion internal change, which together with the DEV-615 review completes the alignment step under [Ordering and Public Disposition](#ordering-and-public-disposition).
+- **Go adoption:** pending under DEV-624: the Go record closing its Open Interpretation Question by reference, and traceability citing REQ-TRUST-0055 to tests.
+- **Remaining before closure:** the Go adoption above; binding and host adoption are outside the current tasks (DEV-455). The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.

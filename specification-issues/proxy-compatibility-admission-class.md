@@ -1,6 +1,6 @@
 # Proposal: Admission Class for Proxy-Incompatible Task Parameters
 
-**Disposition:** Accepted wording (alternative (a)); merge and downstream adoption pending
+**Disposition:** Accepted wording (alternative (a)); merged at `59b192d498bf011e331928d192702e1205a89f35`; internal alignment merged; Go adoption in progress; safety review of the mapping pending
 **Date:** October 19, 2026
 **Related task:** [DEV-598 — Record GO-SPEC-ISSUE-009 and obtain public disposition for the proxy-compatibility admission class](https://app.clickup.com/t/124kk1zcbfb)
 
@@ -103,3 +103,13 @@ The project owner and public maintainer, Lev, accepted alternative (a) on Octobe
 - **Related observation:** the class for a step-8 input or options failure is not addressed by this disposition and remains unmapped in the public text.
 - **Internal alignment:** required. The internal task-trust review validation plan covers every REQ-TRUST-0037 row and must cite the merged wording without adding private normative obligations.
 - **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption (DEV-599); it is recorded as evidence on DEV-598 after merge. The required safety review of the mapping is not represented as completed.
+
+## Merge and Adoption Addendum — October 21, 2026
+
+Recorded under DEV-625. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Merged revisions:** the proposal was merged on October 19, 2026 through [public PR #15](https://github.com/tv-rain/barometer-spec/pull/15) at `edea6256aa9600f1faba6a3924f3b18ac0985de0` (head `39eef9a16be4edd0a02b36079c25313a78eccf69`). The accepted wording, the REQ-TRUST-0039 and REQ-PROXY-0042 allocations and the Draft `0.1.0` retention were merged the same day through [public PR #16](https://github.com/tv-rain/barometer-spec/pull/16) as immutable revision [`59b192d498bf011e331928d192702e1205a89f35`](https://github.com/tv-rain/barometer-spec/tree/59b192d498bf011e331928d192702e1205a89f35) (head `abd23d231c5cac9df60a87d0c620edd2159305f4`).
+- **Later public change:** the [signed remote task package](signed-remote-task-packages.md) change at `e97502747c917a16bc2b71337535ff972bbd7d64` retired REQ-TRUST-0037 with successor [REQ-TRUST-0047](../library/task-trust.md#REQ-TRUST-0047) and changed only the step reference of REQ-TRUST-0039; step 8 and this disposition are unchanged.
+- **Internal alignment:** the internal task-trust review validation plan was aligned under DEV-598, citing `e97502747c917a16bc2b71337535ff972bbd7d64` (internal review repository PR #8, merged at `409967428593200514b23523f8a132a0e24afb9a`).
+- **Go adoption:** [DEV-599](https://app.clickup.com/t/124kk1zcbfc) adopted the disposition against `e975027` in Go [PR #57](https://github.com/tv-rain/barometer-go/pull/57), merged at `3aece5ef33f6c151a7f92c25a2fdf44116519bad` (implementation commit `d309b5b08ad27449523990d3eb1dca080209b757`). Admission step 8 rejects an incompatible `proxy` task with `task_schema_invalid` after input and options and before path authority and target registration, using synthetic test-scoped rules; the related case plans stay planned and the affected requirements are `partial` in traceability ([adoption addendum](https://github.com/tv-rain/barometer-go/blob/3aece5ef33f6c151a7f92c25a2fdf44116519bad/docs/specification-issues.md#adoption-addendum--october-21-2026)).
+- **Remaining before closure:** NET-05 whole-profile rejection, a closure case above, which needs the NET-05 codec (DEV-454); production compatibility rules for the registered tests; the execution-time pre-attempt check and `proxy_path_unsupported` (DEV-578); the required safety review of the mapping, to be confirmed by the maintainer in the DEV-575 assessment; the Go record linking the internal alignment, which merged after the Go adoption; and binding and host adoption, unassessed until those components exist (DEV-455). The disposition remains accepted with adoption pending. No runtime, proxy, platform, field or release support is claimed.
