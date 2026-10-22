@@ -1,6 +1,6 @@
 # Proposal: Bytes Counted Toward Attempt Byte Limits
 
-**Disposition:** Accepted; adoption pending: alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
+**Disposition:** Accepted; adoption pending: wording merged at `5d01879`, internal alignment merged, Go adoption pending; alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
 **Date:** October 22, 2026
 **Related task:** [DEV-580 — Obtain public disposition for GO-SPEC-ISSUE-005 (bytes counted toward attempt byte limits)](https://app.clickup.com/t/124kk1zcaaf)
 
@@ -110,3 +110,12 @@ The project owner and public maintainer, Lev, accepted the recommended resolutio
 - **Requirement IDs:** REQ-LIMIT-0003 is retired with successors REQ-LIMIT-0033 and REQ-LIMIT-0034, and REQ-EXECUTION-0014 with successor REQ-EXECUTION-0032, in the [requirement catalog](../requirements/catalog.json). REQ-LIMIT-0033, REQ-LIMIT-0034 and REQ-EXECUTION-0032 are new allocations. No ID is reused.
 - **Version:** Draft `0.1.0` is retained. No registered number, schema field, state or reason changes, and no release or runtime support claim is made.
 - **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption; it is recorded as evidence on DEV-580 after merge.
+
+## Merge Addendum — October 22, 2026
+
+Recorded under DEV-580. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Merged revision:** the accepted wording, the catalog changes and the Draft `0.1.0` retention were merged on October 22, 2026 through [public PR #24](https://github.com/tv-rain/barometer-spec/pull/24) as immutable revision [`5d01879cfd1d47396c780befa2567f7e90439948`](https://github.com/tv-rain/barometer-spec/tree/5d01879cfd1d47396c780befa2567f7e90439948) (head `e44d9cdc91a6feb13c7d07af472d69db5855205d`). It is the accepted baseline for [REQ-LIMIT-0033](https://github.com/tv-rain/barometer-spec/blob/5d01879cfd1d47396c780befa2567f7e90439948/library/registered-limits.md#REQ-LIMIT-0033), [REQ-LIMIT-0034](https://github.com/tv-rain/barometer-spec/blob/5d01879cfd1d47396c780befa2567f7e90439948/library/registered-limits.md#REQ-LIMIT-0034) and [REQ-EXECUTION-0032](https://github.com/tv-rain/barometer-spec/blob/5d01879cfd1d47396c780befa2567f7e90439948/data-formats/task-execution.md#REQ-EXECUTION-0032), and for the retirement of REQ-LIMIT-0003 and REQ-EXECUTION-0014.
+- **Internal alignment:** the registered-limits and NET-05 validation plans were aligned with the counted boundary through internal review repository PR #11, merged at `dc421a80b3fb19bd07b17a0a4181390ad6e50d2b`.
+- **Go record:** the disposition was recorded in [Go PR #62](https://github.com/tv-rain/barometer-go/pull/62), merged at `f80b6ad8b6254da0f288cde8982224d6949ef8e5`. No Go behavior changed.
+- **Remaining before closure:** Go adoption: byte-budget accounting at the counted boundary for HTTP-01, NET-03, DNS-01, DNS-03, DNS-04 and the NET-05 aggregate, the `CC-LIMIT-PURPOSE` case plan with expected boundary values, scripted-transport results, and traceability rebaselined to this revision so that current references cite the new IDs. Binding and host adoption follow. The open question about a registered byte bound for the proxy `CONNECT` response remains outside this record. The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
