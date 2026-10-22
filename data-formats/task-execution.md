@@ -192,9 +192,15 @@ Defines required network conditions.
 
 <a id="REQ-EXECUTION-0015"></a>
 
-**REQ-EXECUTION-0015:**
+**REQ-EXECUTION-0015 (retired):**
 
-Network conditions may not always be detectable, depending on the platform. In such cases, the task may not run.
+The historical rule said that a task may not run when network conditions cannot be detected on the platform, without naming a state or reason. [REQ-EXECUTION-0031](#REQ-EXECUTION-0031) replaces it. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-EXECUTION-0031"></a>
+
+**REQ-EXECUTION-0031:**
+
+Network conditions may not always be detectable, depending on the platform. When a network condition that the task requires cannot be determined, including an allowed transport, a `vpn_policy` other than `any`, or validation required by `require_validated`, the condition is unsatisfied. The task must not run, and Barometer must not guess the condition. A result recorded for the attempt has `execution.state: not_run` and `execution.reason: constraints_unsatisfied`. `network_context_unavailable` remains limited to required Network Context fields under [REQ-CONTEXT-0028](../library/network-context.md#REQ-CONTEXT-0028).
 
 Example:
 

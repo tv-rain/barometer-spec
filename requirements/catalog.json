@@ -605,10 +605,12 @@
     },
     {
       "id": "REQ-RESULT-0024",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/measurement-result.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-RESULT-0053"
+      ],
+      "reason": "Network Context omission rule replaced so that not_run results never retain network_context (specification-issues/not-run-incomplete-boundary.md)."
     },
     {
       "id": "REQ-RESULT-0025",
@@ -1046,10 +1048,12 @@
     },
     {
       "id": "REQ-EXECUTION-0015",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/task-execution.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-EXECUTION-0031"
+      ],
+      "reason": "Undetectable network conditions now require not_run with constraints_unsatisfied (specification-issues/not-run-incomplete-boundary.md)."
     },
     {
       "id": "REQ-EXECUTION-0016",
@@ -1151,6 +1155,13 @@
     },
     {
       "id": "REQ-EXECUTION-0030",
+      "status": "active",
+      "source": "data-formats/task-execution.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-EXECUTION-0031",
       "status": "active",
       "source": "data-formats/task-execution.md",
       "successors": [],
@@ -3721,6 +3732,27 @@
       "reason": ""
     },
     {
+      "id": "REQ-RESULT-0051",
+      "status": "active",
+      "source": "data-formats/measurement-result.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-RESULT-0052",
+      "status": "active",
+      "source": "data-formats/measurement-result.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-RESULT-0053",
+      "status": "active",
+      "source": "data-formats/measurement-result.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-CONTEXT-FORMAT-0018",
       "status": "active",
       "source": "data-formats/network-context.md",
@@ -5220,6 +5252,13 @@
     },
     {
       "id": "REQ-NET-05-0060",
+      "status": "active",
+      "source": "tests/net-05.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-05-0061",
       "status": "active",
       "source": "tests/net-05.md",
       "successors": [],

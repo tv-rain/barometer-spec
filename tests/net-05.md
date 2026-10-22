@@ -527,6 +527,12 @@ Only one final step may be `incomplete`. Unstarted steps are not emitted. Their 
 
 The failure classes `network_changed` and `resource_limit` are represented as `outcome: incomplete` plus the matching common `execution.reason`. This keeps cross-cutting termination separate from primitive network observations.
 
+<a id="REQ-NET-05-0061"></a>
+
+**REQ-NET-05-0061:**
+
+The composite outcomes `completed`, `network_not_validated`, and `inconclusive` are terminal measurement outcomes and are retained with common `execution.state: completed`. The composite outcome `incomplete` is retained with common `execution.state: incomplete` and the reason that stopped the profile. A task-level `require_validated` constraint that is unsatisfied before the test starts is an execution constraint, not a NET-05 outcome: the attempt is `not_run` with `constraints_unsatisfied` and has no `measurement`.
+
 <a id="REQ-NET-05-0048"></a>
 
 **REQ-NET-05-0048:**
