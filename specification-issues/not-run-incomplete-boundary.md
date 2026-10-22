@@ -1,6 +1,6 @@
 # Proposal: Boundary Between `not_run` and `incomplete`
 
-**Disposition:** Accepted; adoption pending: alternative (a) with `completed` after a recorded terminal outcome, `completed` for the NET-05 `network_not_validated` and `inconclusive` outcomes, `constraints_unsatisfied` for undetectable required network conditions, and no Network Context in `not_run` results
+**Disposition:** Accepted; adoption pending: wording merged at `84f52f8`, internal alignment merged, Go adoption pending; alternative (a) with `completed` after a recorded terminal outcome, `completed` for the NET-05 `network_not_validated` and `inconclusive` outcomes, `constraints_unsatisfied` for undetectable required network conditions, and no Network Context in `not_run` results
 **Date:** October 22, 2026
 **Related task:** [DEV-579 — Obtain public disposition for GO-SPEC-ISSUE-004 (not_run vs incomplete boundary)](https://app.clickup.com/t/124kk1zcaae)
 
@@ -107,3 +107,12 @@ The project owner and public maintainer, Lev, accepted the recommended resolutio
 - **Requirement IDs:** REQ-RESULT-0024 and REQ-EXECUTION-0015 are retired with successors REQ-RESULT-0053 and REQ-EXECUTION-0031 in the [requirement catalog](../requirements/catalog.json). REQ-RESULT-0051, REQ-RESULT-0052, REQ-RESULT-0053, REQ-EXECUTION-0031 and REQ-NET-05-0061 are new allocations. No ID is reused.
 - **Version:** Draft `0.1.0` is retained. No schema field, state, reason or limit is added, and no release or runtime support claim is made.
 - **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption; it is recorded as evidence on DEV-579 after merge.
+
+## Merge Addendum — October 22, 2026
+
+Recorded under DEV-579. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Merged revision:** the accepted wording, the catalog changes and the Draft `0.1.0` retention were merged on October 22, 2026 through [public PR #22](https://github.com/tv-rain/barometer-spec/pull/22) as immutable revision [`84f52f8872a5af9e6d97894611e3b2eaba18aba8`](https://github.com/tv-rain/barometer-spec/tree/84f52f8872a5af9e6d97894611e3b2eaba18aba8) (head `334c6ce1cf633e69f02805664ff5d078357e2470`). It is the accepted baseline for [REQ-RESULT-0051](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/measurement-result.md#REQ-RESULT-0051), [REQ-RESULT-0052](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/measurement-result.md#REQ-RESULT-0052), [REQ-RESULT-0053](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/measurement-result.md#REQ-RESULT-0053), [REQ-EXECUTION-0031](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/task-execution.md#REQ-EXECUTION-0031) and [REQ-NET-05-0061](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/tests/net-05.md#REQ-NET-05-0061), and for the retirement of REQ-RESULT-0024 and REQ-EXECUTION-0015.
+- **Internal alignment:** the NET-05 validation plan was aligned with these rules through internal review repository PR #10, merged at `0414e543db2fea2bb156daaa823e0cc37c759ae0`.
+- **Go record:** the disposition was recorded in [Go PR #59](https://github.com/tv-rain/barometer-go/pull/59), merged at `30f0c39be044535f4e6a26c0d677d81b3a2cb770`. No Go behavior changed.
+- **Remaining before closure:** Go adoption: the result decoder rejecting `network_context` in `not_run` results, runner and execution state selection under REQ-RESULT-0051 and REQ-RESULT-0052 (DEV-561), termination case plans with the expected values, and traceability rebaselined to this revision so that current references cite the new IDs. Binding and host adoption follow. The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
