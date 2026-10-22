@@ -1041,10 +1041,12 @@
     },
     {
       "id": "REQ-EXECUTION-0014",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/task-execution.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-EXECUTION-0032"
+      ],
+      "reason": "Byte-limit exclusions replaced by the attempt byte counting boundary in REQ-LIMIT-0034 (specification-issues/attempt-byte-accounting.md)."
     },
     {
       "id": "REQ-EXECUTION-0015",
@@ -1162,6 +1164,13 @@
     },
     {
       "id": "REQ-EXECUTION-0031",
+      "status": "active",
+      "source": "data-formats/task-execution.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-EXECUTION-0032",
       "status": "active",
       "source": "data-formats/task-execution.md",
       "successors": [],
@@ -2709,10 +2718,13 @@
     },
     {
       "id": "REQ-LIMIT-0003",
-      "status": "active",
+      "status": "retired",
       "source": "library/registered-limits.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-LIMIT-0033",
+        "REQ-LIMIT-0034"
+      ],
+      "reason": "Byte-limit scope split into a general rule and an attempt byte counting boundary that counts HTTP headers and DNS messages (specification-issues/attempt-byte-accounting.md)."
     },
     {
       "id": "REQ-LIMIT-0004",
@@ -4223,6 +4235,20 @@
     },
     {
       "id": "REQ-LIMIT-0032",
+      "status": "active",
+      "source": "library/registered-limits.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-LIMIT-0033",
+      "status": "active",
+      "source": "library/registered-limits.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-LIMIT-0034",
       "status": "active",
       "source": "library/registered-limits.md",
       "successors": [],
