@@ -98,7 +98,7 @@ The encoded result and observation-count maxima are defined in [`Registered Init
 | `implementation` | object | Yes | Complete object defined below. | Minimal producer information needed for compatibility analysis. |
 | `time` | object | Yes | Complete object defined below. | Coarse start time and quantized attempt duration. |
 | `execution` | object | Yes | Complete object defined below. | Attempt completion state independent of measurement outcome. |
-| `network_context` | object | Conditional | Normalized [`Network Context`](network-context.md). | Context used by the attempt when one was captured. |
+| `network_context` | object | Conditional | Normalized [`Network Context`](network-context.md). | Context used by a completed or incomplete attempt, under the [Network Context](#network-context) rules. |
 | `measurement` | object | Conditional | Must comply with the registered test Output schema. | Test-specific outcome and observations. |
 
 <a id="REQ-RESULT-0003"></a>
@@ -271,6 +271,20 @@ State rules:
 
 Invalid task input, unsupported task versions, and malformed tasks are task-validation failures. They are not Measurement Results and must be reported through a separate bounded operational interface, if one exists.
 
+### State Boundaries
+
+<a id="REQ-RESULT-0051"></a>
+
+**REQ-RESULT-0051:**
+
+An attempt is `not_run` until the test starts. The test starts at the first step of its registered procedure that observes the network for the measurement: its first test-specific network operation or, when that comes first, its own network-state observation, such as `NET-01` collection or the `NET-05` stable-network check. Admission, scheduling, task, profile and input validation, safety and permission checks, access-context capture, path and proxy snapshots, egress-context acquisition, and execution-constraint evaluation do not start the test, even when egress-context acquisition sends traffic to a context endpoint. A cross-cutting termination condition that occurs before the test starts produces `not_run` with that reason. After the test starts, a cross-cutting termination condition produces `incomplete`, unless [REQ-RESULT-0052](#REQ-RESULT-0052) applies. Registered test termination rules apply after the test starts.
+
+<a id="REQ-RESULT-0052"></a>
+
+**REQ-RESULT-0052:**
+
+Once the test records its terminal measurement outcome, the attempt is `completed`. A later cancellation, deadline expiry, network change, platform suspension, proxy change, resource limit, or cleanup failure while connections close and resources are released does not change the state, reason, or `measurement`. Releasing those resources remains subject to the attempt's bounds.
+
 ## Network Context
 
 <a id="REQ-RESULT-0023"></a>
@@ -281,12 +295,15 @@ Completed and incomplete remote-network tests require the normalized Network Con
 
 <a id="REQ-RESULT-0024"></a>
 
-**REQ-RESULT-0024:**
+**REQ-RESULT-0024 (retired):**
 
-`network_context` may be omitted only when:
+The historical rule permitted omitting `network_context` only when the attempt reached `not_run` before a context snapshot was captured, or when the registered test defined another representation. [REQ-RESULT-0053](#REQ-RESULT-0053) replaces it: a `not_run` result never contains `network_context`. This text is historical, not a current obligation; historical revisions remain available.
 
-- the attempt reached `not_run` before a context snapshot was captured; or
-- the registered test explicitly defines another representation, as `NET-01` does for its access-only zero-traffic output.
+<a id="REQ-RESULT-0053"></a>
+
+**REQ-RESULT-0053:**
+
+A `not_run` result must not contain `network_context`, including when a context snapshot was captured before the attempt stopped. A completed or incomplete result may omit `network_context` only when the registered test explicitly defines another representation, as `NET-01` does for its access-only zero-traffic output. A snapshot captured for an attempt that ends `not_run` is used only for that attempt's eligibility decision and is not retained in its result.
 
 <a id="REQ-RESULT-0025"></a>
 
