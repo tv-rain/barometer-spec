@@ -170,8 +170,8 @@ Example:
 | Field | Required | Description |
 |--------|:--------:|-------------|
 | `max_duration_ms` | No | Maximum runtime for one execution attempt; default 30,000 and maximum 60,000. |
-| `max_bytes_sent` | No | Maximum application bytes supplied to network APIs; default 32,768 and maximum 65,536. |
-| `max_bytes_received` | No | Maximum application bytes accepted from network APIs; default 131,072 and maximum 262,144. |
+| `max_bytes_sent` | No | Maximum bytes sent, counted under [REQ-LIMIT-0034](../library/registered-limits.md#REQ-LIMIT-0034); default 32,768 and maximum 65,536. |
+| `max_bytes_received` | No | Maximum bytes received, counted under [REQ-LIMIT-0034](../library/registered-limits.md#REQ-LIMIT-0034); default 131,072 and maximum 262,144. |
 | `max_connections` | No | Maximum TCP connections or HTTP CONNECT tunnels opened; default 8 and maximum 12. |
 
 <a id="REQ-EXECUTION-0013"></a>
@@ -182,9 +182,15 @@ Omitted fields receive the registered defaults. A task may request lower positiv
 
 <a id="REQ-EXECUTION-0014"></a>
 
-**REQ-EXECUTION-0014:**
+**REQ-EXECUTION-0014 (retired):**
 
-The byte limits exclude DNS, TCP, TLS, HTTP, proxy, and operating-system framing that the application cannot count portably. Implementations must still stop reads and writes promptly at the application boundary and document buffering limitations.
+The historical rule said that the byte limits exclude DNS, TCP, TLS, HTTP, proxy, and operating-system framing that the application cannot count portably, which conflicted with HTTP headers and DNS messages being the data some tests send. [REQ-EXECUTION-0032](#REQ-EXECUTION-0032) replaces it. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-EXECUTION-0032"></a>
+
+**REQ-EXECUTION-0032:**
+
+The byte limits count bytes at the transport boundary defined in [REQ-LIMIT-0034](../library/registered-limits.md#REQ-LIMIT-0034), including HTTP headers, DNS messages, and length prefixes. TLS, TCP/IP, proxy transport, and operating-system framing below that boundary are not counted. Implementations must stop reads and writes promptly at the counted boundary and document buffering below it.
 
 ### Network
 

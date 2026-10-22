@@ -21,9 +21,15 @@ A host or implementation may enforce stricter limits. It must reject a task that
 
 <a id="REQ-LIMIT-0003"></a>
 
-**REQ-LIMIT-0003:**
+**REQ-LIMIT-0003 (retired):**
 
-All byte limits refer to UTF-8 or encoded application data as stated. They are not exact on-wire limits: operating-system, DNS, TCP, TLS, HTTP, and proxy layers may transmit or buffer protocol overhead before cancellation takes effect.
+The historical rule said that all byte limits refer to UTF-8 or encoded application data and are not exact on-wire limits because operating-system, DNS, TCP, TLS, HTTP, and proxy layers may transmit or buffer protocol overhead, without saying whether HTTP headers and DNS messages are counted application data. [REQ-LIMIT-0033](#REQ-LIMIT-0033) and [REQ-LIMIT-0034](#REQ-LIMIT-0034) replace it. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-LIMIT-0033"></a>
+
+**REQ-LIMIT-0033:**
+
+All byte limits refer to UTF-8 or encoded data as stated. Attempt byte limits count bytes at the boundary defined in [REQ-LIMIT-0034](#REQ-LIMIT-0034). No byte limit is an exact on-wire limit: TLS records, TCP/IP and UDP/IP headers, operating-system retransmissions and buffering, and proxy transport framing below the counted boundary are not counted and may be transmitted or buffered before cancellation takes effect.
 
 ## Task and Identifier Limits
 
@@ -73,9 +79,22 @@ The `execution.limits` object uses:
 | Field | Default | Maximum | Meaning |
 |---|---:|---:|---|
 | `max_duration_ms` | 30,000 | 60,000 | Wall-clock deadline for the complete attempt, including context acquisition and cleanup. |
-| `max_bytes_sent` | 32,768 | 65,536 | Application bytes supplied to network APIs, excluding lower-layer framing. |
-| `max_bytes_received` | 131,072 | 262,144 | Application bytes accepted from network APIs before parsing stops. |
+| `max_bytes_sent` | 32,768 | 65,536 | Bytes sent by the attempt, counted under [REQ-LIMIT-0034](#REQ-LIMIT-0034). |
+| `max_bytes_received` | 131,072 | 262,144 | Bytes received by the attempt, counted under [REQ-LIMIT-0034](#REQ-LIMIT-0034). |
 | `max_connections` | 8 | 12 | TCP connections or HTTP CONNECT tunnels opened by the attempt. |
+
+<a id="REQ-LIMIT-0034"></a>
+
+**REQ-LIMIT-0034:**
+
+`max_bytes_sent`, `max_bytes_received`, and the NET-05 aggregate byte limits in [REQ-LIMIT-0019](#REQ-LIMIT-0019) count the attempt's test traffic where Barometer exchanges it with a transport: a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload.
+
+- **Sent:** every byte Barometer writes to such a transport for the test, including HTTP request lines, headers, and bodies; HTTP/2 frames and encoded header blocks; DNS messages, including each retransmission Barometer sends; DNS-over-TCP and DoT two-byte length prefixes; and the complete DoH HTTP exchange.
+- **Received:** every byte returned to Barometer by a read from such a transport, including HTTP status lines, response headers, chunked or HTTP/2 framing, and bodies; DNS messages and length prefixes; and bytes read ahead into a buffer before parsing stops. Each read requests no more than the remaining received budget.
+- **Not counted:** TLS handshake and record bytes; TCP/IP and UDP/IP headers and operating-system retransmissions; proxy transport framing; the HTTP `CONNECT` request and response exchanged with the loopback proxy endpoint under [REQ-PROXY-0017](proxy.md#REQ-PROXY-0017), after which bytes in the tunnel are counted as on a direct path; hostname resolution delegated to a platform or system resolver API that does not expose its messages to Barometer; and Network Context acquisition, which [REQ-CONTEXT-0015](network-context.md#REQ-CONTEXT-0015) and the attempt deadline bound separately.
+- Every exchange in the attempt counts, including followed redirects and each NET-05 primitive step toward the aggregate limits.
+- A write that would exceed the remaining sent budget is not issued. Reaching either limit stops the active operation under [REQ-LIMIT-0027](#REQ-LIMIT-0027).
+- Bytes subject to a narrower bound, such as the response-header and body bounds in [REQ-LIMIT-0016](#REQ-LIMIT-0016) or the DNS message bounds in [REQ-LIMIT-0014](#REQ-LIMIT-0014), also count toward the attempt limits; the narrower bound does not exempt them.
 
 <a id="REQ-LIMIT-0007"></a>
 
