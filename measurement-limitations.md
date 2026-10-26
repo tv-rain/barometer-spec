@@ -118,6 +118,8 @@ The paths may differ in:
 - proxy retries, upstream selection, multiplexing, and hidden strategy changes;
 - timing and network state between attempts.
 
+Version `0.1.0` refuses hostname CONNECT because the library cannot inspect proxy-side destination addresses before contact. Proxy HTTP-01 therefore requires a permitted explicit-IP URL, and proxy context acquisition requires eligible explicit-IP endpoints. This reduces available path comparisons; missing proxy observations caused by these restrictions are not evidence of interference. Locally resolving or rewriting a hostname to manufacture a comparison is not permitted.
+
 The proxy contract prohibits silent direct fallback, but it cannot make the two paths identical except for one presumed circumvention variable. Stronger comparison requires equivalent test inputs, stable context, close timing, repeated observations, and independent supporting signals.
 
 ## Platform and Implementation Differences

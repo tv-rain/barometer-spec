@@ -193,18 +193,26 @@ Access context may be captured without network traffic before path selection. Di
 
 If a cached direct egress context is not valid for the current access-network generation, a proxy attempt reports direct egress as unknown rather than refreshing it outside the selected proxy path.
 
+Proxy acquisition is subject to the explicit-IP-only endpoint rule in [REQ-PROXY-0045](proxy.md#REQ-PROXY-0045). Hostname endpoint configuration remains valid, but such an endpoint is unavailable on the proxy path. Existing unavailable-context behavior applies; no direct lookup is introduced.
+
 ## Acquisition and Fallback
 
 <a id="REQ-CONTEXT-0020"></a>
 
-**REQ-CONTEXT-0020:**
+**REQ-CONTEXT-0020 (retired):**
+
+The historical acquisition order did not exclude ineligible hostname CONNECT endpoints. [REQ-CONTEXT-0043](#REQ-CONTEXT-0043) replaces it with eligibility checks before each request; historical revisions remain available.
+
+<a id="REQ-CONTEXT-0043"></a>
+
+**REQ-CONTEXT-0043:**
 
 For one access-network generation and selected-path generation, Barometer uses this bounded order:
 
-1. Use a still-valid cached context for the exact same access-network generation, `network_path`, and proxy generation where applicable.
-2. Otherwise make one request to `primary_endpoint` through the selected path.
-3. If the primary cannot be reached, fails TLS or HTTP validation, exceeds its bound, or returns invalid data, make one request to the optional `fallback_endpoint` through the same selected path.
-4. If no endpoint produces a valid response, return egress status `unavailable`.
+1. Use a still-valid cached context for the exact same access-network generation, `network_path`, and proxy generation where applicable, only if its acquisition complied with the current path safety rules.
+2. Otherwise check `primary_endpoint` eligibility under the selected path and local safety policy before contact. A hostname endpoint is ineligible on the proxy path under [REQ-PROXY-0045](proxy.md#REQ-PROXY-0045). Make at most one request to an eligible primary through the selected path; make no request or hostname lookup for an ineligible endpoint.
+3. If the primary is ineligible, cannot be reached, fails TLS or HTTP validation, exceeds its bound, or returns invalid data, check the optional `fallback_endpoint` independently and make at most one request if it is eligible, through the same selected path.
+4. If no eligible endpoint produces a valid response, return egress status `unavailable`.
 
 <a id="REQ-CONTEXT-0021"></a>
 
