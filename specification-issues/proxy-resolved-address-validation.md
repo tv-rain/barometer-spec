@@ -1,6 +1,6 @@
 # Resolved-Address Validation Behind a Hostname CONNECT Proxy
 
-**Disposition:** Maintainer direction accepted; wording prepared for review, merge and downstream adoption pending
+**Disposition:** Maintainer direction accepted; wording merged at `bb805f0`; internal alignment merged; adopted in the Go core; binding and host adoption pending
 **Date:** October 26, 2026
 **Related task:** [DEV-659 — Check resolved addresses and redirect targets against registrations before contact](https://app.clickup.com/t/124kk1zcw4j)
 
@@ -55,3 +55,13 @@ Proxy-side enforcement is deferred because the current interface cannot establis
 4. Assess binding/host and producer adoption, and record bounded remaining work. A future proxy-side enforcement capability is separate work requiring another reviewed contract.
 
 The production target-validation rows of `CC-PROXY-PRIVACY-SAFETY-AND-INTERPRETATION` remain pending. Proxy hostname cases must demonstrate refusal before contact, not claim inspection of proxy-side addresses. No whole-family, independent interpretation, platform, field or release claim is promoted. GO-SPEC-ISSUE-015 and DEV-659 remain open until required adoption and evidence exist; preparing or merging these documents alone does not complete them.
+
+## Adoption Record — October 26, 2026
+
+Recorded under DEV-664. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Coordination decision:** `tv-rain/barometer` decision 0013, Explicit-IP-Only Proxy CONNECT, merged through coordination PR #32 at `61691f49773c68b660e84939555070c8ee1990ff`.
+- **Merged revision:** the explicit-IP-only contract, requirement allocations and retirements, and the Draft `0.1.0` retention were merged through [public PR #29](https://github.com/tv-rain/barometer-spec/pull/29) as immutable revision [`bb805f07a36630db7250d5ab63006ed5e351f7a7`](https://github.com/tv-rain/barometer-spec/tree/bb805f07a36630db7250d5ab63006ed5e351f7a7).
+- **Internal alignment:** the proxy target validation review was aligned through internal review repository PR #13, merged at `fc5fdf8733ad990f8363dcf4748edafa40b08dde`.
+- **Go adoption:** [Go PR #79](https://github.com/tv-rain/barometer-go/pull/79), merged at `9ad1166acf0ec2a2843a695102f3b9f4fe18367f`, adds the shared execution target gate: each contact is checked against its matched registration and local address policy before it is made, a proxy dial accepts only an explicit IP authority, and redirect targets are checked per hop. The TCP-01 and DNS-01 runners use it. Evidence is synthetic, on loopback fixtures and a scripted CONNECT proxy.
+- **Remaining:** runners that follow redirects use the redirect check when they are delivered; binding and host adoption. A proxied request for an explicit IP is still not proof that a malicious proxy obeyed it. No runtime, platform, field or release support is claimed.

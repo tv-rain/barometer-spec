@@ -1,6 +1,6 @@
 # Proposal: Admission Class for Step-8 Input and Options Failures
 
-**Disposition:** Accepted wording (alternative (a)); merge, internal alignment and Go adoption pending; safety review of the mapping pending
+**Disposition:** Accepted wording (alternative (a)); merged at `1206247`; internal alignment merged; maintainer safety review of the mapping passed; adopted in Go; binding and host adoption pending; follow-up finding GO-SPEC-ISSUE-016 open
 **Date:** October 26, 2026
 **Related task:** [DEV-663 — Obtain the public disposition for GO-SPEC-ISSUE-010 and adopt it in Go](https://app.clickup.com/t/124kk1zcw4r)
 
@@ -91,3 +91,12 @@ The project owner and public maintainer, Lev, accepted alternative (a) on Octobe
 - **Version:** Draft `0.1.0` is retained. No admission class, field, schema or test version value changes. External hosts, producers and stored tasks are unassessed. No release or runtime support claim is made.
 - **Internal alignment:** required; the internal task-trust review validation plan must cite the merged wording without adding private normative obligations.
 - **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption under DEV-663; it is recorded as evidence on DEV-663 after merge. The required safety review of the mapping is not represented as completed.
+
+## Adoption Record — October 26, 2026
+
+Recorded under DEV-664. The sections above keep their wording as historical evidence, including their then-pending statements.
+
+- **Merged revision:** the accepted wording, the REQ-TRUST-0056 and REQ-OPTIONS-0033 allocations, the retirement of REQ-OPTIONS-0019 and the Draft `0.1.0` retention were merged through [public PR #30](https://github.com/tv-rain/barometer-spec/pull/30) as immutable revision [`12062471875bbfbc55eafc94dc5a7ea4cd07ca5e`](https://github.com/tv-rain/barometer-spec/tree/12062471875bbfbc55eafc94dc5a7ea4cd07ca5e).
+- **Internal alignment and review:** the task-trust review validation plan was aligned through internal review repository PR #14, merged at `bf2fce978f526fcc80aac2cf9d568352a45799f3`. PR #15, merged at `7868ed6ca180ef9ab6330d4256070a80d4402cd7`, records the safety review of the mapping by the project maintainer: passed, with one follow-up finding. It is a maintainer review, not an independent specialist review.
+- **Go adoption:** [Go PR #80](https://github.com/tv-rain/barometer-go/pull/80), merged at `bb5df9ef2b97070b5301f473f8717e192b846e8e`, records the adoption; admission already returned these classes, and synthetic gate cases assert them for embedded and remote origin. The TCP-01 and DNS-01 production codecs use the same staged validation and define no stricter byte limit.
+- **Remaining:** binding and host adoption. The unnamed classes and ordering found during adoption are tracked in the Go finding GO-SPEC-ISSUE-016 and need their own public record before any change. No runtime, platform, field or release support is claimed.
