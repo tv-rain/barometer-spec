@@ -188,9 +188,15 @@ Barometer must not send the measurement target as a normal cleartext HTTP reques
 
 <a id="REQ-PROXY-0019"></a>
 
-**REQ-PROXY-0019:**
+**REQ-PROXY-0019 (retired):**
 
-When a test supplies an explicit target IP address, the CONNECT authority uses that address and port. When a compatible test supplies only a hostname, the CONNECT authority uses the normalized hostname and port, and destination resolution occurs behind the proxy. Results must preserve this distinction because direct and proxied runs may use different DNS paths.
+The historical rule permitted hostname CONNECT with destination resolution behind the proxy. [REQ-PROXY-0043](#REQ-PROXY-0043) replaces it with explicit-IP-only CONNECT; historical revisions remain available.
+
+<a id="REQ-PROXY-0043"></a>
+
+**REQ-PROXY-0043:**
+
+Version `0.1.0` permits only an explicit IP address and port as the destination CONNECT authority. For a measurement destination, the address must come from the registered test input or its approved bootstrap address, or from an explicit-IP redirect URL permitted by that test and its matched registrations; it must satisfy local address policy immediately before contact. Hostname authorities are prohibited, even when the hostname is registered or the host asserts that the proxy enforces address policy. This rule applies before every tunnel, including redirects. Barometer must refuse a hostname authority before connecting to the proxy endpoint or sending CONNECT. It must not resolve the hostname locally, substitute an address into the task or redirect, or fall back to `direct` to make the operation eligible. TLS server names and HTTP authority inside an approved explicit-IP tunnel remain governed by the registered test; they do not authorize a hostname CONNECT destination. A future hostname-enforcement capability requires a separately reviewed specification change; no such capability exists in this version.
 
 <a id="REQ-PROXY-0020"></a>
 
@@ -227,9 +233,15 @@ If `network_path` is omitted, the task uses `direct`. A task requesting `proxy` 
 
 <a id="REQ-PROXY-0023"></a>
 
-**REQ-PROXY-0023:**
+**REQ-PROXY-0023 (retired):**
 
-When egress context is enabled, lookup requests for a proxy task must use the same proxy generation as the measurement. The primary endpoint and optional fallback endpoint are both contacted through HTTP CONNECT. Failure of the primary must not cause a direct request; the fallback is attempted through the same proxy.
+The historical rule required proxy context endpoints to use CONNECT without excluding hostname authorities. [REQ-PROXY-0045](#REQ-PROXY-0045) replaces it with explicit-IP-only endpoint handling; historical revisions remain available.
+
+<a id="REQ-PROXY-0045"></a>
+
+**REQ-PROXY-0045:**
+
+When egress context is enabled, lookup requests for a proxy task must use the same proxy generation as the measurement and obey the explicit-IP-only CONNECT restriction of [REQ-PROXY-0043](#REQ-PROXY-0043). Each primary or fallback endpoint is independently checked against its trusted host-approved endpoint configuration and local safety policy. A hostname endpoint is unavailable on the proxy path: no local resolution, connection to the proxy endpoint, CONNECT or direct request is made for that endpoint. The bounded acquisition order of [REQ-CONTEXT-0043](network-context.md#REQ-CONTEXT-0043) applies: an ineligible primary may be followed by one eligible, independently approved explicit-IP fallback through the same proxy generation. If neither endpoint is eligible or successful, egress context is unavailable, and [REQ-CONTEXT-0026](network-context.md#REQ-CONTEXT-0026) to [REQ-CONTEXT-0028](network-context.md#REQ-CONTEXT-0028) govern whether the measurement may continue. A cached context may be reused only if its acquisition complied with this rule and it remains valid under the existing cache rules. This restriction does not invalidate a hostname endpoint for the direct path or change initialization configuration validity.
 
 <a id="REQ-PROXY-0024"></a>
 
@@ -247,13 +259,19 @@ Failure to classify proxy egress is recorded as unavailable network context. It 
 
 <a id="REQ-PROXY-0026"></a>
 
-**REQ-PROXY-0026:**
+**REQ-PROXY-0026 (retired):**
+
+The historical compatibility table permitted hostname-based HTTP-01 proxy execution. [REQ-PROXY-0044](#REQ-PROXY-0044) replaces it with the explicit-IP-only compatibility table; historical revisions remain available.
+
+<a id="REQ-PROXY-0044"></a>
+
+**REQ-PROXY-0044:**
 
 | Test | Proxy compatibility |
 |---|---|
 | `TCP-01` | Supported. CONNECT uses the configured IP address and port. |
 | `TLS-01` | Supported. CONNECT uses the configured IP address and port; TLS SNI and certificate validation remain unchanged inside the tunnel. |
-| `HTTP-01` | Supported when `address_family` is `auto`. CONNECT uses the URL hostname and destination resolution occurs behind the proxy. Every followed redirect must use the same proxy generation. |
+| `HTTP-01` | Supported only when `address_family` is `auto` and the URL host is an explicit IP address permitted by the test and its registration. Hostname URL targets are incompatible. Every followed redirect must have an approved explicit-IP URL host and use the same proxy generation; hostname redirects are rejected without contact. TLS certificate validation remains required. |
 | `DNS-01` | Supported only in `direct` resolver mode with `transport: tcp`. System resolution and direct UDP are incompatible with HTTP CONNECT. |
 | `DNS-03` | Supported only with an approved `bootstrap_ip`; CONNECT uses that address while TLS authenticates the resolver hostname. |
 | `DNS-04` | Supported only with an approved `bootstrap_ip`; CONNECT uses that address while TLS authenticates the resolver hostname. |
@@ -269,9 +287,15 @@ Compatibility is validated before network activity. The library must not execute
 
 <a id="REQ-PROXY-0042"></a>
 
-**REQ-PROXY-0042:**
+**REQ-PROXY-0042 (retired):**
 
-An incompatible task is rejected at admission ([REQ-TRUST-0039](task-trust.md#REQ-TRUST-0039)) and is not admitted to fail at execution. `proxy_path_unsupported` records an incompatibility that the pre-attempt check of [REQ-EXECUTION-0008](../data-formats/task-execution.md#REQ-EXECUTION-0008) finds in an admitted task; execution then makes no contact.
+The historical rule mapped proxy incompatibility at admission and the pre-attempt check. [REQ-PROXY-0046](#REQ-PROXY-0046) replaces it, retaining those checks and adding the mandatory per-dial gate; historical revisions remain available.
+
+<a id="REQ-PROXY-0046"></a>
+
+**REQ-PROXY-0046:**
+
+A task whose initial destination requires hostname CONNECT is incompatible and is rejected at admission with `task_schema_invalid` under [REQ-TRUST-0039](task-trust.md#REQ-TRUST-0039), including rejection of a whole NET-05 profile when any step is incompatible. An admitted task that the pre-attempt check finds incompatible records `not_run` with `proxy_path_unsupported` and makes no network contact. An HTTP-01 redirect with a hostname URL host is not followed and produces `redirect_rejected`, as defined in [REQ-HTTP-01-0051](../tests/http-01.md#REQ-HTTP-01-0051). A shared execution/path gate must enforce [REQ-PROXY-0043](#REQ-PROXY-0043) before every dial, even if a runner requests a hostname authority after the pre-attempt check; a prohibited initial or other non-redirect measurement dial ends execution with `proxy_path_unsupported`, rather than becoming a TCP or TLS failure. Its state follows [REQ-RESULT-0051](../data-formats/measurement-result.md#REQ-RESULT-0051): `not_run` before the test starts, or `incomplete` after it starts. The safety check or refusal itself does not start the test. A rejected context lookup alone uses [REQ-PROXY-0045](#REQ-PROXY-0045), not a proxy failure for an otherwise compatible measurement.
 
 ## Execution States
 

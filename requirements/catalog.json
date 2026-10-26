@@ -2361,10 +2361,12 @@
     },
     {
       "id": "REQ-CONTEXT-0020",
-      "status": "active",
+      "status": "retired",
       "source": "library/network-context.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-CONTEXT-0043"
+      ],
+      "reason": "Replaced by endpoint-eligibility checks before acquisition, including fail-closed hostname handling on the proxy path."
     },
     {
       "id": "REQ-CONTEXT-0021",
@@ -2592,10 +2594,12 @@
     },
     {
       "id": "REQ-PROXY-0019",
-      "status": "active",
+      "status": "retired",
       "source": "library/proxy.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-PROXY-0043"
+      ],
+      "reason": "Replaced by explicit-IP-only CONNECT and fail-closed hostname handling under the October 26, 2026 maintainer disposition."
     },
     {
       "id": "REQ-PROXY-0020",
@@ -2620,10 +2624,12 @@
     },
     {
       "id": "REQ-PROXY-0023",
-      "status": "active",
+      "status": "retired",
       "source": "library/proxy.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-PROXY-0045"
+      ],
+      "reason": "Replaced by explicit-IP-only CONNECT and fail-closed hostname handling under the October 26, 2026 maintainer disposition."
     },
     {
       "id": "REQ-PROXY-0024",
@@ -2641,10 +2647,12 @@
     },
     {
       "id": "REQ-PROXY-0026",
-      "status": "active",
+      "status": "retired",
       "source": "library/proxy.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-PROXY-0044"
+      ],
+      "reason": "Replaced by explicit-IP-only CONNECT and fail-closed hostname handling under the October 26, 2026 maintainer disposition."
     },
     {
       "id": "REQ-PROXY-0027",
@@ -4193,10 +4201,12 @@
     },
     {
       "id": "REQ-PROXY-0042",
-      "status": "active",
+      "status": "retired",
       "source": "library/proxy.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-PROXY-0046"
+      ],
+      "reason": "Replaced by admission, pre-attempt and mandatory per-dial enforcement of explicit-IP-only proxy compatibility."
     },
     {
       "id": "REQ-LIMIT-0027",
@@ -7135,6 +7145,48 @@
       "id": "REQ-OBS-0051",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-PROXY-0043",
+      "status": "active",
+      "source": "library/proxy.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-PROXY-0044",
+      "status": "active",
+      "source": "library/proxy.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-PROXY-0045",
+      "status": "active",
+      "source": "library/proxy.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-PROXY-0046",
+      "status": "active",
+      "source": "library/proxy.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-HTTP-01-0051",
+      "status": "active",
+      "source": "tests/http-01.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-CONTEXT-0043",
+      "status": "active",
+      "source": "library/network-context.md",
       "successors": [],
       "reason": ""
     }

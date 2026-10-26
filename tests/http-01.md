@@ -158,6 +158,12 @@ For a multi-valued header, `equals` or `contains` succeeds when at least one fie
 
 ### Input Validation
 
+<a id="REQ-HTTP-01-0051"></a>
+
+**REQ-HTTP-01-0051:**
+
+For `network_path: proxy`, the initial URL must have an explicit IP address as its host and satisfy [REQ-PROXY-0044](../library/proxy.md#REQ-PROXY-0044). A hostname initial URL is incompatible at admission. When following a redirect, a hostname destination is rejected before any destination contact, proxy connection, CONNECT or local resolution for that redirect, even if separately registered. The outcome is `redirect_rejected` using the existing minimized observation representation; it is a local safety rejection, not evidence that the destination is censored. Explicit-IP redirects still require every existing URL, registration, local address policy, redirect-count and same-proxy-generation check. Barometer must not replace a hostname URL with a resolved IP URL or weaken TLS certificate validation to enable proxy execution. Direct-path hostname URLs retain their existing behavior.
+
 <a id="REQ-HTTP-01-0015"></a>
 
 **REQ-HTTP-01-0015:**
