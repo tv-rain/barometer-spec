@@ -1,6 +1,6 @@
 # Proposal: Bytes Counted Toward Attempt Byte Limits
 
-**Disposition:** Accepted; adoption pending: wording merged at `5d01879`, internal alignment merged, Go adoption pending; alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
+**Disposition:** Accepted; wording merged at `5d01879`, internal alignment merged, adopted in the Go stream layer and for TCP-01 and DNS-01; the other registered tests, binding and host adoption pending; alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
 **Date:** October 22, 2026
 **Related task:** [DEV-580 — Obtain public disposition for GO-SPEC-ISSUE-005 (bytes counted toward attempt byte limits)](https://app.clickup.com/t/124kk1zcaaf)
 
@@ -119,3 +119,10 @@ Recorded under DEV-580. The sections above keep their wording as historical evid
 - **Internal alignment:** the registered-limits and NET-05 validation plans were aligned with the counted boundary through internal review repository PR #11, merged at `dc421a80b3fb19bd07b17a0a4181390ad6e50d2b`.
 - **Go record:** the disposition was recorded in [Go PR #62](https://github.com/tv-rain/barometer-go/pull/62), merged at `f80b6ad8b6254da0f288cde8982224d6949ef8e5`. No Go behavior changed.
 - **Remaining before closure:** Go adoption: byte-budget accounting at the counted boundary for HTTP-01, NET-03, DNS-01, DNS-03, DNS-04 and the NET-05 aggregate, the `CC-LIMIT-PURPOSE` case plan with expected boundary values, scripted-transport results, and traceability rebaselined to this revision so that current references cite the new IDs. Binding and host adoption follow. The open question about a registered byte bound for the proxy `CONNECT` response remains outside this record. The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
+
+## Adoption Record — October 26, 2026
+
+Recorded under DEV-664.
+
+- **Go adoption:** the attempt scope meters every byte a runner exchanges with its stream and counts each dial toward `max_connections` ([`cf20572`](https://github.com/tv-rain/barometer-go/commit/cf20572b4cf73b09a4869877735d2f1ddfc06ad3)); the proxy path keeps the `CONNECT` exchange below it ([`c9df795`](https://github.com/tv-rain/barometer-go/commit/c9df795ec78e5bfa2b8e26c53d13fbbe1d60733c)). TCP-01 opens one metered connection and sends no application bytes. DNS-01 counts exact DNS messages and both TCP length prefixes, with synthetic below, at and above limit cases, and its ordinary-resolver mode issues no metered traffic, as the system-resolver exception allows.
+- **Remaining:** HTTP-01, NET-03, DNS-03, DNS-04 and the NET-05 aggregate, and binding and host adoption. No runtime, platform, field or release support is claimed.
