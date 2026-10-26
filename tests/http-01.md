@@ -399,6 +399,12 @@ Example:
 | `unsupported_content_encoding` | HTTP failed with `unsupported_content_encoding`; `content_encoding` is `unsupported`. |
 | `inconclusive` | The terminal observation failed with `inconclusive`. |
 
+<a id="REQ-HTTP-01-0052"></a>
+
+**REQ-HTTP-01-0052:**
+
+For a terminal non-redirect HTTP response, common execution interruptions remain governed by the common execution-state rules and do not become HTTP outcomes. An HTTP operation timeout, malformed or prematurely terminated protocol body, or inconclusive body read takes precedence over already evaluated response-check mismatches and uses its registered HTTP outcome (`http_timeout`, `protocol_error`, or `inconclusive`, respectively). If a body check is configured and the response encoding is unsupported, select `unsupported_content_encoding` without evaluating body checks. Otherwise select the first applicable class in this order: `unexpected_status`, `header_check_failed`, `body_check_failed`, `body_limit_reached`, `expected_response`. `body_limit_reached` applies when the body bound leaves at least one configured body check undecidable; truncation alone does not override an already decidable mismatch or require that outcome when all checks are decidable. Preserve every check result decidable before termination; do not invent results for unevaluated checks. This order authorizes no additional reads, retries or network operations and changes neither redirect nor preceding-stage outcomes.
+
 <a id="REQ-HTTP-01-0037"></a>
 
 **REQ-HTTP-01-0037:**
