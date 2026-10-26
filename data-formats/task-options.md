@@ -275,9 +275,15 @@ Silently changing an option can alter measurement semantics and make results fro
 
 <a id="REQ-OPTIONS-0019"></a>
 
-**REQ-OPTIONS-0019:**
+**REQ-OPTIONS-0019 (retired):**
 
-When requested options are unsupported, invalid, or unsafe, the probe should reject or skip the task with an appropriate task or execution status.
+The historical rule said that when requested options are unsupported, invalid, or unsafe, the probe should reject or skip the task with an appropriate task or execution status. [REQ-OPTIONS-0033](#REQ-OPTIONS-0033) replaces it: such options are rejected at admission with a named class, and the task is not skipped. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-OPTIONS-0033"></a>
+
+**REQ-OPTIONS-0033:**
+
+Options that are invalid for the registered test or prohibited by this document are rejected at admission with the class named by [REQ-TRUST-0056](../library/task-trust.md#REQ-TRUST-0056). A valid option value that requires a capability the implementation does not provide is rejected with `task_unsupported` under [REQ-TRUST-0036](../library/task-trust.md#REQ-TRUST-0036). Options that local policy does not permit are rejected with the class [REQ-TRUST-0047](../library/task-trust.md#REQ-TRUST-0047) lists for that condition. Such a task is not admitted to be skipped or to fail at execution.
 
 <a id="REQ-OPTIONS-0020"></a>
 

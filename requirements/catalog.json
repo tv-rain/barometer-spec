@@ -1689,10 +1689,12 @@
     },
     {
       "id": "REQ-OPTIONS-0019",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/task-options.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-OPTIONS-0033"
+      ],
+      "reason": "Reject-or-skip rule for unsupported, invalid or unsafe options replaced by admission rejection with named classes (specification-issues/step-8-input-options-admission-class.md)."
     },
     {
       "id": "REQ-OPTIONS-0020",
@@ -3591,6 +3593,13 @@
       "reason": ""
     },
     {
+      "id": "REQ-TRUST-0056",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-OBS-0034",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
@@ -4033,6 +4042,13 @@
     },
     {
       "id": "REQ-OPTIONS-0032",
+      "status": "active",
+      "source": "data-formats/task-options.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OPTIONS-0033",
       "status": "active",
       "source": "data-formats/task-options.md",
       "successors": [],

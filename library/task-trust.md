@@ -514,6 +514,12 @@ A rejected task receives exactly one class: the class of the first step, in [REQ
 
 At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task with `network_path: proxy` whose test, input or options are not compatible with HTTP CONNECT under [REQ-PROXY-0044](proxy.md#REQ-PROXY-0044), including a `NET-05` profile with any incompatible step, is rejected with `task_schema_invalid`. Within step 8, proxy compatibility is evaluated after input and options and before path authority and target registration. A combination that REQ-PROXY-0044 permits but the implementation does not provide through the proxy is rejected with `task_unsupported` under [REQ-TRUST-0036](#REQ-TRUST-0036).
 
+<a id="REQ-TRUST-0056"></a>
+
+**REQ-TRUST-0056:**
+
+At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task whose `input` or `options` fail validation against the selected registered test is rejected with `task_schema_invalid`. This includes an unknown property ([REQ-INPUT-0006](../data-formats/task-input.md#REQ-INPUT-0006), [REQ-OPTIONS-0009](../data-formats/task-options.md#REQ-OPTIONS-0009)), a value the test's schema or field table does not permit, an input that is ambiguous or cannot be normalized safely ([REQ-INPUT-0014](../data-formats/task-input.md#REQ-INPUT-0014)), and an option prohibited by [REQ-OPTIONS-0021](../data-formats/task-options.md#REQ-OPTIONS-0021). An `input` or `options` object, or a value within it, that exceeds a byte limit the registered test defines more strictly than the registered maximum is rejected with `task_limit_exceeded`; that limit is checked before the content it bounds is validated. A valid value that requires a capability the implementation does not provide remains `task_unsupported` under [REQ-TRUST-0036](#REQ-TRUST-0036). No failing task is admitted to be skipped or to fail at execution.
+
 ## Residual Risks
 
 - A compromised host, admitted issuer, operating system, or policy package can misuse authority available to it.
