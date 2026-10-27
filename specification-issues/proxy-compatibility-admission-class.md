@@ -1,6 +1,6 @@
 # Proposal: Admission Class for Proxy-Incompatible Task Parameters
 
-**Disposition:** Accepted wording (alternative (a)); merged at `59b192d498bf011e331928d192702e1205a89f35`; internal alignment merged; adopted at Go admission with production rules for TCP-01 and DNS-01; remaining test rules, NET-05 whole-profile rejection and binding and host adoption pending
+**Disposition:** Accepted wording (alternative (a)); merged at `59b192d498bf011e331928d192702e1205a89f35`; internal alignment merged; adopted at Go admission with production rules for TCP-01, DNS-01, TLS-01 and HTTP-01 and NET-05 whole-profile rejection; remaining test rules and binding and host adoption pending
 **Date:** October 19, 2026
 **Related task:** [DEV-598 — Record GO-SPEC-ISSUE-009 and obtain public disposition for the proxy-compatibility admission class](https://app.clickup.com/t/124kk1zcbfb)
 
@@ -120,3 +120,10 @@ Recorded under DEV-664.
 
 - **Production rules:** the Go production registry carries proxy-compatibility rules for TCP-01 (compatible) and DNS-01 (compatible only for direct TCP queries; system and UDP modes are rejected with `task_schema_invalid` before contact), merged at [`c3a3954`](https://github.com/tv-rain/barometer-go/commit/c3a3954a0a26cd9bdada6ece0ee6393d872ea750) and [`10887f4`](https://github.com/tv-rain/barometer-go/commit/10887f42f6c05159a707cd9cf96d65ca392a9729). The execution-time pre-attempt check and `proxy_path_unsupported` were added with the Go proxy path at [`c9df795`](https://github.com/tv-rain/barometer-go/commit/c9df795ec78e5bfa2b8e26c53d13fbbe1d60733c). The safety review of the mapping was confirmed by the maintainer at the Go admission assessment.
 - **Remaining:** rules for the other registered tests, NET-05 whole-profile rejection, a `task_unsupported` case once a production rule distinguishes an unprovided combination, and binding and host adoption. No runtime, proxy, platform, field or release support is claimed.
+
+## Adoption Record — October 27, 2026
+
+Recorded under DEV-670.
+
+- **Production rules:** TLS-01 and HTTP-01 carry proxy-compatibility rules with explicit IP authorities ([`1fedad4`](https://github.com/tv-rain/barometer-go/commit/1fedad4912709356858ae545b8b441ff55d9c5da), [`a1074a5`](https://github.com/tv-rain/barometer-go/commit/a1074a5ccd1da39022833ca8d9a38477a559be87)). The NET-05 codec rejects a `proxy` profile with any incompatible step as a whole with `task_schema_invalid` before contact ([`c24a3b6`](https://github.com/tv-rain/barometer-go/commit/c24a3b6ce525a0c58c9659bb09f54dfe2c048647)).
+- **Remaining:** rules for NET-01, NET-03, DNS-03 and DNS-04, a `task_unsupported` case once a production rule distinguishes an unprovided combination, and binding and host adoption. No runtime, proxy, platform, field or release support is claimed.
