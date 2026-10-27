@@ -7212,6 +7212,27 @@
       "source": "tests/http-01.md",
       "successors": [],
       "reason": ""
+    },
+    {
+      "id": "REQ-NET-03-0041",
+      "status": "active",
+      "source": "tests/net-03.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-03-0042",
+      "status": "active",
+      "source": "tests/net-03.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-03-0043",
+      "status": "active",
+      "source": "tests/net-03.md",
+      "successors": [],
+      "reason": ""
     }
   ]
 }

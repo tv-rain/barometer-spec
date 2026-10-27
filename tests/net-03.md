@@ -123,6 +123,12 @@ The validation endpoint returns its registered expected response on the same net
 
 - A redirect target must not be contacted; its location may only be classified after safe parsing and minimization.
 
+<a id="REQ-NET-03-0043"></a>
+
+**REQ-NET-03-0043:**
+
+- `expected_status` must be a final, non-redirect status: an integer from 200 to 599 other than 301, 302, 303, 307 and 308. Redirects are never followed and a redirect status is always classified `redirect`, so another value could never establish validation and is invalid input.
+
 <a id="REQ-NET-03-0013"></a>
 
 **REQ-NET-03-0013:**
@@ -298,6 +304,33 @@ For `redirect`, the `http_exchange` includes the common minimized redirect objec
 | `tls_failure` | TLS failed; its normalized failure is retained. |
 | `unexpected_response` | A valid response was received with `response_class: unexpected`. |
 | `inconclusive` | Platform and active observations conflict or the terminal observation is too coarse for another outcome. |
+
+<a id="REQ-NET-03-0041"></a>
+
+**REQ-NET-03-0041:**
+
+A valid HTTP response is one whose final status line and header block were received within the 16,384-byte header bound. A header block that exceeds the bound, or a request that ends without a parsed final status, is not a valid HTTP response: the `http_exchange` fails with its registered HTTP failure and the result has no `response_class`. A valid HTTP response receives exactly one `response_class`:
+
+- `redirect` when its status is 301, 302, 303, 307 or 308; only the minimized redirect object is retained and the location is not contacted;
+- `expected` when its status equals `expected_status`, the body read within the registered response prefix ends without an HTTP failure, and either no `expected_body_sha256` is configured or the complete response body has that digest;
+- `content_mismatch` when its status equals `expected_status`, `expected_body_sha256` is configured and the complete response body, read within the registered response prefix, has a different digest;
+- `unexpected` otherwise, including a different non-redirect status, a body that reaches the registered response prefix before the configured digest is decidable, an unsupported content encoding while a digest is configured, and a body read that fails, by timeout, premature end or malformed framing, before the response prefix bound.
+
+A response that exceeds the registered response prefix is classified as exceeding the registered validation bound (REQ-NET-03-0021) by `response_class: unexpected`; the bound is a test bound, not the common `resource_limit` termination. Classification authorizes no additional read, request, retry or redirect contact.
+
+<a id="REQ-NET-03-0042"></a>
+
+**REQ-NET-03-0042:**
+
+Select the outcome from the active request first; `platform_validation` is retained independently and selects the outcome only when the request produced no `response_class`:
+
+1. `response_class: expected` selects `validated`, whatever the platform state.
+2. `response_class: redirect` or `content_mismatch` selects `captive_portal_suspected`.
+3. `response_class: unexpected` selects `unexpected_response`.
+4. Without a `response_class`, platform state `captive_portal` selects `captive_portal_suspected` and platform state `not_validated` selects `not_validated`.
+5. Otherwise a failed `dns_query`, `tcp_connect` or `tls_handshake` selects `dns_failure`, `connection_failure` or `tls_failure`, and a failed `http_exchange` without a valid response selects `inconclusive`.
+
+Common execution interruptions remain governed by REQ-NET-03-0029 and do not become NET-03 outcomes. This order changes neither the captured platform state nor the request observations.
 
 <a id="REQ-NET-03-0028"></a>
 
