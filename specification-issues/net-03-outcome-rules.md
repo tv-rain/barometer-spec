@@ -4,7 +4,7 @@
 
 - Local findings: `GO-SPEC-ISSUE-006` (over-bound response classification) and `GO-SPEC-ISSUE-019` (platform and active outcome selection); Go [finding records](https://github.com/tv-rain/barometer-go/blob/agent/dev-674-net-03-network-validation/docs/specification-issues.md#go-spec-issue-019-net-03-platform-and-active-outcome-selection). The branch link is a proposed record, not immutable published evidence.
 - Implementation task: [DEV-674 — Implement NET-03](https://app.clickup.com/t/124kk1zcw55).
-- Disposition: **Maintainer-selected; wording prepared, public merge pending.** The project owner, Lev, selected the rules on October 27, 2026 and authorized preparing the wording with the Go adoption. Required reviews and immutable public merge remain pending.
+- Disposition: **Accepted; wording merged at `f889a38`, adopted in Go; internal alignment, required reviews, binding and host adoption pending.** The project owner, Lev, selected the rules on October 27, 2026 and authorized preparing the wording with the Go adoption. See the [adoption record](#adoption-record--october-27-2026).
 - No duplicate identified. [HTTP-01 Terminal Response Outcome Precedence](http-01-outcome-precedence.md) settles the analogous question for HTTP-01 only; [`not-run-incomplete-boundary.md`](not-run-incomplete-boundary.md) governs common termination.
 
 ## Affected Baselines and Requirements
@@ -50,3 +50,11 @@ No architecture or responsibility boundary changes, so no coordination decision 
 ## Adoption and Closure Evidence
 
 Prepared: REQ-NET-03-0041 to REQ-NET-03-0043, the catalog entries and this record. Pending: immutable public merge, review and alignment evidence, Go adoption commits and cases, compatibility confirmation and downstream validation. Neither finding is closed, and no platform, field or release support is claimed.
+
+## Adoption Record — October 27, 2026
+
+Recorded under DEV-674. The sections above keep their wording as historical evidence.
+
+- **Merged revision:** REQ-NET-03-0041 to REQ-NET-03-0043 merged through [public PR #35](https://github.com/tv-rain/barometer-spec/pull/35) at [`f889a38`](https://github.com/tv-rain/barometer-spec/tree/f889a381c84a781176024f3fed3a3d4f5c92b241), retaining Draft `0.1.0`.
+- **Go adoption:** the NET-03 runner, merged through [barometer-go PR #94](https://github.com/tv-rain/barometer-go/pull/94) at [`a3db353`](https://github.com/tv-rain/barometer-go/commit/a3db3535a81df7960a51f82bc7a6d78230be1a9d), applies the selected classes, outcome order and `expected_status` domain, with synthetic cases in `TestMNet03Normalization`, `TestMNet03Limits` and `TestMNet03Admission`. [barometer-go PR #95](https://github.com/tv-rain/barometer-go/pull/95), merged at [`ee606be`](https://github.com/tv-rain/barometer-go/commit/ee606be0197a96a970b4d7a3f70f7760af3b6aaf), moves the Go reference pin to `f889a38` and adds machine-readable references to the three requirements.
+- **Remaining:** internal NET-03 review and validation alignment, required reviews, the milestone manifest mapping, and binding and host adoption. Neither finding is closed, and no runtime, platform, field or release support is claimed.
