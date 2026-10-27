@@ -1,6 +1,6 @@
 # Proposal: Boundary Between `not_run` and `incomplete`
 
-**Disposition:** Accepted; wording merged at `84f52f8`, internal alignment merged, adopted in the Go core with TCP-01 and DNS-01 termination evidence; NET-05, binding and host adoption pending; alternative (a) with `completed` after a recorded terminal outcome, `completed` for the NET-05 `network_not_validated` and `inconclusive` outcomes, `constraints_unsatisfied` for undetectable required network conditions, and no Network Context in `not_run` results
+**Disposition:** Accepted; wording merged at `84f52f8`, internal alignment merged, adopted in the Go core with TCP-01, DNS-01, TLS-01, HTTP-01 and NET-05 termination evidence; the other registered runners, binding and host adoption pending; alternative (a) with `completed` after a recorded terminal outcome, `completed` for the NET-05 `network_not_validated` and `inconclusive` outcomes, `constraints_unsatisfied` for undetectable required network conditions, and no Network Context in `not_run` results
 **Date:** October 22, 2026
 **Related task:** [DEV-579 — Obtain public disposition for GO-SPEC-ISSUE-004 (not_run vs incomplete boundary)](https://app.clickup.com/t/124kk1zcaae)
 
@@ -123,3 +123,10 @@ Recorded under DEV-664.
 
 - **Go adoption:** Go commit [`8156c1a`](https://github.com/tv-rain/barometer-go/commit/8156c1a32d8f9af71e656edc4070456bb303265f) (DEV-561) selects `not_run`, `incomplete` and `completed` under REQ-RESULT-0051 and REQ-RESULT-0052 and rejects `network_context` in `not_run` results. The TCP-01 and DNS-01 runners, merged at [`c3a3954`](https://github.com/tv-rain/barometer-go/commit/c3a3954a0a26cd9bdada6ece0ee6393d872ea750) and [`10887f4`](https://github.com/tv-rain/barometer-go/commit/10887f42f6c05159a707cd9cf96d65ca392a9729), apply it at each interruption point, with synthetic termination tests. The Go measurement case plans and traceability now carry these expected states and REQ-NET-05-0061.
 - **Remaining:** NET-05 runner evidence for REQ-NET-05-0061, the other registered runners, and binding and host adoption. No runtime, platform, field or release support is claimed.
+
+## Adoption Record — October 27, 2026
+
+Recorded under DEV-670.
+
+- **Go adoption:** the TLS-01, HTTP-01 and NET-05 runners, merged at [`1fedad4`](https://github.com/tv-rain/barometer-go/commit/1fedad4912709356858ae545b8b441ff55d9c5da), [`a1074a5`](https://github.com/tv-rain/barometer-go/commit/a1074a5ccd1da39022833ca8d9a38477a559be87) and [`1b89ccd`](https://github.com/tv-rain/barometer-go/commit/1b89ccdc2154b67c4da4f3d3a1c909dd9ce329f5), apply REQ-RESULT-0051 and REQ-RESULT-0052 at each interruption point. NET-05 records `network_not_validated` and `inconclusive` profile outcomes as `completed` under REQ-NET-05-0061, with synthetic termination and platform-validation tests.
+- **Remaining:** the NET-01, NET-03, DNS-03 and DNS-04 runners, and binding and host adoption. No runtime, platform, field or release support is claimed.

@@ -1,6 +1,6 @@
 # Proposal: Bytes Counted Toward Attempt Byte Limits
 
-**Disposition:** Accepted; wording merged at `5d01879`, internal alignment merged, adopted in the Go stream layer and for TCP-01 and DNS-01; the other registered tests, binding and host adoption pending; alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
+**Disposition:** Accepted; wording merged at `5d01879`, internal alignment merged, adopted in the Go stream layer and for TCP-01, DNS-01, TLS-01, HTTP-01 and the NET-05 aggregate; NET-03, DNS-03, DNS-04, binding and host adoption pending; alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
 **Date:** October 22, 2026
 **Related task:** [DEV-580 — Obtain public disposition for GO-SPEC-ISSUE-005 (bytes counted toward attempt byte limits)](https://app.clickup.com/t/124kk1zcaaf)
 
@@ -126,3 +126,10 @@ Recorded under DEV-664.
 
 - **Go adoption:** the attempt scope meters every byte a runner exchanges with its stream and counts each dial toward `max_connections` ([`cf20572`](https://github.com/tv-rain/barometer-go/commit/cf20572b4cf73b09a4869877735d2f1ddfc06ad3)); the proxy path keeps the `CONNECT` exchange below it ([`c9df795`](https://github.com/tv-rain/barometer-go/commit/c9df795ec78e5bfa2b8e26c53d13fbbe1d60733c)). TCP-01 opens one metered connection and sends no application bytes. DNS-01 counts exact DNS messages and both TCP length prefixes, with synthetic below, at and above limit cases, and its ordinary-resolver mode issues no metered traffic, as the system-resolver exception allows.
 - **Remaining:** HTTP-01, NET-03, DNS-03, DNS-04 and the NET-05 aggregate, and binding and host adoption. No runtime, platform, field or release support is claimed.
+
+## Adoption Record — October 27, 2026
+
+Recorded under DEV-670.
+
+- **Go adoption:** TLS-01 meters the plaintext side of its session, so handshake and record bytes are not counted, on the direct path and through the proxy tunnel ([`1fedad4`](https://github.com/tv-rain/barometer-go/commit/1fedad4912709356858ae545b8b441ff55d9c5da)). The HTTP exchange primitive and HTTP-01 count request and response headers and bodies at the same boundary, including redirect hops and the CONNECT tunnel ([`8576bbc`](https://github.com/tv-rain/barometer-go/commit/8576bbc10d68c4a5c2328df34043d31124b06bad), [`a1074a5`](https://github.com/tv-rain/barometer-go/commit/a1074a5ccd1da39022833ca8d9a38477a559be87)). The NET-05 runner sums its steps' counted bytes and connections against the aggregate limits ([`1b89ccd`](https://github.com/tv-rain/barometer-go/commit/1b89ccdc2154b67c4da4f3d3a1c909dd9ce329f5)). Synthetic below, at and above limit cases cover each.
+- **Remaining:** NET-03, DNS-03 and DNS-04, and binding and host adoption. No runtime, platform, field or release support is claimed.
