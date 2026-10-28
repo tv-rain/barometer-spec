@@ -2,9 +2,9 @@
 
 ## Identity and Ownership
 
-- Local finding: `GO-SPEC-ISSUE-021` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/agent/dev-687-net05-summed-maxima/docs/specification-issues.md#go-spec-issue-021-net-05-declared-primitive-maxima). The branch link is a proposed record, not immutable published evidence.
+- Local finding: `GO-SPEC-ISSUE-021` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/86ed264c2476fb280be7ea8f7bf9ef7b733d1caa/docs/specification-issues.md#go-spec-issue-021-net-05-declared-primitive-maxima).
 - Implementation task: [DEV-687 — Reject NET-05 profiles whose summed declared maxima exceed the composite limits at admission](https://app.clickup.com/t/124kk1zd4vp).
-- Disposition: **Accepted; wording prepared, adoption pending.** The project owner, Lev, selected the declared-only rule on October 28, 2026 and authorized preparing the wording with the Go adoption. The wording is not accepted public behavior until it merges.
+- Disposition: **Accepted; wording merged at `6bd8804`, adopted in Go; internal alignment, required reviews, binding and host adoption pending.** The project owner, Lev, selected the declared-only rule on October 28, 2026 and authorized preparing the wording with the Go adoption. See the [adoption record](#adoption-record--october-28-2026).
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: [Bytes Counted Toward Attempt Byte Limits](attempt-byte-accounting.md) defines the counting boundary the sums use; [`editorial-consistency-0-1-0.md`](editorial-consistency-0-1-0.md) covers the DNS-01 window maximum, which bounds the duration a DNS-01 step declares; [`net-05-profile-input-bound.md`](net-05-profile-input-bound.md) covers a different NET-05 admission bound.
 
@@ -55,3 +55,11 @@ No architecture or responsibility boundary changes, so no coordination decision 
 ## Adoption and Closure Evidence
 
 Prepared: REQ-LIMIT-0035, the editorial pointers, the catalog entry and this record. Pending: immutable public merge, review and alignment evidence, Go adoption commits and cases, compatibility confirmation and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
+
+## Adoption Record — October 28, 2026
+
+Recorded under DEV-687. The sections above keep their wording as historical evidence.
+
+- **Merged revision:** REQ-LIMIT-0035 and the editorial pointers in REQ-LIMIT-0020 and REQ-NET-05-0026 merged through [public PR #37](https://github.com/tv-rain/barometer-spec/pull/37) at [`6bd8804`](https://github.com/tv-rain/barometer-spec/tree/6bd88047a85b3207bbc8ade00a44411bc70567b1), retaining Draft `0.1.0`.
+- **Go adoption:** the summed declared maxima check, merged through [barometer-go PR #103](https://github.com/tv-rain/barometer-go/pull/103) at [`86ed264`](https://github.com/tv-rain/barometer-go/commit/86ed264c2476fb280be7ea8f7bf9ef7b733d1caa), applies the per-step declarations, per-resource sums, fail-closed handling and `task_limit_exceeded` rejection before contact, with synthetic cases in `TestMNet05Limits`, `TestMNet05RegisteredCeilingAdmission` and `TestDeclaredMaximaFailClosed`; both Go manifests record `M-NET-05-LIMITS` as passed at Go `249438e`. The Go reference-pin update to `6bd8804`, which adds machine-readable references to REQ-LIMIT-0035, is prepared on the barometer-go branch `agent/dev-687-reference-pin`.
+- **Remaining:** the merge of that reference-pin update, internal NET-05 and registered-limits review alignment, required reviews, the milestone manifest mapping of REQ-LIMIT-0035, and binding and host adoption. The finding is not closed, and no runtime, platform, field or release support is claimed.
