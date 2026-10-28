@@ -262,7 +262,7 @@ The example identifiers, target, status, and version illustrate structure only. 
 
 **REQ-NET-05-0026:**
 
-- The declared primitive maxima must fit within 60,000 ms, 12 connections or tunnels, 65,536 application bytes sent, and 262,144 application bytes received.
+- The declared primitive maxima, defined by [REQ-LIMIT-0035](../library/registered-limits.md#REQ-LIMIT-0035), must fit within 60,000 ms, 12 connections or tunnels, 65,536 application bytes sent, and 262,144 application bytes received.
 
 <a id="REQ-NET-05-0027"></a>
 

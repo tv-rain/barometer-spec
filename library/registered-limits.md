@@ -225,7 +225,24 @@ NET-03 never follows redirects. It retains only the minimized redirect class.
 
 **REQ-LIMIT-0020:**
 
-Every nested primitive must also satisfy its own limit. The complete profile is rejected before network activity if the sum of declared maxima cannot fit within the outer limits.
+Every nested primitive must also satisfy its own limit. The complete profile is rejected before network activity if the sum of declared maxima cannot fit within the outer limits. Declared maxima are defined by [REQ-LIMIT-0035](#REQ-LIMIT-0035).
+
+<a id="REQ-LIMIT-0035"></a>
+
+**REQ-LIMIT-0035:**
+
+A NET-05 step's declared maxima are the amounts that its primitive's registered limits and its normalized `input` and `options` bound, counted under [REQ-LIMIT-0034](#REQ-LIMIT-0034):
+
+| Step | Duration | Connections or tunnels | Application bytes sent | Application bytes received |
+|---|---|---|---|---|
+| `DNS-01`, `system` resolver mode | Not declared | 0 | Not declared | Not declared |
+| `DNS-01`, `direct` mode, `udp` transport | `additional_response_window_ms` when additional responses are collected; otherwise not declared | 0 | Not declared | 4,096 bytes, or 12,288 bytes when additional responses are collected |
+| `DNS-01`, `direct` mode, `tcp` transport | Not declared | 1 | Not declared | 65,537 bytes |
+| `TCP-01` | Not declared | 1 | 0 | 0 |
+| `TLS-01` | Not declared | 1 | 0 | 0 |
+| `HTTP-01` | Not declared | 1, plus `max_redirects` when `follow_redirects` is `true` | Not declared | 16,384 bytes for each response the connection count permits, plus `max_body_bytes` |
+
+The profile's declared maxima are the per-resource sums over all steps. A resource a step does not declare adds nothing to the sum. As part of `input` validation at step 8 of [REQ-TRUST-0046](task-trust.md#REQ-TRUST-0046), a profile whose sum for any resource exceeds the matching [NET-05 composite limit](#REQ-LIMIT-0019) or the task's `execution.limits` value for that resource, whichever is smaller, is rejected with `task_limit_exceeded` before network activity. Admission does not show that a run fits: platform resolution, transport behavior and undeclared traffic remain bounded during execution only, by the outer limits under [REQ-LIMIT-0027](#REQ-LIMIT-0027).
 
 ## Result and Bundle Limits
 
