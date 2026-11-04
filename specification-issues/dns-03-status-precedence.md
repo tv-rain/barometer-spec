@@ -4,7 +4,7 @@
 
 - Local finding: `GO-SPEC-ISSUE-020` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-020-dns-03-non-success-status-and-media-type-precedence).
 - Implementation task: [DEV-672 — Implement DNS-03 (DNS over HTTPS)](https://app.clickup.com/t/124kk1zcw52). Public record task: [DEV-716 — Public records for the remaining Go specification findings](https://app.clickup.com/t/124kk1zdmdq).
-- Disposition: **Accepted; wording prepared as REQ-DNS-03-0040, merge pending; already adopted in Go.** The project owner, Lev, selected the rule on October 27, 2026 under DEV-672.
+- Disposition: **Accepted; wording merged as REQ-DNS-03-0040 at `830e956`, internal alignment merged, adopted in Go; Go reference update pending.** The project owner, Lev, selected the rule on October 27, 2026 under DEV-672.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: [HTTP-01 Terminal Response Outcome Precedence](http-01-outcome-precedence.md) settles the analogous question for HTTP-01 only.
 
@@ -43,4 +43,4 @@ No architecture or responsibility boundary changes, so no coordination decision 
 
 ## Adoption and Closure Evidence
 
-Prepared: REQ-DNS-03-0040, the catalog entry, the editorial pointers and this record. Go behavior: adopted under DEV-672. Pending: immutable public merge, internal alignment, Go reference update and milestone manifest mapping, and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
+Merged: REQ-DNS-03-0040, the catalog entry, the editorial pointers and this record through [public PR #39](https://github.com/tv-rain/barometer-spec/pull/39) at [`830e956`](https://github.com/tv-rain/barometer-spec/tree/830e9564849ebfedaa0860d9f01032574e2b9fa3), retaining Draft `0.1.0`. Internal DNS-03 alignment merged through internal PR #19 at `a884513`. Go behavior: adopted under DEV-672. Pending: Go reference update, the milestone manifest mapping, and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
