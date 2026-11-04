@@ -2,8 +2,7 @@
 
 ## Identity and Ownership
 
-- Local finding: `GO-SPEC-ISSUE-014` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-014-equal-start-and-end-in-a-time-window-range), recorded under DEV-652 from the runtime closeout limitation.
-- Public record task: [DEV-716 — Public records for the remaining Go specification findings](https://app.clickup.com/t/124kk1zdmdq).
+- Local finding: `GO-SPEC-ISSUE-014` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-014-equal-start-and-end-in-a-time-window-range), recorded from the runtime closeout limitation.
 - Disposition: **Accepted; wording merged as REQ-SCHEDULE-0044 at `830e956`; Go reference update and case pending.** The project owner, Lev, selected the explicitly empty range on November 4, 2026.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: [`interval-due-times-catch-up.md`](interval-due-times-catch-up.md) covers other schedule timing.

@@ -1,14 +1,13 @@
 # Proposal: Re-verification of Redelivered Remote Tasks After Key Expiry
 
-**Disposition:** Closed: accepted wording (alternative (a)) merged at `4743b636f29feb1f0f8d042866d04ccda3532938`, aligned in the internal review by DEV-625 and adopted in Go by DEV-624; binding and host adoption not yet available
+**Disposition:** Closed: accepted wording (alternative (a)) merged at `4743b636f29feb1f0f8d042866d04ccda3532938`, aligned in the internal review and adopted in Go; binding and host adoption not yet available
 **Date:** October 20, 2026
-**Related task:** [DEV-616 — Clarify whether REQ-TRUST-0054 tasks survive policy replacement without re-verification](https://app.clickup.com/t/124kk1zcf5d)
 
 This record asks public maintainers whether a remote task admitted while its signing key was trusted and valid stays exempt from re-verification when it is presented again after that key's validity ends, in particular after a policy replacement. It confirms the existing fail-closed reading and states it as a new requirement. It changes no admission order, error class, serialized field or limit, and makes no support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-20-2026) below did. Sections before it are the proposal as reviewed. The accepted wording is included in the same public change as this record.
 
 ## Identity and Ownership
 
-- Local finding: the Open Interpretation Question under [Signed Remote Task Package Adoption](https://github.com/tv-rain/barometer-go/blob/33a90150b2ce0698b69c4cf90a8f1a9a0726b780/docs/specification-issues.md#signed-remote-task-package-adoption) in the Go specification-issue record, raised October 20, 2026 under DEV-612 while adopting signed remote task packages.
+- Local finding: the Open Interpretation Question under [Signed Remote Task Package Adoption](https://github.com/tv-rain/barometer-go/blob/33a90150b2ce0698b69c4cf90a8f1a9a0726b780/docs/specification-issues.md#signed-remote-task-package-adoption) in the Go specification-issue record, raised October 20, 2026 while adopting signed remote task packages.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption.
 - Related: [Signed remote task packages](signed-remote-task-packages.md), which introduced REQ-TRUST-0054. Duplicates: none found.
@@ -70,29 +69,29 @@ Expected cases: with a key valid until one hour after acceptance and a task vali
 
 ## Maintainer Disposition — October 20, 2026
 
-The project owner and public maintainer, Lev, accepted alternative (a) on October 20, 2026, in the DEV-616 task review.
+The project owner and public maintainer, Lev, accepted alternative (a) on October 20, 2026.
 
 - **Rule:** the exemption from re-verification in REQ-TRUST-0054 applies only to an accepted task the initialized library instance still holds. Every presentation of a remote package, including an exact redelivery and a redelivery after policy replacement, reinitialization or data clearing, is verified at its own acceptance time before replay handling.
 - **Rationale:** the fail-closed reading keeps a key's validity period as a hard bound on new admissions, requires no retained key material, and matches the existing check order.
 - **Wording:** accepted as proposed. [REQ-TRUST-0055](../library/task-trust.md#REQ-TRUST-0055) follows REQ-TRUST-0054 in `library/task-trust.md`, and the Residual Risks section records that such tasks can stop before their own expiry.
 - **Requirement IDs:** REQ-TRUST-0055 is a new allocation recorded in the [requirement catalog](../requirements/catalog.json). REQ-TRUST-0054 remains active and unchanged; no ID is retired or reused.
 - **Version:** Draft `0.1.0` is retained. No schema, field, class or limit changes, and no release or runtime support claim is made.
-- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption; it is recorded as evidence on DEV-616 after merge. The required safety review is not represented as completed.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption. The required safety review is not represented as completed.
 
 ## Merge and Adoption Addendum — October 21, 2026
 
-Recorded under DEV-625. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Merged revision:** the accepted wording, the REQ-TRUST-0055 allocation and the Draft `0.1.0` retention were merged on October 20, 2026 through [public PR #19](https://github.com/tv-rain/barometer-spec/pull/19) as immutable revision [`4743b636f29feb1f0f8d042866d04ccda3532938`](https://github.com/tv-rain/barometer-spec/tree/4743b636f29feb1f0f8d042866d04ccda3532938) (head `a83447ddff338d05599ec6d3e7abb564aba79977`).
-- **Safety review:** the project maintainer's DEV-615 safety review of signed remote task packages was performed against `4743b63` and includes re-verification on redelivery (REQ-TRUST-0055); it passed with no findings (internal review repository PR #7, merged at `4522637fc91890acae9de6b4da9bd189d9f3318e`). Under the maintainer decision of October 21, 2026 recorded in [signed remote task packages](signed-remote-task-packages.md#closure-addendum--october-21-2026), that review satisfies the required review.
-- **Internal alignment:** the DEV-615 review cites REQ-TRUST-0055 in its scope. DEV-625 adds the REQ-TRUST-0055 validation-plan expectation to the internal task-trust review in its companion internal change, which together with the DEV-615 review completes the alignment step under [Ordering and Public Disposition](#ordering-and-public-disposition).
-- **Go adoption:** pending under DEV-624: the Go record closing its Open Interpretation Question by reference, and traceability citing REQ-TRUST-0055 to tests.
-- **Remaining before closure:** the Go adoption above; binding and host adoption are outside the current tasks (DEV-455). The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
+- **Safety review:** the project maintainer's safety review of signed remote task packages was performed against `4743b63` and includes re-verification on redelivery (REQ-TRUST-0055); it passed with no findings (internal review repository PR #7, merged at `4522637fc91890acae9de6b4da9bd189d9f3318e`). Under the maintainer decision of October 21, 2026 recorded in [signed remote task packages](signed-remote-task-packages.md#closure-addendum--october-21-2026), that review satisfies the required review.
+- **Internal alignment:** the maintainer's safety review cites REQ-TRUST-0055 in its scope. A companion internal change adds the REQ-TRUST-0055 validation-plan expectation to the internal task-trust review, which together with that review completes the alignment step under [Ordering and Public Disposition](#ordering-and-public-disposition).
+- **Go adoption:** pending: the Go record closing its Open Interpretation Question by reference, and traceability citing REQ-TRUST-0055 to tests.
+- **Remaining before closure:** the Go adoption above; binding and host adoption are outside the current tasks. The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
 
 ## Closure Addendum — October 21, 2026
 
-Recorded under DEV-626. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Internal alignment:** the REQ-TRUST-0055 alignment section and validation-plan expectation were merged into the internal task-trust review through internal review repository PR #9 at `de9b3da5484b88e045d180ad6913e24b22f57662`.
-- **Go adoption:** DEV-624 adopted REQ-TRUST-0055 in Go [PR #58](https://github.com/tv-rain/barometer-go/pull/58), merged at `2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67` (implementation commit `19b5810c80ba6dedc115d513cdc4ad51bfceec0b`). The Go record closes its interpretation question by reference ([Interpretation Question](https://github.com/tv-rain/barometer-go/blob/2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67/docs/specification-issues.md#interpretation-question)), and the cross-cutting traceability manifest at public `4743b63` maps REQ-TRUST-0055 to the existing key-rotation case, with two synthetic tests for redelivery after key expiry. No Go behavior changed. Evidence is synthetic only.
-- **Disposition:** closed October 21, 2026 by the public maintainer through this DEV-626 change; the evidence required under [Adoption and Closure Evidence](#adoption-and-closure-evidence) is linked above. Binding and host adoption are assessed when those components exist (DEV-455). No runtime, platform, field or release support is claimed.
+- **Go adoption:** REQ-TRUST-0055 was adopted in Go [PR #58](https://github.com/tv-rain/barometer-go/pull/58), merged at `2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67` (implementation commit `19b5810c80ba6dedc115d513cdc4ad51bfceec0b`). The Go record closes its interpretation question by reference ([Interpretation Question](https://github.com/tv-rain/barometer-go/blob/2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67/docs/specification-issues.md#interpretation-question)), and the cross-cutting traceability manifest at public `4743b63` maps REQ-TRUST-0055 to the existing key-rotation case, with two synthetic tests for redelivery after key expiry. No Go behavior changed. Evidence is synthetic only.
+- **Disposition:** closed October 21, 2026 by the public maintainer through this change; the evidence required under [Adoption and Closure Evidence](#adoption-and-closure-evidence) is linked above. Binding and host adoption are assessed when those components exist. No runtime, platform, field or release support is claimed.

@@ -2,13 +2,12 @@
 
 **Disposition:** Open (proposal; no specification text changed)
 **Date:** October 23, 2026
-**Related task:** [DEV-649 — Prepare the public specification-issue record for the require_validated internal check (GO-SPEC-ISSUE-013)](https://app.clickup.com/t/124kk1zct3d)
 
 This record asks public maintainers to resolve a conflict between two rules for the `require_validated` network condition. One rule says the library calls its own connectivity check when the platform offers no validation method; another says an undeterminable validation state is unsatisfied and Barometer must not guess. The contract does not define the check. This record lists alternatives and their tradeoffs and does not select one; disposition and wording belong to public maintainers. The normative files are unchanged until maintainers approve a separate change. Opening this record does not accept any alternative, including the interim rule one implementation uses.
 
 ## Identity and Ownership
 
-- Local finding: [GO-SPEC-ISSUE-013](https://github.com/tv-rain/barometer-go/blob/cdbd16043d991d4b11544420b5ba8531fb8c95f1/docs/specification-issues.md#go-spec-issue-013-library-internal-check-for-require_validated) in the Go specification-issue record, raised October 23, 2026 under [DEV-644](https://app.clickup.com/t/124kk1zcrjd) while implementing network-condition evaluation.
+- Local finding: [GO-SPEC-ISSUE-013](https://github.com/tv-rain/barometer-go/blob/cdbd16043d991d4b11544420b5ba8531fb8c95f1/docs/specification-issues.md#go-spec-issue-013-library-internal-check-for-require_validated) in the Go specification-issue record, raised October 23, 2026 while implementing network-condition evaluation.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption.
 - Duplicates: none found. Related: [`not-run-incomplete-boundary.md`](not-run-incomplete-boundary.md), which introduced REQ-EXECUTION-0031 and its mapping of undetectable required network conditions; it did not change REQ-EXECUTION-0016.
@@ -37,7 +36,7 @@ The contract does not define the check named in REQ-EXECUTION-0016. It gives no:
 
 An implementation therefore cannot build the check without inventing observable behavior, including network traffic outside the attempt's registered test.
 
-Observed behavior: barometer-go implements this interim rule, approved by its task owner with the DEV-644 plan while this record is open. It is a local interpretation and not accepted public behavior:
+Observed behavior: barometer-go implements this interim rule, approved by its task owner with the network-condition evaluation plan while this record is open. It is a local interpretation and not accepted public behavior:
 
 1. `require_validated` is satisfied only when the platform's own validation state is `validated: yes`.
 2. `no`, `unknown`, a capability error and an unreadable access context leave the condition unsatisfied, as REQ-EXECUTION-0031 requires. The run is not started; before the first attempt of a run that was already reserved, the attempt is `not_run` with `constraints_unsatisfied`.

@@ -2,7 +2,6 @@
 
 **Disposition:** Closed: no-text-change clarification accepted under REQ-JSON-0009
 **Date:** October 16, 2026
-**Related task:** [DEV-571 — Close minor Foundation assessment gaps in barometer-go](https://app.clickup.com/t/124kk1zc521)
 
 This record asks public maintainers to dispose of local host-configuration decoding bounds selected by the Go implementation where the public contract registers no maximum. It proposes a no-text-change clarification that the bounds are explicitly local and non-normative under an existing rule. It introduces no normative limit, serialized field, version change or support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-16-2026) below did. Sections before it are the proposal as reviewed.
 
@@ -18,7 +17,7 @@ This record asks public maintainers to dispose of local host-configuration decod
 - Public Draft `0.1.0` at immutable revision [`83d0b10cffb37a53de120b56825b42eb226568d9`](https://github.com/tv-rain/barometer-spec/tree/83d0b10cffb37a53de120b56825b42eb226568d9). The cited decoding text is unchanged from the adopted revision `05c1364af4f9a604b617fca45f060949b557d265`.
 - [REQ-JSON-0009](https://github.com/tv-rain/barometer-spec/blob/83d0b10cffb37a53de120b56825b42eb226568d9/data-formats/json-decoding.md#REQ-JSON-0009) applies registered complete-input limits, permits stricter reviewed local bounds, and requires a finite reviewed local input bound for models without a registered complete-input maximum. [REQ-JSON-0010](https://github.com/tv-rain/barometer-spec/blob/83d0b10cffb37a53de120b56825b42eb226568d9/data-formats/json-decoding.md#REQ-JSON-0010) requires bounded memory and work.
 - Host-configuration sections: [Proxy](https://github.com/tv-rain/barometer-spec/blob/83d0b10cffb37a53de120b56825b42eb226568d9/library/proxy.md), [Network Context](https://github.com/tv-rain/barometer-spec/blob/83d0b10cffb37a53de120b56825b42eb226568d9/library/network-context.md) and [Result Linkage](https://github.com/tv-rain/barometer-spec/blob/83d0b10cffb37a53de120b56825b42eb226568d9/library/result-linkage.md). None registers a complete host-configuration byte, depth or node maximum, or a URL length maximum.
-- Implementation: `tv-rain/barometer-go` `internal/config` at `374c8bd7a8db634ddac5f799b2894ce3d96856d5` (DEV-486 models). No runtime initialization, binding, native or platform behavior is implemented or validated.
+- Implementation: `tv-rain/barometer-go` `internal/config` at `374c8bd7a8db634ddac5f799b2894ce3d96856d5` (initialization and configuration models). No runtime initialization, binding, native or platform behavior is implemented or validated.
 
 ## Finding and Reproduction
 
@@ -74,4 +73,4 @@ The project owner and public maintainer, Lev, accepted alternative 1 on October 
 - **Effect:** no public text, requirement ID, schema or version change. Draft `0.1.0` remains authoritative at its existing revisions. No Go behavior change follows. Specialist mobile-resource review is not required, because no public maxima are registered.
 - **Reopening:** if host interoperability evidence shows that portable maxima are needed, open a new specification issue for alternative 2 and link it here.
 
-Downstream evidence: the Go record `GO-SPEC-ISSUE-003` is updated to cite this disposition, under [DEV-571](https://app.clickup.com/t/124kk1zc521). Existing `internal/config` bound tests remain synthetic regression evidence only.
+Downstream evidence: the Go record `GO-SPEC-ISSUE-003` is updated to cite this disposition. Existing `internal/config` bound tests remain synthetic regression evidence only.
