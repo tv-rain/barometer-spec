@@ -235,13 +235,19 @@ Example:
 
 <a id="REQ-EXECUTION-0016"></a>
 
-**REQ-EXECUTION-0016:**
+**REQ-EXECUTION-0016 (retired):**
+
+The historical field table described `require_validated` as using the platform's validation method when available and calling a library internal check otherwise, which conflicted with [REQ-EXECUTION-0031](#REQ-EXECUTION-0031) and named a check the contract never defined. [REQ-EXECUTION-0033](#REQ-EXECUTION-0033) replaces it. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-EXECUTION-0033"></a>
+
+**REQ-EXECUTION-0033:**
 
 | Field | Required | Description |
 |--------|:--------:|-------------|
 | `allowed_transports` | No | Base network transports on which the task may execute. |
 | `vpn_policy` | No | Defines whether detected VPN usage affects execution eligibility. Default: any |
-| `require_validated` | No | Require confirmed Internet connectivity, system method will be used to check when available, lib internal check will be called otherwise. |
+| `require_validated` | No | Require confirmed Internet connectivity. When `true`, the condition is satisfied only when the platform's own Internet-validation state for the selected path is `yes`. Barometer sends no traffic of its own to decide validation. Any other state, or a state that cannot be determined, is unsatisfied under [REQ-EXECUTION-0031](#REQ-EXECUTION-0031). |
 | `context` | No | Requirements evaluated against the selected path's normalized Network Context. |
 
 Initial network transports:

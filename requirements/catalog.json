@@ -1059,10 +1059,12 @@
     },
     {
       "id": "REQ-EXECUTION-0016",
-      "status": "active",
+      "status": "retired",
       "source": "data-formats/task-execution.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-EXECUTION-0033"
+      ],
+      "reason": "Library internal check for require_validated removed; only the platform validation state satisfies it (specification-issues/require-validated-internal-check.md)."
     },
     {
       "id": "REQ-EXECUTION-0017",
@@ -1171,6 +1173,13 @@
     },
     {
       "id": "REQ-EXECUTION-0032",
+      "status": "active",
+      "source": "data-formats/task-execution.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-EXECUTION-0033",
       "status": "active",
       "source": "data-formats/task-execution.md",
       "successors": [],
@@ -3957,6 +3966,13 @@
       "reason": ""
     },
     {
+      "id": "REQ-BUNDLE-0037",
+      "status": "active",
+      "source": "data-formats/result-bundle.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-INPUT-0027",
       "status": "active",
       "source": "data-formats/task-input.md",
@@ -4133,6 +4149,13 @@
     },
     {
       "id": "REQ-SCHEDULE-0044",
+      "status": "active",
+      "source": "data-formats/task-schedule.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-SCHEDULE-0045",
       "status": "active",
       "source": "data-formats/task-schedule.md",
       "successors": [],

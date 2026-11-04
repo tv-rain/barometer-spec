@@ -1,6 +1,6 @@
 # Proposal: Library Internal Check for `require_validated`
 
-**Disposition:** Open (proposal; no specification text changed)
+**Disposition:** Accepted; wording prepared as REQ-EXECUTION-0033, replacing REQ-EXECUTION-0016, merge pending. See the [disposition record](#disposition-record--november-4-2026).
 **Date:** October 23, 2026
 
 This record asks public maintainers to resolve a conflict between two rules for the `require_validated` network condition. One rule says the library calls its own connectivity check when the platform offers no validation method; another says an undeterminable validation state is unsatisfied and Barometer must not guess. The contract does not define the check. This record lists alternatives and their tradeoffs and does not select one; disposition and wording belong to public maintainers. The normative files are unchanged until maintainers approve a separate change. Opening this record does not accept any alternative, including the interim rule one implementation uses.
@@ -83,3 +83,14 @@ Expected cases, to be defined after disposition: `require_validated: true` with 
 - Internal review and validation-plan alignment: pending, or a recorded reason it does not apply.
 - Go adoption evidence, or a recorded statement that the interim rule already conforms: pending.
 - Closure requires the public disposition, its immutable revision if wording changes, the safety and privacy review if a library check is accepted, and Go adoption evidence or recorded non-applicability. Binding and host adoption are assessed when those components exist. No runtime, platform, field or release support is claimed.
+
+## Disposition Record — November 4, 2026
+
+The sections above keep their wording as historical evidence.
+
+- **Disposition:** the project owner, Lev, selected alternative (a): the internal-check clause is removed. `require_validated` is satisfied only by the platform's own validation state `yes`, and REQ-EXECUTION-0031 remains the only rule when that state cannot be determined.
+- **Wording:** [REQ-EXECUTION-0033](../data-formats/task-execution.md#REQ-EXECUTION-0033) replaces the network-condition field table of REQ-EXECUTION-0016, which is retired because removing the check clause changes an obligation. The other rows are unchanged. Draft `0.1.0` is retained; no field is added.
+- **Rationale:** Barometer sends no traffic outside the registered test to decide validation, needs no check destination, and adds no resource accounting. It matches current Go behavior. Its cost is that a task requiring validation never runs where the platform reports no validation state.
+- **Reviews:** no library connectivity check is introduced, so the safety and privacy review this record requires for any such check does not apply. Maintainer disposition is the only required review.
+- **Internal alignment:** no internal validation plan names the library check; the affected conformance row is maintained with the Go implementation, which records its non-applicability.
+- **Remaining:** immutable public merge, the Go reference update from REQ-EXECUTION-0016 to REQ-EXECUTION-0033 and the network-condition case row, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.
