@@ -226,6 +226,12 @@ Example nighttime window:
 
 When `end` is earlier than `start`, the range crosses midnight.
 
+<a id="REQ-SCHEDULE-0044"></a>
+
+**REQ-SCHEDULE-0044:**
+
+When `end` equals `start`, the range is valid and empty: it contains no minute and permits no run start or retry. It is not a full-day range. An empty range overlaps no other range, but an identical range is still a duplicate under [REQ-SCHEDULE-0013](#REQ-SCHEDULE-0013). A window whose ranges are all empty never permits a run start; another nonempty range in the same window still applies.
+
 A task may define multiple allowed ranges:
 
 ### Repeat

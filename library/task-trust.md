@@ -520,6 +520,30 @@ At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task with `network_path: proxy
 
 At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task whose `input` or `options` fail validation against the selected registered test is rejected with `task_schema_invalid`. This includes an unknown property ([REQ-INPUT-0006](../data-formats/task-input.md#REQ-INPUT-0006), [REQ-OPTIONS-0009](../data-formats/task-options.md#REQ-OPTIONS-0009)), a value the test's schema or field table does not permit, an input that is ambiguous or cannot be normalized safely ([REQ-INPUT-0014](../data-formats/task-input.md#REQ-INPUT-0014)), and an option prohibited by [REQ-OPTIONS-0021](../data-formats/task-options.md#REQ-OPTIONS-0021). An `input` or `options` object, or a value within it, that exceeds a byte limit the registered test defines more strictly than the registered maximum is rejected with `task_limit_exceeded`; that limit is checked before the content it bounds is validated. A valid value that requires a capability the implementation does not provide remains `task_unsupported` under [REQ-TRUST-0036](#REQ-TRUST-0036). No failing task is admitted to be skipped or to fail at execution.
 
+<a id="REQ-TRUST-0057"></a>
+
+**REQ-TRUST-0057:**
+
+At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), a task with an option value that is valid for the registered test but that a stricter local safety restriction does not permit is rejected with `task_issuer_not_authorized`, the class [REQ-TRUST-0047](#REQ-TRUST-0047) lists for local-policy refusal at the same step. Local-policy refusal of the network path remains governed by REQ-TRUST-0047.
+
+<a id="REQ-TRUST-0058"></a>
+
+**REQ-TRUST-0058:**
+
+At step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046), an `input` or `options` value of the permitted type that exceeds a maximum registered in [Registered Limits](registered-limits.md) is rejected with `task_limit_exceeded`, as [REQ-LIMIT-0002](registered-limits.md#REQ-LIMIT-0002) requires rejection for a registered limit. A value outside a range that only the test's schema or field table defines, or a value of a type the schema does not permit, remains `task_schema_invalid` under [REQ-TRUST-0056](#REQ-TRUST-0056).
+
+<a id="REQ-TRUST-0059"></a>
+
+**REQ-TRUST-0059:**
+
+When several `input` and `options` checks at step 8 of [REQ-TRUST-0046](#REQ-TRUST-0046) would fail, the first failing check in this order decides the class:
+
+1. `input` against the selected test's schema or field table;
+2. `options` against the selected test's schema or field table;
+3. normalization of `input` and `options` together, including [REQ-INPUT-0014](../data-formats/task-input.md#REQ-INPUT-0014) and the NET-05 declared maxima of [REQ-LIMIT-0035](registered-limits.md#REQ-LIMIT-0035).
+
+Within an object, members are checked in the order they appear in the presented task, and missing required members are checked after the present members. A byte limit on an object or value is checked before the content it bounds, as [REQ-TRUST-0056](#REQ-TRUST-0056) requires. Proxy compatibility follows these checks under [REQ-TRUST-0039](#REQ-TRUST-0039).
+
 ## Residual Risks
 
 - A compromised host, admitted issuer, operating system, or policy package can misuse authority available to it.

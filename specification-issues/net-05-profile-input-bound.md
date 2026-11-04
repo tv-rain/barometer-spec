@@ -1,6 +1,6 @@
 # Proposal: NET-05 Profile Bound Inside the Common Input Bound
 
-**Disposition:** Open (proposal; no specification text changed)
+**Disposition:** Accepted; editorial wording prepared, merge pending. See the [disposition record](#disposition-record--november-4-2026).
 **Date:** October 27, 2026
 **Related task:** [DEV-670 — Close out the Measurement web reachability and composite sub-epic](https://app.clickup.com/t/124kk1zcw50)
 
@@ -55,3 +55,12 @@ Proposed exact wording: none; maintainers select the rule and wording.
 ## Adoption and Closure Evidence
 
 Pending: maintainer disposition, merged wording or no-text-change citation, internal alignment, Go adoption evidence or recorded conformance. No runtime, platform, field or release support is claimed.
+
+## Disposition Record — November 4, 2026
+
+Recorded under [DEV-716 — Public records for the remaining Go specification findings](https://app.clickup.com/t/124kk1zdmdq). The sections above keep their wording as historical evidence.
+
+- **Disposition:** the project owner, Lev, selected alternative (a) in its qualifying form: the `profile` bound applies in addition to REQ-INPUT-0007 and the stricter bound decides. No registered number changes.
+- **Wording:** [REQ-NET-05-0025](../tests/net-05.md#REQ-NET-05-0025) states that both bounds apply, that the stricter one decides admission, and that with the smallest wrapper the largest admissible `profile` is 49,140 bytes. [REQ-LIMIT-0019](../library/registered-limits.md#REQ-LIMIT-0019) gains a note below its table. Both are editorial clarifications of the existing obligations and keep their IDs; Draft `0.1.0` is retained.
+- **Rationale:** matches current Go behavior and the rules as written, adds no traffic, decoding or storage allowance, and removes the reading that a 49,152-byte `profile` is admissible.
+- **Remaining:** immutable public merge, internal NET-05 validation-plan alignment, the Go reference update and the NET-05 limits case plan, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.

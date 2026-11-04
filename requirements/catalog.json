@@ -3600,6 +3600,27 @@
       "reason": ""
     },
     {
+      "id": "REQ-TRUST-0057",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0058",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-TRUST-0059",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-OBS-0034",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
@@ -4105,6 +4126,13 @@
     },
     {
       "id": "REQ-SCHEDULE-0043",
+      "status": "active",
+      "source": "data-formats/task-schedule.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-SCHEDULE-0044",
       "status": "active",
       "source": "data-formats/task-schedule.md",
       "successors": [],
@@ -5955,6 +5983,13 @@
     },
     {
       "id": "REQ-DNS-03-0039",
+      "status": "active",
+      "source": "tests/dns-03.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-DNS-03-0040",
       "status": "active",
       "source": "tests/dns-03.md",
       "successors": [],

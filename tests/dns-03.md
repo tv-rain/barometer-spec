@@ -86,8 +86,8 @@ An authenticated HTTPS exchange returns a syntactically valid DNS message that m
 | `bootstrap_failure` | The resolver hostname cannot be resolved through the selected bootstrap path. |
 | `tcp_failure` | TCP connection to the selected resolver address fails. |
 | `tls_failure` | TLS negotiation or resolver certificate validation fails. |
-| `http_failure` | The HTTPS exchange fails or returns a non-success status that does not contain a DNS response. |
-| `unexpected_content_type` | The response is not a supported DNS message media type. |
+| `http_failure` | The HTTPS exchange fails or returns a non-success status that does not contain a DNS response. [REQ-DNS-03-0040](#REQ-DNS-03-0040) orders status before media type. |
+| `unexpected_content_type` | The response is not a supported DNS message media type. Only a 2xx response is checked ([REQ-DNS-03-0040](#REQ-DNS-03-0040)). |
 | `dns_nxdomain` | A valid DNS response reports `NXDOMAIN`. |
 | `dns_servfail` | A valid DNS response reports `SERVFAIL`. |
 | `dns_refused` | A valid DNS response reports `REFUSED`. |
@@ -324,6 +324,12 @@ Example:
 | `query_mismatch` | The DoH DNS observation failed with `query_mismatch`. |
 | `timeout` | The terminal DNS, TCP, TLS, or HTTP observation failed with its registered timeout; observation order identifies the stage. |
 | `inconclusive` | The terminal observation failed with `inconclusive`. |
+
+<a id="REQ-DNS-03-0040"></a>
+
+**REQ-DNS-03-0040:**
+
+The HTTP response status is checked first. A response with a status outside 200–299, including a redirect status, is `http_failure` even when it declares `application/dns-message`: its status is retained, its content encoding and media type are not checked, its body is neither read nor parsed, and no `doh` `dns_query` observation is produced. A redirect `Location` is neither classified nor contacted ([REQ-DNS-03-0012](#REQ-DNS-03-0012)). Only a response with a 2xx status is checked for a supported DNS message media type, yielding `unexpected_content_type` when the check fails, and only then is its body parsed.
 
 <a id="REQ-DNS-03-0028"></a>
 
