@@ -17,7 +17,7 @@ This document is the canonical numeric limit registry for Barometer version `0.1
 
 **REQ-LIMIT-0002:**
 
-A host or implementation may enforce stricter limits. It must reject a task that requests more than a registered or local limit; it must not silently clamp the task because that would change measurement semantics.
+A host or implementation may enforce stricter limits. It must reject a task that requests more than a registered or local limit; it must not silently clamp the task because that would change measurement semantics. [REQ-TRUST-0058](task-trust.md#REQ-TRUST-0058) names the admission class for an `input` or `options` value above a registered maximum.
 
 <a id="REQ-LIMIT-0003"></a>
 
@@ -220,6 +220,8 @@ NET-03 never follows redirects. It retains only the minimized redirect class.
 | Aggregate application bytes sent | 65,536 bytes |
 | Aggregate application bytes received | 262,144 bytes |
 | Composite attempt duration | 60,000 ms |
+
+The encoded `profile` maximum applies in addition to the common `input` maximum of [REQ-INPUT-0007](../data-formats/task-input.md#REQ-INPUT-0007), which contains the `profile`; the stricter bound decides admission ([REQ-NET-05-0025](../tests/net-05.md#REQ-NET-05-0025)).
 
 <a id="REQ-LIMIT-0020"></a>
 

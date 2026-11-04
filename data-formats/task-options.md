@@ -283,7 +283,7 @@ The historical rule said that when requested options are unsupported, invalid, o
 
 **REQ-OPTIONS-0033:**
 
-Options that are invalid for the registered test or prohibited by this document are rejected at admission with the class named by [REQ-TRUST-0056](../library/task-trust.md#REQ-TRUST-0056). A valid option value that requires a capability the implementation does not provide is rejected with `task_unsupported` under [REQ-TRUST-0036](../library/task-trust.md#REQ-TRUST-0036). Options that local policy does not permit are rejected with the class [REQ-TRUST-0047](../library/task-trust.md#REQ-TRUST-0047) lists for that condition. Such a task is not admitted to be skipped or to fail at execution.
+Options that are invalid for the registered test or prohibited by this document are rejected at admission with the class named by [REQ-TRUST-0056](../library/task-trust.md#REQ-TRUST-0056). A valid option value that requires a capability the implementation does not provide is rejected with `task_unsupported` under [REQ-TRUST-0036](../library/task-trust.md#REQ-TRUST-0036). Options that local policy does not permit are rejected with the class [REQ-TRUST-0047](../library/task-trust.md#REQ-TRUST-0047) lists for that condition, which [REQ-TRUST-0057](../library/task-trust.md#REQ-TRUST-0057) names for an option value. Such a task is not admitted to be skipped or to fail at execution.
 
 <a id="REQ-OPTIONS-0020"></a>
 

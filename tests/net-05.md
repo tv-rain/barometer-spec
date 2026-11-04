@@ -256,7 +256,7 @@ The example identifiers, target, status, and version illustrate structure only. 
 
 **REQ-NET-05-0025:**
 
-- The encoded `profile` must not exceed 49,152 bytes.
+- The encoded `profile` must not exceed 49,152 bytes. The complete `input` that contains it remains bounded by [REQ-INPUT-0007](../data-formats/task-input.md#REQ-INPUT-0007); both bounds apply and the stricter one decides admission, so with the smallest wrapper, `{"profile":` and `}`, the largest admissible `profile` is 49,140 bytes.
 
 <a id="REQ-NET-05-0026"></a>
 
