@@ -1,6 +1,6 @@
 # Proposal: Library Internal Check for `require_validated`
 
-**Disposition:** Accepted; wording prepared as REQ-EXECUTION-0033, replacing REQ-EXECUTION-0016, merge pending. See the [disposition record](#disposition-record--november-4-2026).
+**Disposition:** Accepted; wording merged as REQ-EXECUTION-0033, replacing REQ-EXECUTION-0016, at `d537657`. See the [disposition record](#disposition-record--november-4-2026).
 **Date:** October 23, 2026
 
 This record asks public maintainers to resolve a conflict between two rules for the `require_validated` network condition. One rule says the library calls its own connectivity check when the platform offers no validation method; another says an undeterminable validation state is unsatisfied and Barometer must not guess. The contract does not define the check. This record lists alternatives and their tradeoffs and does not select one; disposition and wording belong to public maintainers. The normative files are unchanged until maintainers approve a separate change. Opening this record does not accept any alternative, including the interim rule one implementation uses.
@@ -93,4 +93,5 @@ The sections above keep their wording as historical evidence.
 - **Rationale:** Barometer sends no traffic outside the registered test to decide validation, needs no check destination, and adds no resource accounting. It matches current Go behavior. Its cost is that a task requiring validation never runs where the platform reports no validation state.
 - **Reviews:** no library connectivity check is introduced, so the safety and privacy review this record requires for any such check does not apply. Maintainer disposition is the only required review.
 - **Internal alignment:** no internal validation plan names the library check; the affected conformance row is maintained with the Go implementation, which records its non-applicability.
-- **Remaining:** immutable public merge, the Go reference update from REQ-EXECUTION-0016 to REQ-EXECUTION-0033 and the network-condition case row, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.
+- **Merged:** REQ-EXECUTION-0033, the REQ-EXECUTION-0016 retirement, the catalog entries and this record through [public PR #42](https://github.com/tv-rain/barometer-spec/pull/42) at [`d537657`](https://github.com/tv-rain/barometer-spec/tree/d53765716e9413ba140935009a4c62e1260dff8c), retaining Draft `0.1.0`.
+- **Remaining:** the Go reference update from REQ-EXECUTION-0016 to REQ-EXECUTION-0033 and the milestone mapping of the network-condition case, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.
