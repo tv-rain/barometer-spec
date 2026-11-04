@@ -293,7 +293,22 @@ A repeated run becomes due according to the interval, but it may start later bec
 
 **REQ-SCHEDULE-0021:**
 
-Jitter is generated locally from a cryptographically secure or platform-approved random source independently for each due run. A task source cannot select the realized offset. Jitter must not move a run before `starts_at`, after `not_after`, or outside an allowed time window.
+Jitter is generated locally from a cryptographically secure or platform-approved random source independently for each due run. A task source cannot select the realized offset. Jitter must not move a run before `starts_at`, after `not_after`, or outside an allowed time window. For `interval` repetition, [REQ-SCHEDULE-0045](#REQ-SCHEDULE-0045) defines when each run is due and which runs are jittered.
+
+<a id="REQ-SCHEDULE-0045"></a>
+
+**REQ-SCHEDULE-0045:**
+
+For `interval` repetition, runs become due on a fixed grid of occurrences:
+
+1. The anchor is `starts_at` when present; otherwise it is the time the Barometer instance accepted the task.
+2. Occurrence 0 is due at the anchor, without jitter. Occurrence *k* ≥ 1 is due at the anchor plus *k* × `interval` plus a jitter offset from 0 through `jitter` seconds, drawn under [REQ-SCHEDULE-0021](#REQ-SCHEDULE-0021) once for that occurrence.
+3. The current occurrence is the latest *k* for which the anchor plus *k* × `interval` has passed. Once that *k* reaches `max_runs`, no occurrence is current and the schedule has ended.
+4. An earlier occurrence that never started is skipped. It does not start late, it is not run in addition to the current occurrence, and it does not count toward `max_runs`. A task therefore makes at most `max_runs` runs and may make fewer.
+5. The current occurrence may start only after its jittered due time and while every eligibility condition in [REQ-SCHEDULE-0034](#REQ-SCHEDULE-0034) holds. An occurrence whose due time is at or after `not_after` never starts. While a time window or execution constraint prevents a start, the occurrence remains current until the next occurrence becomes current.
+6. At most one run starts for each occurrence.
+
+A skipped occurrence produces no result and is not evidence of censorship or of a network failure; it reflects when the host asked Barometer to run.
 
 ### Retry
 

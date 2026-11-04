@@ -1,6 +1,6 @@
 # Proposal: Due Times and Catch-Up for Interval Repetition
 
-**Disposition:** Open (proposal; no specification text changed)
+**Disposition:** Accepted; wording prepared as REQ-SCHEDULE-0045, merge pending; safety review drafted, sign-off pending. See the [disposition record](#disposition-record--november-4-2026).
 **Date:** October 22, 2026
 
 This record asks public maintainers to define when the runs of an `interval` schedule become due: what the interval is measured from, whether the first run is jittered, and what happens to occurrences that become due while the host does not ask to start a run. It lists alternatives and their tradeoffs and does not select one; disposition and wording belong to public maintainers. The normative files are unchanged until maintainers approve a separate change. Opening this record does not accept any alternative, including the interim rule one implementation uses.
@@ -89,3 +89,13 @@ Expected cases, to be defined after disposition: due time of occurrence 0 with a
 - Internal review and validation-plan alignment: pending, or a recorded reason it does not apply.
 - Go adoption evidence, or a recorded statement that the interim rule already conforms: pending.
 - Closure requires the public disposition, its immutable revision if wording changes, the safety review of the chosen rule, and Go adoption evidence or recorded non-applicability. Binding and host adoption are assessed when those components exist. No runtime, platform, field or release support is claimed.
+
+## Disposition Record — November 4, 2026
+
+The sections above keep their wording as historical evidence.
+
+- **Disposition:** the project owner, Lev, selected alternative (a), the anchored grid with skipping, without (d): occurrence 0 is not jittered.
+- **Wording:** [REQ-SCHEDULE-0045](../data-formats/task-schedule.md#REQ-SCHEDULE-0045) defines the anchor, the due time of each occurrence, the current occurrence, skipping and its relation to `max_runs`, the start condition and the one-run-per-occurrence rule. [REQ-SCHEDULE-0021](../data-formats/task-schedule.md#REQ-SCHEDULE-0021) gains an editorial pointer to it. REQ-SCHEDULE-0020 and REQ-SCHEDULE-0021 keep their IDs: the new rule resolves what they left open (the anchor, and whether the run REQ-SCHEDULE-0009 makes eligible immediately is jittered) rather than replacing an obligation they stated. Draft `0.1.0` is retained; no field is added.
+- **Rationale:** the rule never starts more than `max_runs` runs and never runs missed occurrences in a burst, so it creates the least distinctive traffic of the alternatives and keeps the schedule's end bounded by the grid. It matches current Go behavior. Its cost is fewer runs when the host wakes rarely.
+- **Safety review:** a scoped review of the selected rule (run count, run spacing and traffic distinctiveness) is drafted in the internal registered-limits review and awaits sign-off by a reviewer other than the drafting agent. It is not complete.
+- **Remaining:** immutable public merge, the safety review sign-off, Go reference update and due-time cases, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.

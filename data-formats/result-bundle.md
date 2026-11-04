@@ -233,13 +233,19 @@ Barometer must:
 5. encode and persist the exact retryable bundle within the 262,144-byte bundle and local pending-storage limits;
 6. submit the bundle through the configured ingestion path;
 7. retransmit the exact same bytes or semantically identical canonical object with the same `bundle_id` after an ambiguous delivery failure;
-8. delete the local bundle immediately after durable acknowledgement processing or after at most 86,400 seconds without acknowledgement.
+8. delete the local bundle immediately after durable acknowledgement processing or after at most 86,400 seconds without acknowledgement, measured from the start defined by [REQ-BUNDLE-0037](#REQ-BUNDLE-0037).
 
 <a id="REQ-BUNDLE-0016"></a>
 
 **REQ-BUNDLE-0016:**
 
 Changing linkage mode, epoch, token, result membership, or result content during a retry is not an exact retransmission and requires a new bundle identifier.
+
+<a id="REQ-BUNDLE-0037"></a>
+
+**REQ-BUNDLE-0037:**
+
+The unacknowledged retention of a pending bundle starts when the first result it contains is persisted locally, including when the result is persisted before its logical bundle is complete. It does not restart when a later result is added, when the bundle is encoded and persisted in step 5, when it is submitted or retransmitted, or when Barometer restarts. A result held locally before it belongs to a bundle is subject to the same limit from the time it is first persisted. Once 86,400 seconds have passed since that start, the bundle or result is deleted and is not submitted, retransmitted or returned. No result therefore remains in local pending storage for more than 86,400 seconds after it was first persisted.
 
 ## Validation
 

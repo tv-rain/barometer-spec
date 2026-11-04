@@ -286,7 +286,7 @@ When a new valid result cannot fit without exceeding a limit, the library must c
 
 **REQ-LIMIT-0024:**
 
-Acknowledged bundles are deleted immediately after durable acknowledgement processing. Expired pending bundles are deleted rather than uploaded late. Barometer-owned measurement results must not be retained elsewhere by the library after acknowledgement.
+Acknowledged bundles are deleted immediately after durable acknowledgement processing. Expired pending bundles are deleted rather than uploaded late; unacknowledged retention starts as [REQ-BUNDLE-0037](../data-formats/result-bundle.md#REQ-BUNDLE-0037) defines. Barometer-owned measurement results must not be retained elsewhere by the library after acknowledgement.
 
 <a id="REQ-LIMIT-0025"></a>
 
