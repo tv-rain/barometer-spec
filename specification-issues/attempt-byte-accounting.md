@@ -2,13 +2,12 @@
 
 **Disposition:** Accepted; wording merged at `5d01879`, internal alignment merged, adopted in the Go stream layer and for TCP-01, DNS-01, TLS-01, HTTP-01 and the NET-05 aggregate; NET-03, DNS-03, DNS-04, binding and host adoption pending; alternative (a) counting every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session, or a UDP datagram payload, including HTTP headers, DNS messages and length prefixes, and excluding TLS, TCP/IP and proxy transport framing, the loopback `CONNECT` exchange, platform resolver traffic and Network Context acquisition
 **Date:** October 22, 2026
-**Related task:** [DEV-580 — Obtain public disposition for GO-SPEC-ISSUE-005 (bytes counted toward attempt byte limits)](https://app.clickup.com/t/124kk1zcaaf)
 
 This record asks public maintainers which bytes count toward `max_bytes_sent` and `max_bytes_received` and toward the NET-05 aggregate byte limits. The current text excludes HTTP and DNS "overhead", although HTTP headers and DNS messages are the data several tests send. It changes no registered number, field, state or reason and makes no support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-22-2026) below did. Sections before it are the proposal as reviewed. The accepted wording is included in the same public change as this record.
 
 ## Identity and Ownership
 
-- Local finding: [GO-SPEC-ISSUE-005](https://github.com/tv-rain/barometer-go/blob/d53bb1477169b31563c46b0b2a2106422702ea85/docs/specification-issues.md#go-spec-issue-005-which-bytes-count-toward-attempt-byte-limits) in the Go specification-issue record, raised October 16, 2026 under DEV-573 from the DEV-572 case-plan triage.
+- Local finding: [GO-SPEC-ISSUE-005](https://github.com/tv-rain/barometer-go/blob/d53bb1477169b31563c46b0b2a2106422702ea85/docs/specification-issues.md#go-spec-issue-005-which-bytes-count-toward-attempt-byte-limits) in the Go specification-issue record, raised October 16, 2026 from the Go conformance case-plan triage.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption.
 - Related: [Proxy compatibility admission class](proxy-compatibility-admission-class.md) concerns proxy admission, not byte accounting. Duplicates: none found.
@@ -40,7 +39,7 @@ Two conforming implementations could therefore stop the same task at different p
 
 Reproduction: none is required; the gap is in the text. Synthetic cases are listed under the proposed resolution.
 
-Affected work that must stop: byte-budget accounting in Go for HTTP-01, NET-03, DNS-01, DNS-03, DNS-04 and the NET-05 aggregate (DEV-562 and the per-protocol work under DEV-454), and the expected boundary values in the `CC-LIMIT-PURPOSE` case plan. Interim handling: no accounting layer is chosen; the open question stays visible in the `RV-CC-LIMIT-PURPOSE` review case. Unaffected: connection, duration, body, prefix and header bounds, which have their own units, and plain TCP stream accounting on loopback.
+Affected work that must stop: byte-budget accounting in Go for HTTP-01, NET-03, DNS-01, DNS-03, DNS-04 and the NET-05 aggregate (the metered transport and the per-protocol measurement work), and the expected boundary values in the `CC-LIMIT-PURPOSE` case plan. Interim handling: no accounting layer is chosen; the open question stays visible in the `RV-CC-LIMIT-PURPOSE` review case. Unaffected: connection, duration, body, prefix and header bounds, which have their own units, and plain TCP stream accounting on loopback.
 
 ## Impact and Required Reviews
 
@@ -91,7 +90,7 @@ These remain proposals until the wording is merged.
 ## Ordering and Public Disposition
 
 - Coordination decision: not needed; no architecture or responsibility boundary changes.
-- Order: merge this record together with the wording and catalog changes in one public change. Then record internal review alignment. Then adopt in Go: the Go record cites the merged revision, byte-budget accounting is implemented at the counted boundary with scripted-transport cases (DEV-562 and the per-protocol work under DEV-454), and the traceability mapping is rebaselined to replace references to the retired IDs. Bindings and hosts follow.
+- Order: merge this record together with the wording and catalog changes in one public change. Then record internal review alignment. Then adopt in Go: the Go record cites the merged revision, byte-budget accounting is implemented at the counted boundary with scripted-transport cases (the metered transport and the per-protocol measurement work), and the traceability mapping is rebaselined to replace references to the retired IDs. Bindings and hosts follow.
 - Maintainer disposition, rationale and date: see [Maintainer Disposition](#maintainer-disposition--october-22-2026).
 - Remaining open question outside this change: REQ-PROXY-0017 bounds the `CONNECT` request but registers no byte bound for the proxy's `CONNECT` response; it is limited only by the deadline and syntactic validity. Because the exchange is not counted toward the attempt limits, a registered response bound should be considered separately.
 
@@ -102,18 +101,18 @@ These remain proposals until the wording is merged.
 
 ## Maintainer Disposition — October 22, 2026
 
-The project owner and public maintainer, Lev, accepted the recommended resolution on October 22, 2026, in the DEV-580 task review, including the exclusion of Network Context acquisition traffic. The public PR review records confirmation of the wording.
+The project owner and public maintainer, Lev, accepted the recommended resolution on October 22, 2026, including the exclusion of Network Context acquisition traffic. The public PR review records confirmation of the wording.
 
 - **Rule:** the attempt byte limits and the NET-05 aggregate byte limits count every byte Barometer writes to or reads from a TCP stream, the plaintext side of a TLS session or a UDP datagram payload for the test, including HTTP request lines, headers and framing, DNS messages and length prefixes, and the complete DoH exchange. TLS handshake and records, TCP/IP and UDP/IP headers, operating-system retransmissions, proxy transport framing, the loopback `CONNECT` exchange, resolution through a platform resolver API that does not expose its messages, and Network Context acquisition are not counted.
 - **Rationale:** one boundary applies to every test, bounds the traffic a reviewer approves, can be validated with scripted transports, and gives the same task the same budget on direct and proxy paths.
 - **Wording:** accepted as proposed: REQ-LIMIT-0033 and REQ-LIMIT-0034 in `library/registered-limits.md` and REQ-EXECUTION-0032 in `data-formats/task-execution.md`, with editorial pointers in REQ-LIMIT-0006 and REQ-EXECUTION-0012.
 - **Requirement IDs:** REQ-LIMIT-0003 is retired with successors REQ-LIMIT-0033 and REQ-LIMIT-0034, and REQ-EXECUTION-0014 with successor REQ-EXECUTION-0032, in the [requirement catalog](../requirements/catalog.json). REQ-LIMIT-0033, REQ-LIMIT-0034 and REQ-EXECUTION-0032 are new allocations. No ID is reused.
 - **Version:** Draft `0.1.0` is retained. No registered number, schema field, state or reason changes, and no release or runtime support claim is made.
-- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption; it is recorded as evidence on DEV-580 after merge.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption.
 
 ## Merge Addendum — October 22, 2026
 
-Recorded under DEV-580. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Merged revision:** the accepted wording, the catalog changes and the Draft `0.1.0` retention were merged on October 22, 2026 through [public PR #24](https://github.com/tv-rain/barometer-spec/pull/24) as immutable revision [`5d01879cfd1d47396c780befa2567f7e90439948`](https://github.com/tv-rain/barometer-spec/tree/5d01879cfd1d47396c780befa2567f7e90439948) (head `e44d9cdc91a6feb13c7d07af472d69db5855205d`). It is the accepted baseline for [REQ-LIMIT-0033](https://github.com/tv-rain/barometer-spec/blob/5d01879cfd1d47396c780befa2567f7e90439948/library/registered-limits.md#REQ-LIMIT-0033), [REQ-LIMIT-0034](https://github.com/tv-rain/barometer-spec/blob/5d01879cfd1d47396c780befa2567f7e90439948/library/registered-limits.md#REQ-LIMIT-0034) and [REQ-EXECUTION-0032](https://github.com/tv-rain/barometer-spec/blob/5d01879cfd1d47396c780befa2567f7e90439948/data-formats/task-execution.md#REQ-EXECUTION-0032), and for the retirement of REQ-LIMIT-0003 and REQ-EXECUTION-0014.
 - **Internal alignment:** the registered-limits and NET-05 validation plans were aligned with the counted boundary through internal review repository PR #11, merged at `dc421a80b3fb19bd07b17a0a4181390ad6e50d2b`.
@@ -122,14 +121,10 @@ Recorded under DEV-580. The sections above keep their wording as historical evid
 
 ## Adoption Record — October 26, 2026
 
-Recorded under DEV-664.
-
 - **Go adoption:** the attempt scope meters every byte a runner exchanges with its stream and counts each dial toward `max_connections` ([`cf20572`](https://github.com/tv-rain/barometer-go/commit/cf20572b4cf73b09a4869877735d2f1ddfc06ad3)); the proxy path keeps the `CONNECT` exchange below it ([`c9df795`](https://github.com/tv-rain/barometer-go/commit/c9df795ec78e5bfa2b8e26c53d13fbbe1d60733c)). TCP-01 opens one metered connection and sends no application bytes. DNS-01 counts exact DNS messages and both TCP length prefixes, with synthetic below, at and above limit cases, and its ordinary-resolver mode issues no metered traffic, as the system-resolver exception allows.
 - **Remaining:** HTTP-01, NET-03, DNS-03, DNS-04 and the NET-05 aggregate, and binding and host adoption. No runtime, platform, field or release support is claimed.
 
 ## Adoption Record — October 27, 2026
-
-Recorded under DEV-670.
 
 - **Go adoption:** TLS-01 meters the plaintext side of its session, so handshake and record bytes are not counted, on the direct path and through the proxy tunnel ([`1fedad4`](https://github.com/tv-rain/barometer-go/commit/1fedad4912709356858ae545b8b441ff55d9c5da)). The HTTP exchange primitive and HTTP-01 count request and response headers and bodies at the same boundary, including redirect hops and the CONNECT tunnel ([`8576bbc`](https://github.com/tv-rain/barometer-go/commit/8576bbc10d68c4a5c2328df34043d31124b06bad), [`a1074a5`](https://github.com/tv-rain/barometer-go/commit/a1074a5ccd1da39022833ca8d9a38477a559be87)). The NET-05 runner sums its steps' counted bytes and connections against the aggregate limits ([`1b89ccd`](https://github.com/tv-rain/barometer-go/commit/1b89ccdc2154b67c4da4f3d3a1c909dd9ce329f5)). Synthetic below, at and above limit cases cover each.
 - **Remaining:** NET-03, DNS-03 and DNS-04, and binding and host adoption. No runtime, platform, field or release support is claimed.

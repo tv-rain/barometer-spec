@@ -2,8 +2,7 @@
 
 ## Identity and Ownership
 
-- Local finding: `GO-SPEC-ISSUE-016` items 1 to 3 in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-016-unnamed-classes-and-order-in-step-8-input-and-options), raised October 26, 2026 under DEV-663 from the maintainer safety review of the GO-SPEC-ISSUE-010 mapping. Item 4 is a Go codec-contract gap, not a public ambiguity, and is out of scope.
-- Public record task: [DEV-716 — Public records for the remaining Go specification findings](https://app.clickup.com/t/124kk1zdmdq).
+- Local finding: `GO-SPEC-ISSUE-016` items 1 to 3 in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-016-unnamed-classes-and-order-in-step-8-input-and-options), raised October 26, 2026 from the maintainer safety review of the GO-SPEC-ISSUE-010 mapping. Item 4 is a Go codec-contract gap, not a public ambiguity, and is out of scope.
 - Disposition: **Accepted; wording merged as REQ-TRUST-0057 to REQ-TRUST-0059 at `830e956`, internal alignment merged; Go reference update and cases pending.** The project owner, Lev, selected the current Go interim rules on November 4, 2026.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: [Step-8 Input and Options Admission Class](step-8-input-options-admission-class.md) named the classes this record extends; [Proxy Compatibility Admission Class](proxy-compatibility-admission-class.md) orders proxy compatibility after input and options.

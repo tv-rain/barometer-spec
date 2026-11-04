@@ -2,7 +2,6 @@
 
 **Disposition:** Maintainer direction accepted; wording merged at `bb805f0`; internal alignment merged; adopted in the Go core; binding and host adoption pending
 **Date:** October 26, 2026
-**Related task:** [DEV-659 — Check resolved addresses and redirect targets against registrations before contact](https://app.clickup.com/t/124kk1zcw4j)
 
 The project owner and public maintainer, Lev, selected fail-closed hostname CONNECT on October 26, 2026. This is alternative 3 of the original proposal, presented as option 1 in the decision discussion. Version `0.1.0` permits only approved explicit-IP destination authorities; a future hostname enforcement capability requires a separately reviewed contract. This record does not establish Go implementation, completed downstream reviews or runtime support.
 
@@ -11,7 +10,7 @@ The project owner and public maintainer, Lev, selected fail-closed hostname CONN
 - Local finding: [GO-SPEC-ISSUE-015](https://github.com/tv-rain/barometer-go/blob/d8310854460ebf83f264cbdd8edcb4db630c7743/docs/specification-issues.md#go-spec-issue-015-resolved-address-validation-behind-a-hostname-connect-proxy), published through [Go PR #78](https://github.com/tv-rain/barometer-go/pull/78).
 - Original public proposal: [public PR #28](https://github.com/tv-rain/barometer-spec/pull/28), immutable publication revision [`f9d4348a5cc7963e81887a20d8dae887e927bbd6`](https://github.com/tv-rain/barometer-spec/tree/f9d4348a5cc7963e81887a20d8dae887e927bbd6). Its alternatives and then-pending statements are historical; that publication did not select a rule.
 - Coordination decision: `tv-rain/barometer`, `docs/decisions/0013-explicit-ip-only-proxy-connect.md`, prepared on `agent/dev-659-fail-closed-hostnames`; immutable publication and merge evidence pending. The coordination decision must merge before this normative contract is adopted.
-- Responsible public maintainer: the project owner, Lev. DEV-659 owns Go adoption. Native, binding and host adoption belong to their implementation owners when applicable.
+- Responsible public maintainer: the project owner, Lev. The Go implementation owner owns Go adoption. Native, binding and host adoption belong to their implementation owners when applicable.
 - Duplicates: none identified. The separate [proxy-compatibility admission finding](proxy-compatibility-admission-class.md) supplies the existing rejection class and precedence; it does not establish visibility of proxy-side DNS answers.
 
 ## Finding and Affected Baseline
@@ -51,14 +50,14 @@ Proxy-side enforcement is deferred because the current interface cannot establis
 
 1. Publish and merge the coordination decision, then merge this wording, requirement catalog changes and disposition. Final work approval, human-created PRs and immutable merge evidence remain pending.
 2. Align required internal review and case plans against the merged public revision, recording review evidence rather than treating the direction selection as review completion.
-3. Implement the Go shared execution/path gate, admission compatibility and failure mapping under DEV-659, with synthetic evidence for allowed/prohibited explicit IPs, blocked hostname initial and late dials, redirects, direct mixed-resolution cases, expiry/path restrictions, context fallback/unavailability, bounds/cancellation and no direct fallback. Run `make check` and update the Go finding against the accepted baseline.
+3. Implement the Go shared execution/path gate, admission compatibility and failure mapping, with synthetic evidence for allowed/prohibited explicit IPs, blocked hostname initial and late dials, redirects, direct mixed-resolution cases, expiry/path restrictions, context fallback/unavailability, bounds/cancellation and no direct fallback. Run `make check` and update the Go finding against the accepted baseline.
 4. Assess binding/host and producer adoption, and record bounded remaining work. A future proxy-side enforcement capability is separate work requiring another reviewed contract.
 
-The production target-validation rows of `CC-PROXY-PRIVACY-SAFETY-AND-INTERPRETATION` remain pending. Proxy hostname cases must demonstrate refusal before contact, not claim inspection of proxy-side addresses. No whole-family, independent interpretation, platform, field or release claim is promoted. GO-SPEC-ISSUE-015 and DEV-659 remain open until required adoption and evidence exist; preparing or merging these documents alone does not complete them.
+The production target-validation rows of `CC-PROXY-PRIVACY-SAFETY-AND-INTERPRETATION` remain pending. Proxy hostname cases must demonstrate refusal before contact, not claim inspection of proxy-side addresses. No whole-family, independent interpretation, platform, field or release claim is promoted. GO-SPEC-ISSUE-015 and its Go pre-contact address check remain open until required adoption and evidence exist; preparing or merging these documents alone does not complete them.
 
 ## Adoption Record — October 26, 2026
 
-Recorded under DEV-664. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Coordination decision:** `tv-rain/barometer` decision 0013, Explicit-IP-Only Proxy CONNECT, merged through coordination PR #32 at `61691f49773c68b660e84939555070c8ee1990ff`.
 - **Merged revision:** the explicit-IP-only contract, requirement allocations and retirements, and the Draft `0.1.0` retention were merged through [public PR #29](https://github.com/tv-rain/barometer-spec/pull/29) as immutable revision [`bb805f07a36630db7250d5ab63006ed5e351f7a7`](https://github.com/tv-rain/barometer-spec/tree/bb805f07a36630db7250d5ab63006ed5e351f7a7).

@@ -2,13 +2,12 @@
 
 **Disposition:** Accepted; wording merged at `84f52f8`, internal alignment merged, adopted in the Go core with TCP-01, DNS-01, TLS-01, HTTP-01 and NET-05 termination evidence; the other registered runners, binding and host adoption pending; alternative (a) with `completed` after a recorded terminal outcome, `completed` for the NET-05 `network_not_validated` and `inconclusive` outcomes, `constraints_unsatisfied` for undetectable required network conditions, and no Network Context in `not_run` results
 **Date:** October 22, 2026
-**Related task:** [DEV-579 — Obtain public disposition for GO-SPEC-ISSUE-004 (not_run vs incomplete boundary)](https://app.clickup.com/t/124kk1zcaae)
 
 This record asks public maintainers when an execution attempt is `not_run` and when it becomes `incomplete`, and settles three related cases: an interruption after a terminal observation, the execution state of two NET-05 composite outcomes, and the reason for a required network condition that cannot be detected. Because the state decides whether a result retains Network Context, it also decides a data-minimization question. It adds no state, reason, field or limit and makes no support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-22-2026) below did. Sections before it are the proposal as reviewed. The accepted wording is included in the same public change as this record.
 
 ## Identity and Ownership
 
-- Local finding: [GO-SPEC-ISSUE-004](https://github.com/tv-rain/barometer-go/blob/2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67/docs/specification-issues.md#go-spec-issue-004-boundary-between-not_run-and-incomplete) in the Go specification-issue record, raised October 16, 2026 under DEV-573 from the DEV-572 case-plan triage.
+- Local finding: [GO-SPEC-ISSUE-004](https://github.com/tv-rain/barometer-go/blob/2a6d7af52b0d18cfe6efb5cc10161f3a33eb7a67/docs/specification-issues.md#go-spec-issue-004-boundary-between-not_run-and-incomplete) in the Go specification-issue record, raised October 16, 2026 from the Go conformance case-plan triage.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption.
 - Related: [Observation vocabularies](observation-vocabularies.md) clarified incomplete observation fields, not execution states. Duplicates: none found.
@@ -38,7 +37,7 @@ Documented rules: `not_run` prohibits `measurement`; a snapshot captured before 
 
 Reproduction: none is required; the gap is in the text. Synthetic cases are listed under the proposed resolution.
 
-Affected work that must stop: selecting the state and reason for these four cases in Go runner, execution and result code (DEV-561), and the expected values in the `M-*-TERMINATION` case plans. Interim handling: existing Go models keep validating only the documented combinations; no fallback state is chosen. Unaffected: interruptions during an active protocol operation, which every termination rule already maps to `incomplete` with no `measurement`.
+Affected work that must stop: selecting the state and reason for these four cases in Go runner, execution and result code, and the expected values in the `M-*-TERMINATION` case plans. Interim handling: existing Go models keep validating only the documented combinations; no fallback state is chosen. Unaffected: interruptions during an active protocol operation, which every termination rule already maps to `incomplete` with no `measurement`.
 
 ## Impact and Required Reviews
 
@@ -89,7 +88,7 @@ These remain proposals until the wording is merged.
 ## Ordering and Public Disposition
 
 - Coordination decision: not needed; no architecture or responsibility boundary changes.
-- Order: merge this record together with the wording and catalog changes in one public change. Then record internal review alignment. Then adopt in Go: the Go record cites the merged revision, the result decoder rejects `not_run` results with `network_context`, the runner selects states under REQ-RESULT-0051 and REQ-RESULT-0052 (DEV-561), and the traceability mapping is rebaselined to replace references to the retired IDs. Bindings and hosts follow.
+- Order: merge this record together with the wording and catalog changes in one public change. Then record internal review alignment. Then adopt in Go: the Go record cites the merged revision, the result decoder rejects `not_run` results with `network_context`, the runner selects states under REQ-RESULT-0051 and REQ-RESULT-0052, and the traceability mapping is rebaselined to replace references to the retired IDs. Bindings and hosts follow.
 - Maintainer disposition, rationale and date: see [Maintainer Disposition](#maintainer-disposition--october-22-2026).
 
 ## Adoption and Closure Evidence
@@ -99,34 +98,30 @@ These remain proposals until the wording is merged.
 
 ## Maintainer Disposition — October 22, 2026
 
-The project owner and public maintainer, Lev, accepted the recommended resolution on October 22, 2026, in the DEV-579 task review, including the prohibition of `network_context` in `not_run` results. The public PR review records confirmation of the wording.
+The project owner and public maintainer, Lev, accepted the recommended resolution on October 22, 2026, including the prohibition of `network_context` in `not_run` results. The public PR review records confirmation of the wording.
 
 - **Rule:** an attempt is `not_run` until the test starts its first test-specific operation and `incomplete` if a cross-cutting condition stops it afterwards; a recorded terminal outcome stays `completed`; NET-05 `network_not_validated` and `inconclusive` are retained with `completed`; an undetectable required network condition produces `not_run` with `constraints_unsatisfied`; a `not_run` result never contains `network_context`.
 - **Rationale:** the state then describes whether the measurement began, independent of context endpoint behavior; valid observations are not discarded because of cleanup timing; and attempts that made no measurement retain no Network Context.
 - **Wording:** accepted as proposed: REQ-RESULT-0051, REQ-RESULT-0052 and REQ-RESULT-0053 in `data-formats/measurement-result.md`, REQ-EXECUTION-0031 in `data-formats/task-execution.md`, and REQ-NET-05-0061 in `tests/net-05.md`.
 - **Requirement IDs:** REQ-RESULT-0024 and REQ-EXECUTION-0015 are retired with successors REQ-RESULT-0053 and REQ-EXECUTION-0031 in the [requirement catalog](../requirements/catalog.json). REQ-RESULT-0051, REQ-RESULT-0052, REQ-RESULT-0053, REQ-EXECUTION-0031 and REQ-NET-05-0061 are new allocations. No ID is reused.
 - **Version:** Draft `0.1.0` is retained. No schema field, state, reason or limit is added, and no release or runtime support claim is made.
-- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption; it is recorded as evidence on DEV-579 after merge.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption.
 
 ## Merge Addendum — October 22, 2026
 
-Recorded under DEV-579. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Merged revision:** the accepted wording, the catalog changes and the Draft `0.1.0` retention were merged on October 22, 2026 through [public PR #22](https://github.com/tv-rain/barometer-spec/pull/22) as immutable revision [`84f52f8872a5af9e6d97894611e3b2eaba18aba8`](https://github.com/tv-rain/barometer-spec/tree/84f52f8872a5af9e6d97894611e3b2eaba18aba8) (head `334c6ce1cf633e69f02805664ff5d078357e2470`). It is the accepted baseline for [REQ-RESULT-0051](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/measurement-result.md#REQ-RESULT-0051), [REQ-RESULT-0052](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/measurement-result.md#REQ-RESULT-0052), [REQ-RESULT-0053](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/measurement-result.md#REQ-RESULT-0053), [REQ-EXECUTION-0031](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/data-formats/task-execution.md#REQ-EXECUTION-0031) and [REQ-NET-05-0061](https://github.com/tv-rain/barometer-spec/blob/84f52f8872a5af9e6d97894611e3b2eaba18aba8/tests/net-05.md#REQ-NET-05-0061), and for the retirement of REQ-RESULT-0024 and REQ-EXECUTION-0015.
 - **Internal alignment:** the NET-05 validation plan was aligned with these rules through internal review repository PR #10, merged at `0414e543db2fea2bb156daaa823e0cc37c759ae0`.
 - **Go record:** the disposition was recorded in [Go PR #59](https://github.com/tv-rain/barometer-go/pull/59), merged at `30f0c39be044535f4e6a26c0d677d81b3a2cb770`. No Go behavior changed.
-- **Remaining before closure:** Go adoption: the result decoder rejecting `network_context` in `not_run` results, runner and execution state selection under REQ-RESULT-0051 and REQ-RESULT-0052 (DEV-561), termination case plans with the expected values, and traceability rebaselined to this revision so that current references cite the new IDs. Binding and host adoption follow. The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
+- **Remaining before closure:** Go adoption: the result decoder rejecting `network_context` in `not_run` results, runner and execution state selection under REQ-RESULT-0051 and REQ-RESULT-0052, termination case plans with the expected values, and traceability rebaselined to this revision so that current references cite the new IDs. Binding and host adoption follow. The disposition remains accepted with adoption pending. No runtime, platform, field or release support is claimed.
 
 ## Adoption Record — October 26, 2026
 
-Recorded under DEV-664.
-
-- **Go adoption:** Go commit [`8156c1a`](https://github.com/tv-rain/barometer-go/commit/8156c1a32d8f9af71e656edc4070456bb303265f) (DEV-561) selects `not_run`, `incomplete` and `completed` under REQ-RESULT-0051 and REQ-RESULT-0052 and rejects `network_context` in `not_run` results. The TCP-01 and DNS-01 runners, merged at [`c3a3954`](https://github.com/tv-rain/barometer-go/commit/c3a3954a0a26cd9bdada6ece0ee6393d872ea750) and [`10887f4`](https://github.com/tv-rain/barometer-go/commit/10887f42f6c05159a707cd9cf96d65ca392a9729), apply it at each interruption point, with synthetic termination tests. The Go measurement case plans and traceability now carry these expected states and REQ-NET-05-0061.
+- **Go adoption:** Go commit [`8156c1a`](https://github.com/tv-rain/barometer-go/commit/8156c1a32d8f9af71e656edc4070456bb303265f) selects `not_run`, `incomplete` and `completed` under REQ-RESULT-0051 and REQ-RESULT-0052 and rejects `network_context` in `not_run` results. The TCP-01 and DNS-01 runners, merged at [`c3a3954`](https://github.com/tv-rain/barometer-go/commit/c3a3954a0a26cd9bdada6ece0ee6393d872ea750) and [`10887f4`](https://github.com/tv-rain/barometer-go/commit/10887f42f6c05159a707cd9cf96d65ca392a9729), apply it at each interruption point, with synthetic termination tests. The Go measurement case plans and traceability now carry these expected states and REQ-NET-05-0061.
 - **Remaining:** NET-05 runner evidence for REQ-NET-05-0061, the other registered runners, and binding and host adoption. No runtime, platform, field or release support is claimed.
 
 ## Adoption Record — October 27, 2026
-
-Recorded under DEV-670.
 
 - **Go adoption:** the TLS-01, HTTP-01 and NET-05 runners, merged at [`1fedad4`](https://github.com/tv-rain/barometer-go/commit/1fedad4912709356858ae545b8b441ff55d9c5da), [`a1074a5`](https://github.com/tv-rain/barometer-go/commit/a1074a5ccd1da39022833ca8d9a38477a559be87) and [`1b89ccd`](https://github.com/tv-rain/barometer-go/commit/1b89ccdc2154b67c4da4f3d3a1c909dd9ce329f5), apply REQ-RESULT-0051 and REQ-RESULT-0052 at each interruption point. NET-05 records `network_not_validated` and `inconclusive` profile outcomes as `completed` under REQ-NET-05-0061, with synthetic termination and platform-validation tests.
 - **Remaining:** the NET-01, NET-03, DNS-03 and DNS-04 runners, and binding and host adoption. No runtime, platform, field or release support is claimed.

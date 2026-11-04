@@ -3,7 +3,7 @@
 ## Identity and Ownership
 
 - Local finding: `GO-SPEC-ISSUE-017`; Go [finding record](https://github.com/tv-rain/barometer-go/blob/agent/dev-667-http-outcome-precedence/docs/specification-issues.md#go-spec-issue-017-http-01-terminal-response-outcome-precedence). The branch link is a proposed record, not immutable published evidence.
-- Implementation task: [DEV-667 — Implement HTTP-01](https://app.clickup.com/t/124kk1zcw4x). The initial open proposal merged through [public PR #32](https://github.com/tv-rain/barometer-spec/pull/32) at `b215dd6e90f8422f03674e80aaa7ddba12fb1c45`; that merge published the proposal without selecting a rule. The normative follow-up PR and individual review assignments are pending.
+- The initial open proposal merged through [public PR #32](https://github.com/tv-rain/barometer-spec/pull/32) at `b215dd6e90f8422f03674e80aaa7ddba12fb1c45`; that merge published the proposal without selecting a rule. The normative follow-up PR and individual review assignments are pending.
 - Disposition: **Accepted; wording merged at `e6257ec`, internal alignment merged, adopted in Go; binding and host adoption pending.** The rule was selected on October 26, 2026. The project owner, Lev, explicitly approved the proposed order for adoption in the public specification. This is distinct from the earlier approval to record the finding. The Go implementation agent prepares the selected wording; required reviews and immutable public merge remain pending.
 - No duplicate identified in the public or Go findings. GO-SPEC-ISSUE-004 governs common execution termination separately.
 
@@ -29,7 +29,7 @@ The synthetic examples below describe source-inspected paths, not newly executed
 
 Source inspection also shows that an HTTP operation timeout replaces an earlier mismatch. Otherwise status wins over header, header over body, and `body_limit_reached` is selected only when checks remain undecidable and no check mismatch was selected. These are source-inspected implementation choices, not evidence that the original public baseline specified an order. The owner-selected normative follow-up remains unmerged.
 
-**Blocked:** affected HTTP-01 outcome selection, exact multi-failure assertions in `M-HTTP-01-NORMALIZATION`, and a complete DEV-667 conformance claim. Existing primitive behavior stays unchanged; this proposal adds no runner or runtime fallback. Unaffected codec, target, bounds and common-termination work may continue within its approved scope.
+**Blocked:** affected HTTP-01 outcome selection, exact multi-failure assertions in `M-HTTP-01-NORMALIZATION`, and a complete Go HTTP-01 conformance claim. Existing primitive behavior stays unchanged; this proposal adds no runner or runtime fallback. Unaffected codec, target, bounds and common-termination work may continue within its approved scope.
 
 ## Impact and Required Reviews
 
@@ -60,15 +60,15 @@ Expected cases: every row above; header plus body mismatch; prefix mismatch plus
 
 No architecture or responsibility boundary change is proposed, so no coordination ADR is currently needed. The project owner selected the recommended order on October 26, 2026 and authorized its preparation. Final public review, commit/push approval, human-created PR, required scoped reviews and immutable normative merge remain pending. Selection does not establish that reviews ran or authorize Go adoption before merge.
 
-Order: public disposition and merged wording (or immutable no-text-change clarification), required internal HTTP-01 review/validation alignment, Go adoption under DEV-667, then affected native/binding and host/consumer validation before release. Public maintainers own disposition, internal review owners own alignment and the Go implementation owner owns synthetic adoption evidence. Downstream individual owners/task links remain to be assigned. If deferred or rejected without a usable clarification, retain the blocked scope and record the rationale.
+Order: public disposition and merged wording (or immutable no-text-change clarification), required internal HTTP-01 review/validation alignment, Go adoption, then affected native/binding and host/consumer validation before release. Public maintainers own disposition, internal review owners own alignment and the Go implementation owner owns synthetic adoption evidence. Downstream individual owners/task links remain to be assigned. If deferred or rejected without a usable clarification, retain the blocked scope and record the rationale.
 
 ## Adoption and Closure Evidence
 
-Prepared: the owner-selected rule in REQ-HTTP-01-0052 and the catalog entry. Pending: immutable merged public baseline, required review/alignment evidence, Go adoption commits and multi-failure cases, compatibility confirmation, downstream validation or explicit non-applicability. Source inspection is not runtime conformance evidence. This proposal neither completes DEV-667 nor closes GO-SPEC-ISSUE-017 and makes no platform, field or release-support claim.
+Prepared: the owner-selected rule in REQ-HTTP-01-0052 and the catalog entry. Pending: immutable merged public baseline, required review/alignment evidence, Go adoption commits and multi-failure cases, compatibility confirmation, downstream validation or explicit non-applicability. Source inspection is not runtime conformance evidence. This proposal neither completes the Go HTTP-01 implementation nor closes GO-SPEC-ISSUE-017 and makes no platform, field or release-support claim.
 
 ## Adoption Record — October 27, 2026
 
-Recorded under DEV-670. The sections above keep their wording as historical evidence.
+The sections above keep their wording as historical evidence.
 
 - **Merged revision:** REQ-HTTP-01-0052 merged through [public PR #33](https://github.com/tv-rain/barometer-spec/pull/33) at [`e6257ec64564ad415a2d6c1f8d106fa1763d7de8`](https://github.com/tv-rain/barometer-spec/tree/e6257ec64564ad415a2d6c1f8d106fa1763d7de8), retaining Draft `0.1.0`.
 - **Internal alignment:** internal review repository PR #17, merged at `986a207176a9190d1c4c354fd69df55cfab23616`, and the baseline reconciliation in PR #18, merged at `fdaf85855f641077a1c359067b87910b801b96b8`.

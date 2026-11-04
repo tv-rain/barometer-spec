@@ -2,7 +2,6 @@
 
 **Disposition:** Wording approved; merged at `a944ed6c389fec9f0d089f0044ead6fe845328b1`; downstream adoption pending
 **Date:** October 15, 2026
-**Related task:** [DEV-481 — Implement observation and Network Context models](https://app.clickup.com/t/86cbb8f2n)
 
 This review package defines the approved normalized DNS/TLS wording and clarifies incomplete-observation failures. After preparation, the project owner, Lev, reviewed the specifications and approved the wording, Draft `0.1.0` version disposition and specification commit/push on October 15, 2026. Affected Go implementation remains stopped until public merge and required internal alignment. No specialist review, conformance or release support is claimed.
 

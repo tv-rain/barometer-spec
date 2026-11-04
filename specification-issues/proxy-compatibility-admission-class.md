@@ -2,15 +2,14 @@
 
 **Disposition:** Accepted wording (alternative (a)); merged at `59b192d498bf011e331928d192702e1205a89f35`; internal alignment merged; adopted at Go admission with production rules for TCP-01, DNS-01, TLS-01 and HTTP-01 and NET-05 whole-profile rejection; remaining test rules and binding and host adoption pending
 **Date:** October 19, 2026
-**Related task:** [DEV-598 — Record GO-SPEC-ISSUE-009 and obtain public disposition for the proxy-compatibility admission class](https://app.clickup.com/t/124kk1zcbfb)
 
 This record asks public maintainers to decide what admission does with a task that selects `network_path: proxy` when its test, input or options cannot run through HTTP CONNECT. REQ-TRUST-0017 requires admission to validate proxy compatibility, but no requirement assigns an admission error class to a failure, and the execution states already define `proxy_path_unsupported` for the same condition. It proposes reusing `task_schema_invalid`. It adds no admission class or serialized field and makes no support claim. Opening this record did not accept its proposal; the [maintainer disposition](#maintainer-disposition--october-19-2026) below did. Sections before it are the proposal as reviewed. The accepted wording is included in the same public change as this disposition.
 
 ## Identity and Ownership
 
-- Local finding: `GO-SPEC-ISSUE-009` in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md#go-spec-issue-009-admission-class-for-proxy-incompatible-task-parameters), raised October 19, 2026 while implementing target registration matching at admission step 8 (DEV-588).
+- Local finding: `GO-SPEC-ISSUE-009` in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md#go-spec-issue-009-admission-class-for-proxy-incompatible-task-parameters), raised October 19, 2026 while implementing target registration matching at admission step 8.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
-- Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption in DEV-599 of the Admission and local policy sub-epic.
+- Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption in the Go admission implementation.
 - Duplicates: none found. [Admission Error Classes](admission-error-classes.md) mapped path refusal by issuer authority, local policy and the matched target registration, but not proxy compatibility.
 
 ## Affected Baselines and Requirements
@@ -79,7 +78,7 @@ Expected cases: a DNS-01 task with `resolver_mode: system` and `network_path: pr
 ## Ordering and Public Disposition
 
 - Coordination decision: not needed; no architecture or responsibility boundary changes.
-- Order: maintainer disposition; if text changes, merge the wording, catalog allocations and version decision together with this record's disposition in one public change. Then align the internal task-trust review if its validation plan names the class. Then update the Go `GO-SPEC-ISSUE-009` entry, admission design and case plans, and implement the check in DEV-599. Bindings and hosts follow.
+- Order: maintainer disposition; if text changes, merge the wording, catalog allocations and version decision together with this record's disposition in one public change. Then align the internal task-trust review if its validation plan names the class. Then update the Go `GO-SPEC-ISSUE-009` entry, admission design and case plans, and implement the check in Go admission. Bindings and hosts follow.
 - Internal alignment: expected to be required, because the internal task-trust review validation plan covers the REQ-TRUST-0037 table; to be confirmed at disposition.
 - Maintainer disposition, rationale and date: see [Maintainer Disposition](#maintainer-disposition--october-19-2026).
 
@@ -90,7 +89,7 @@ Expected cases: a DNS-01 task with `resolver_mode: system` and `network_path: pr
 
 ## Maintainer Disposition — October 19, 2026
 
-The project owner and public maintainer, Lev, accepted alternative (a) on October 19, 2026, in the DEV-598 task review.
+The project owner and public maintainer, Lev, accepted alternative (a) on October 19, 2026.
 
 - **Class:** a task with `network_path: proxy` whose test, input or options are not compatible with HTTP CONNECT under REQ-PROXY-0026, including a `NET-05` profile with any incompatible step, is rejected at admission step 8 with `task_schema_invalid`.
 - **Order within step 8:** proxy compatibility is evaluated after input and options and before path authority and target registration. No other intra-step order is set.
@@ -102,28 +101,24 @@ The project owner and public maintainer, Lev, accepted alternative (a) on Octobe
 - **Version:** Draft `0.1.0` is retained. No admission class, field, schema or test version value changes. Hosts that expected per-attempt `proxy_path_unsupported` for such tasks receive an admission rejection instead; external hosts, producers and stored tasks are unassessed. No release or runtime support claim is made.
 - **Related observation:** the class for a step-8 input or options failure is not addressed by this disposition and remains unmapped in the public text.
 - **Internal alignment:** required. The internal task-trust review validation plan covers every REQ-TRUST-0037 row and must cite the merged wording without adding private normative obligations.
-- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption (DEV-599); it is recorded as evidence on DEV-598 after merge. The required safety review of the mapping is not represented as completed.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption. The required safety review of the mapping is not represented as completed.
 
 ## Merge and Adoption Addendum — October 21, 2026
 
-Recorded under DEV-625. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Merged revisions:** the proposal was merged on October 19, 2026 through [public PR #15](https://github.com/tv-rain/barometer-spec/pull/15) at `edea6256aa9600f1faba6a3924f3b18ac0985de0` (head `39eef9a16be4edd0a02b36079c25313a78eccf69`). The accepted wording, the REQ-TRUST-0039 and REQ-PROXY-0042 allocations and the Draft `0.1.0` retention were merged the same day through [public PR #16](https://github.com/tv-rain/barometer-spec/pull/16) as immutable revision [`59b192d498bf011e331928d192702e1205a89f35`](https://github.com/tv-rain/barometer-spec/tree/59b192d498bf011e331928d192702e1205a89f35) (head `abd23d231c5cac9df60a87d0c620edd2159305f4`).
 - **Later public change:** the [signed remote task package](signed-remote-task-packages.md) change at `e97502747c917a16bc2b71337535ff972bbd7d64` retired REQ-TRUST-0037 with successor [REQ-TRUST-0047](../library/task-trust.md#REQ-TRUST-0047) and changed only the step reference of REQ-TRUST-0039; step 8 and this disposition are unchanged.
-- **Internal alignment:** the internal task-trust review validation plan was aligned under DEV-598, citing `e97502747c917a16bc2b71337535ff972bbd7d64` (internal review repository PR #8, merged at `409967428593200514b23523f8a132a0e24afb9a`).
-- **Go adoption:** [DEV-599](https://app.clickup.com/t/124kk1zcbfc) adopted the disposition against `e975027` in Go [PR #57](https://github.com/tv-rain/barometer-go/pull/57), merged at `3aece5ef33f6c151a7f92c25a2fdf44116519bad` (implementation commit `d309b5b08ad27449523990d3eb1dca080209b757`). Admission step 8 rejects an incompatible `proxy` task with `task_schema_invalid` after input and options and before path authority and target registration, using synthetic test-scoped rules; the related case plans stay planned and the affected requirements are `partial` in traceability ([adoption addendum](https://github.com/tv-rain/barometer-go/blob/3aece5ef33f6c151a7f92c25a2fdf44116519bad/docs/specification-issues.md#adoption-addendum--october-21-2026)).
-- **Remaining before closure:** NET-05 whole-profile rejection, a closure case above, which needs the NET-05 codec (DEV-454); production compatibility rules for the registered tests; the execution-time pre-attempt check and `proxy_path_unsupported` (DEV-578); the required safety review of the mapping, to be confirmed by the maintainer in the DEV-575 assessment; the Go record linking the internal alignment, which merged after the Go adoption; and binding and host adoption, unassessed until those components exist (DEV-455). The disposition remains accepted with adoption pending. No runtime, proxy, platform, field or release support is claimed.
+- **Internal alignment:** the internal task-trust review validation plan was aligned, citing `e97502747c917a16bc2b71337535ff972bbd7d64` (internal review repository PR #8, merged at `409967428593200514b23523f8a132a0e24afb9a`).
+- **Go adoption:** the disposition was adopted against `e975027` in Go [PR #57](https://github.com/tv-rain/barometer-go/pull/57), merged at `3aece5ef33f6c151a7f92c25a2fdf44116519bad` (implementation commit `d309b5b08ad27449523990d3eb1dca080209b757`). Admission step 8 rejects an incompatible `proxy` task with `task_schema_invalid` after input and options and before path authority and target registration, using synthetic test-scoped rules; the related case plans stay planned and the affected requirements are `partial` in traceability ([adoption addendum](https://github.com/tv-rain/barometer-go/blob/3aece5ef33f6c151a7f92c25a2fdf44116519bad/docs/specification-issues.md#adoption-addendum--october-21-2026)).
+- **Remaining before closure:** NET-05 whole-profile rejection, a closure case above, which needs the NET-05 codec; production compatibility rules for the registered tests; the execution-time pre-attempt check and `proxy_path_unsupported`; the required safety review of the mapping, to be confirmed by the maintainer in the admission and local policy assessment; the Go record linking the internal alignment, which merged after the Go adoption; and binding and host adoption, unassessed until those components exist. The disposition remains accepted with adoption pending. No runtime, proxy, platform, field or release support is claimed.
 
 ## Adoption Record — October 26, 2026
-
-Recorded under DEV-664.
 
 - **Production rules:** the Go production registry carries proxy-compatibility rules for TCP-01 (compatible) and DNS-01 (compatible only for direct TCP queries; system and UDP modes are rejected with `task_schema_invalid` before contact), merged at [`c3a3954`](https://github.com/tv-rain/barometer-go/commit/c3a3954a0a26cd9bdada6ece0ee6393d872ea750) and [`10887f4`](https://github.com/tv-rain/barometer-go/commit/10887f42f6c05159a707cd9cf96d65ca392a9729). The execution-time pre-attempt check and `proxy_path_unsupported` were added with the Go proxy path at [`c9df795`](https://github.com/tv-rain/barometer-go/commit/c9df795ec78e5bfa2b8e26c53d13fbbe1d60733c). The safety review of the mapping was confirmed by the maintainer at the Go admission assessment.
 - **Remaining:** rules for the other registered tests, NET-05 whole-profile rejection, a `task_unsupported` case once a production rule distinguishes an unprovided combination, and binding and host adoption. No runtime, proxy, platform, field or release support is claimed.
 
 ## Adoption Record — October 27, 2026
-
-Recorded under DEV-670.
 
 - **Production rules:** TLS-01 and HTTP-01 carry proxy-compatibility rules with explicit IP authorities ([`1fedad4`](https://github.com/tv-rain/barometer-go/commit/1fedad4912709356858ae545b8b441ff55d9c5da), [`a1074a5`](https://github.com/tv-rain/barometer-go/commit/a1074a5ccd1da39022833ca8d9a38477a559be87)). The NET-05 codec rejects a `proxy` profile with any incompatible step as a whole with `task_schema_invalid` before contact ([`c24a3b6`](https://github.com/tv-rain/barometer-go/commit/c24a3b6ce525a0c58c9659bb09f54dfe2c048647)).
 - **Remaining:** rules for NET-01, NET-03, DNS-03 and DNS-04, a `task_unsupported` case once a production rule distinguishes an unprovided combination, and binding and host adoption. No runtime, proxy, platform, field or release support is claimed.

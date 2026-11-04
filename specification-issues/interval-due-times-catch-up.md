@@ -2,13 +2,12 @@
 
 **Disposition:** Open (proposal; no specification text changed)
 **Date:** October 22, 2026
-**Related task:** [DEV-639 — Prepare the public specification-issue record for interval due times and catch-up (GO-SPEC-ISSUE-011)](https://app.clickup.com/t/124kk1zcpc3)
 
 This record asks public maintainers to define when the runs of an `interval` schedule become due: what the interval is measured from, whether the first run is jittered, and what happens to occurrences that become due while the host does not ask to start a run. It lists alternatives and their tradeoffs and does not select one; disposition and wording belong to public maintainers. The normative files are unchanged until maintainers approve a separate change. Opening this record does not accept any alternative, including the interim rule one implementation uses.
 
 ## Identity and Ownership
 
-- Local finding: [GO-SPEC-ISSUE-011](https://github.com/tv-rain/barometer-go/blob/daeb718a291a33aff0eff492cc59d8dba8b00d2f/docs/specification-issues.md#go-spec-issue-011-due-times-and-catch-up-for-interval-repetition) in the Go specification-issue record, raised October 22, 2026 under [DEV-636](https://app.clickup.com/t/124kk1zcn0g) while implementing `StartRun`.
+- Local finding: [GO-SPEC-ISSUE-011](https://github.com/tv-rain/barometer-go/blob/daeb718a291a33aff0eff492cc59d8dba8b00d2f/docs/specification-issues.md#go-spec-issue-011-due-times-and-catch-up-for-interval-repetition) in the Go specification-issue record, raised October 22, 2026 while implementing `StartRun`.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption.
 - Duplicates: none found. Related: none.

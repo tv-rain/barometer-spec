@@ -2,15 +2,14 @@
 
 **Disposition:** Accepted wording (alternative (a)); merged at `1206247`; internal alignment merged; maintainer safety review of the mapping passed; adopted in Go; binding and host adoption pending; follow-up finding GO-SPEC-ISSUE-016 open
 **Date:** October 26, 2026
-**Related task:** [DEV-663 — Obtain the public disposition for GO-SPEC-ISSUE-010 and adopt it in Go](https://app.clickup.com/t/124kk1zcw4r)
 
 This record asks public maintainers to name the admission error class for a task whose `input` or `options` fail validation at admission step 8, and to resolve whether invalid options are rejected or skipped. It proposes `task_schema_invalid` for invalid content and `task_limit_exceeded` for a stricter test-defined byte limit, with rejection at admission. It adds no admission class or serialized field and makes no support claim. The proposal and the [maintainer disposition](#maintainer-disposition--october-26-2026) are reviewed in the same public change.
 
 ## Identity and Ownership
 
-- Local finding: `GO-SPEC-ISSUE-010` in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/d8310854460ebf83f264cbdd8edcb4db630c7743/docs/specification-issues.md#go-spec-issue-010-admission-class-for-step-8-input-and-options-failures), raised October 21, 2026 under DEV-624 from an observation recorded in the [proxy-compatibility admission class](proxy-compatibility-admission-class.md#alternatives-and-proposed-public-resolution) record.
+- Local finding: `GO-SPEC-ISSUE-010` in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/d8310854460ebf83f264cbdd8edcb4db630c7743/docs/specification-issues.md#go-spec-issue-010-admission-class-for-step-8-input-and-options-failures), raised October 21, 2026 from an observation recorded in the [proxy-compatibility admission class](proxy-compatibility-admission-class.md#alternatives-and-proposed-public-resolution) record.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
-- Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption under DEV-663.
+- Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording. The Go implementation owner owns adoption.
 - Duplicates: none found. [Admission Error Classes](admission-error-classes.md) mapped the step-8 path-authority and target-registration rows; [Admission Class for Proxy-Incompatible Task Parameters](proxy-compatibility-admission-class.md) mapped proxy compatibility only and left this class unmapped.
 
 ## Affected Baselines and Requirements
@@ -70,7 +69,7 @@ Expected cases: a task with an unknown `options` property is rejected with `task
 ## Ordering and Public Disposition
 
 - Coordination decision: not needed; no architecture or responsibility boundary changes.
-- Order: this public change carries the proposal, disposition, wording, catalog allocations and version decision. Then the internal task-trust review validation plan is aligned to the merged revision. Then Go records the disposition in `GO-SPEC-ISSUE-010`, rebaselines its REQ-OPTIONS-0019 references to REQ-OPTIONS-0033 and adds exact-class admission cases under DEV-663. Bindings and hosts follow.
+- Order: this public change carries the proposal, disposition, wording, catalog allocations and version decision. Then the internal task-trust review validation plan is aligned to the merged revision. Then Go records the disposition in `GO-SPEC-ISSUE-010`, rebaselines its REQ-OPTIONS-0019 references to REQ-OPTIONS-0033 and adds exact-class admission cases. Bindings and hosts follow.
 - Go compatibility: Go traceability cites REQ-OPTIONS-0019 at an earlier immutable baseline; those references stay valid until Go rebaselines, which must then cite REQ-OPTIONS-0033.
 
 ## Adoption and Closure Evidence
@@ -80,7 +79,7 @@ Expected cases: a task with an unknown `options` property is rejected with `task
 
 ## Maintainer Disposition — October 26, 2026
 
-The project owner and public maintainer, Lev, accepted alternative (a) on October 26, 2026, in the DEV-663 task review, with the proposal, disposition and wording in one public change.
+The project owner and public maintainer, Lev, accepted alternative (a) on October 26, 2026, with the proposal, disposition and wording in one public change.
 
 - **Class:** a task whose `input` or `options` fail validation against the selected registered test at admission step 8 is rejected with `task_schema_invalid`. A stricter test-defined byte limit on `input`, `options` or a value within them is rejected with `task_limit_exceeded`, checked before the content it bounds.
 - **Capability gaps:** a valid value that requires a capability the implementation does not provide remains `task_unsupported` under REQ-TRUST-0036.
@@ -90,11 +89,11 @@ The project owner and public maintainer, Lev, accepted alternative (a) on Octobe
 - **Requirement IDs:** REQ-TRUST-0056 and REQ-OPTIONS-0033 are new allocations recorded in the [requirement catalog](../requirements/catalog.json). REQ-OPTIONS-0019 is retired with successor REQ-OPTIONS-0033. No ID is reused.
 - **Version:** Draft `0.1.0` is retained. No admission class, field, schema or test version value changes. External hosts, producers and stored tasks are unassessed. No release or runtime support claim is made.
 - **Internal alignment:** required; the internal task-trust review validation plan must cite the merged wording without adding private normative obligations.
-- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption under DEV-663; it is recorded as evidence on DEV-663 after merge. The required safety review of the mapping is not represented as completed.
+- **Effect:** the merged immutable revision of this change becomes the accepted baseline for internal alignment and Go adoption. The required safety review of the mapping is not represented as completed.
 
 ## Adoption Record — October 26, 2026
 
-Recorded under DEV-664. The sections above keep their wording as historical evidence, including their then-pending statements.
+The sections above keep their wording as historical evidence, including their then-pending statements.
 
 - **Merged revision:** the accepted wording, the REQ-TRUST-0056 and REQ-OPTIONS-0033 allocations, the retirement of REQ-OPTIONS-0019 and the Draft `0.1.0` retention were merged through [public PR #30](https://github.com/tv-rain/barometer-spec/pull/30) as immutable revision [`12062471875bbfbc55eafc94dc5a7ea4cd07ca5e`](https://github.com/tv-rain/barometer-spec/tree/12062471875bbfbc55eafc94dc5a7ea4cd07ca5e).
 - **Internal alignment and review:** the task-trust review validation plan was aligned through internal review repository PR #14, merged at `bf2fce978f526fcc80aac2cf9d568352a45799f3`. PR #15, merged at `7868ed6ca180ef9ab6330d4256070a80d4402cd7`, records the safety review of the mapping by the project maintainer: passed, with one follow-up finding. It is a maintainer review, not an independent specialist review.

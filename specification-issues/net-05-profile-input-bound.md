@@ -2,15 +2,14 @@
 
 **Disposition:** Accepted; editorial wording merged at `830e956`, internal alignment merged. See the [disposition record](#disposition-record--november-4-2026).
 **Date:** October 27, 2026
-**Related task:** [DEV-670 — Close out the Measurement web reachability and composite sub-epic](https://app.clickup.com/t/124kk1zcw50)
 
 This record asks public maintainers to state how the NET-05 encoded `profile` bound relates to the common `input` bound. Both are 49,152 bytes, and the `profile` is one member of `input`, so a `profile` at its own registered maximum always makes `input` exceed its maximum. The record lists alternatives and does not select one. The normative files are unchanged until maintainers approve a separate change.
 
 ## Identity and Ownership
 
-- Local finding: GO-SPEC-ISSUE-018 in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md), raised October 27, 2026 under DEV-670 from the closeout coverage check of the NET-05 admission and limits families.
+- Local finding: GO-SPEC-ISSUE-018 in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md), raised October 27, 2026 from the closeout coverage check of the NET-05 admission and limits families.
 - Public identity: this Markdown record, once reviewed through a public PR. Responsible maintainer: the project owner, Lev.
-- Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption, followed by [DEV-658 — Coverage completion](https://app.clickup.com/t/124kk1zcw4g).
+- Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption in the measurement coverage completion work.
 - Duplicates: none found. Related: [`editorial-consistency-0-1-0.md`](editorial-consistency-0-1-0.md), which proposes corrections where a test-level value conflicts with a shared rule.
 
 ## Affected Baselines and Requirements
@@ -58,7 +57,7 @@ Pending: maintainer disposition, merged wording or no-text-change citation, inte
 
 ## Disposition Record — November 4, 2026
 
-Recorded under [DEV-716 — Public records for the remaining Go specification findings](https://app.clickup.com/t/124kk1zdmdq). The sections above keep their wording as historical evidence.
+The sections above keep their wording as historical evidence.
 
 - **Disposition:** the project owner, Lev, selected alternative (a) in its qualifying form: the `profile` bound applies in addition to REQ-INPUT-0007 and the stricter bound decides. No registered number changes.
 - **Wording:** [REQ-NET-05-0025](../tests/net-05.md#REQ-NET-05-0025) states that both bounds apply, that the stricter one decides admission, and that with the smallest wrapper the largest admissible `profile` is 49,140 bytes. [REQ-LIMIT-0019](../library/registered-limits.md#REQ-LIMIT-0019) gains a note below its table. Both are editorial clarifications of the existing obligations and keep their IDs; Draft `0.1.0` is retained.

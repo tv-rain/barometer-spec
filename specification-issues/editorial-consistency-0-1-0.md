@@ -2,13 +2,12 @@
 
 **Disposition:** Open (proposal; no specification text changed)
 **Date:** October 16, 2026
-**Related task:** [DEV-573 — Record DEV-572 specification ambiguities as Go findings and an editorial proposal](https://app.clickup.com/t/124kk1zc613)
 
 This record asks public maintainers to correct three inconsistencies between test specifications and shared contracts in Draft `0.1.0`. In each case an existing rule already determines the behavior, so the proposal changes no observable behavior. It proposes wording only; the normative files are unchanged until maintainers approve a separate change.
 
 ## Identity and Ownership
 
-- **Origin:** the October 16, 2026 triage of public-text ambiguities found while drafting Go conformance case plans under [DEV-572](https://app.clickup.com/t/124kk1zc5xp). The Go findings that need behavior decisions are recorded separately as GO-SPEC-ISSUE-004 to GO-SPEC-ISSUE-007 in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md). These three items have no local Go finding ID because none blocks implementation.
+- **Origin:** the October 16, 2026 triage of public-text ambiguities found while drafting Go conformance case plans. The Go findings that need behavior decisions are recorded separately as GO-SPEC-ISSUE-004 to GO-SPEC-ISSUE-007 in the Go [specification-issue record](https://github.com/tv-rain/barometer-go/blob/main/docs/specification-issues.md). These three items have no local Go finding ID because none blocks implementation.
 - **Public identity:** this Markdown record, once reviewed through a public PR.
 - **Reporter:** the Go implementation agent, under the task owner's instruction. Public maintainers own disposition and wording.
 - **Duplicates:** none found. [Observation vocabularies](observation-vocabularies.md) changed shared observation text but does not cover these test-level tables.
