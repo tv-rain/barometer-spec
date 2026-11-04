@@ -3,7 +3,7 @@
 ## Identity and Ownership
 
 - Local finding: `GO-SPEC-ISSUE-012` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/d3886377ea48ff30cdac845b0de30b6917d44256/docs/specification-issues.md#go-spec-issue-012-start-of-unacknowledged-bundle-retention), raised October 22, 2026 while implementing the pending-result store.
-- Disposition: **Accepted; wording prepared as REQ-BUNDLE-0037, merge pending; privacy review drafted, sign-off pending.** The project owner, Lev, selected retention from the first persisted result on November 4, 2026.
+- Disposition: **Accepted; wording merged as REQ-BUNDLE-0037 at `d537657`; privacy review drafted, sign-off pending.** The project owner, Lev, selected retention from the first persisted result on November 4, 2026.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: none.
 
@@ -45,4 +45,4 @@ No architecture or responsibility boundary changes, so no coordination decision 
 
 ## Adoption and Closure Evidence
 
-Pending: immutable public merge, privacy review sign-off, the Go reference update and retention cases, the milestone manifest mapping, and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
+Merged: REQ-BUNDLE-0037, the REQ-BUNDLE-0015 and REQ-LIMIT-0024 pointers, the catalog entry and this record through [public PR #42](https://github.com/tv-rain/barometer-spec/pull/42) at [`d537657`](https://github.com/tv-rain/barometer-spec/tree/d53765716e9413ba140935009a4c62e1260dff8c), retaining Draft `0.1.0`; the internal registered-limits alignment is merged. Pending: privacy review sign-off, the Go reference update, the milestone manifest mapping, and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
