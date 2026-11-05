@@ -3,7 +3,7 @@
 ## Identity and Ownership
 
 - Local finding: `GO-SPEC-ISSUE-014` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-014-equal-start-and-end-in-a-time-window-range), recorded from the runtime closeout limitation.
-- Disposition: **Accepted; wording merged as REQ-SCHEDULE-0044 at `830e956`; Go reference update and case pending.** The project owner, Lev, selected the explicitly empty range on November 4, 2026.
+- Disposition: **Accepted; wording merged as REQ-SCHEDULE-0044 at `830e956`; adopted in Go; binding and host adoption pending.** The project owner, Lev, selected the explicitly empty range on November 4, 2026.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: [`interval-due-times-catch-up.md`](interval-due-times-catch-up.md) covers other schedule timing.
 
@@ -42,4 +42,4 @@ No architecture or responsibility boundary changes, so no coordination decision 
 
 ## Adoption and Closure Evidence
 
-Merged: REQ-SCHEDULE-0044, the catalog entry and this record through [public PR #39](https://github.com/tv-rain/barometer-spec/pull/39) at [`830e956`](https://github.com/tv-rain/barometer-spec/tree/830e9564849ebfedaa0860d9f01032574e2b9fa3), retaining Draft `0.1.0`. No internal schedule companion exists to align. Pending: Go reference update and an equal-endpoint case, the milestone manifest mapping, and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
+Merged: REQ-SCHEDULE-0044, the catalog entry and this record through [public PR #39](https://github.com/tv-rain/barometer-spec/pull/39) at [`830e956`](https://github.com/tv-rain/barometer-spec/tree/830e9564849ebfedaa0860d9f01032574e2b9fa3), retaining Draft `0.1.0`. No internal schedule companion exists to align. Go adoption: schedule validation and the start envelope cite REQ-SCHEDULE-0044, and the equal-endpoint conformance case executes, through [barometer-go PR #118](https://github.com/tv-rain/barometer-go/pull/118) at [`db100b4`](https://github.com/tv-rain/barometer-go/commit/db100b4d6f4b2b23fbdd75f64cf5b6c01bead96d), with Go behavior unchanged. Pending: the milestone manifest mapping, and binding, host and downstream validation. The finding is not closed, and no platform, field or release support is claimed.

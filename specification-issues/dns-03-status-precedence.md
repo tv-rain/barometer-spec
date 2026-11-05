@@ -3,7 +3,7 @@
 ## Identity and Ownership
 
 - Local finding: `GO-SPEC-ISSUE-020` in the Go [finding record](https://github.com/tv-rain/barometer-go/blob/54feb7d76c3ef52b2746e02ae6df67b424c86629/docs/specification-issues.md#go-spec-issue-020-dns-03-non-success-status-and-media-type-precedence).
-- Disposition: **Accepted; wording merged as REQ-DNS-03-0040 at `830e956`, internal alignment merged, adopted in Go; Go reference update pending.** The project owner, Lev, selected the rule on October 27, 2026.
+- Disposition: **Accepted; wording merged as REQ-DNS-03-0040 at `830e956`, internal alignment merged, adopted in Go with its reference update; binding and host adoption pending.** The project owner, Lev, selected the rule on October 27, 2026.
 - Reporter: the Go implementation agent under the task owner's instruction. Public maintainers own disposition and wording; the Go implementation owner owns adoption.
 - No duplicate identified. Related: [HTTP-01 Terminal Response Outcome Precedence](http-01-outcome-precedence.md) settles the analogous question for HTTP-01 only.
 
@@ -42,4 +42,4 @@ No architecture or responsibility boundary changes, so no coordination decision 
 
 ## Adoption and Closure Evidence
 
-Merged: REQ-DNS-03-0040, the catalog entry, the editorial pointers and this record through [public PR #39](https://github.com/tv-rain/barometer-spec/pull/39) at [`830e956`](https://github.com/tv-rain/barometer-spec/tree/830e9564849ebfedaa0860d9f01032574e2b9fa3), retaining Draft `0.1.0`. Internal DNS-03 alignment merged through internal PR #19 at `a884513`. Go behavior: adopted. Pending: Go reference update, the milestone manifest mapping, and downstream validation. The finding is not closed, and no platform, field or release support is claimed.
+Merged: REQ-DNS-03-0040, the catalog entry, the editorial pointers and this record through [public PR #39](https://github.com/tv-rain/barometer-spec/pull/39) at [`830e956`](https://github.com/tv-rain/barometer-spec/tree/830e9564849ebfedaa0860d9f01032574e2b9fa3), retaining Draft `0.1.0`. Internal DNS-03 alignment merged through internal PR #19 at `a884513`. Go behavior: adopted. Go reference update: the shared HTTP exchange, the DNS-03 runner and the existing status-precedence cases cite REQ-DNS-03-0040 through [barometer-go PR #118](https://github.com/tv-rain/barometer-go/pull/118) at [`db100b4`](https://github.com/tv-rain/barometer-go/commit/db100b4d6f4b2b23fbdd75f64cf5b6c01bead96d). Pending: the milestone manifest mapping, and binding, host and downstream validation. The finding is not closed, and no platform, field or release support is claimed.

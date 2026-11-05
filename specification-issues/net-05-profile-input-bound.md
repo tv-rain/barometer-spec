@@ -1,6 +1,6 @@
 # Proposal: NET-05 Profile Bound Inside the Common Input Bound
 
-**Disposition:** Accepted; editorial wording merged at `830e956`, internal alignment merged. See the [disposition record](#disposition-record--november-4-2026).
+**Disposition:** Accepted; editorial wording merged at `830e956`, internal alignment merged, adopted in Go. See the [disposition record](#disposition-record--november-4-2026).
 **Date:** October 27, 2026
 
 This record asks public maintainers to state how the NET-05 encoded `profile` bound relates to the common `input` bound. Both are 49,152 bytes, and the `profile` is one member of `input`, so a `profile` at its own registered maximum always makes `input` exceed its maximum. The record lists alternatives and does not select one. The normative files are unchanged until maintainers approve a separate change.
@@ -63,4 +63,5 @@ The sections above keep their wording as historical evidence.
 - **Wording:** [REQ-NET-05-0025](../tests/net-05.md#REQ-NET-05-0025) states that both bounds apply, that the stricter one decides admission, and that with the smallest wrapper the largest admissible `profile` is 49,140 bytes. [REQ-LIMIT-0019](../library/registered-limits.md#REQ-LIMIT-0019) gains a note below its table. Both are editorial clarifications of the existing obligations and keep their IDs; Draft `0.1.0` is retained.
 - **Rationale:** matches current Go behavior and the rules as written, adds no traffic, decoding or storage allowance, and removes the reading that a 49,152-byte `profile` is admissible.
 - **Merged:** the wording and this record through [public PR #39](https://github.com/tv-rain/barometer-spec/pull/39) at [`830e956`](https://github.com/tv-rain/barometer-spec/tree/830e9564849ebfedaa0860d9f01032574e2b9fa3); internal NET-05 and registered-limits alignment through internal PR #19 at `a884513`.
-- **Remaining:** the Go reference update and the NET-05 limits case plan, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.
+- **Go adoption:** the NET-05 codec and its admission case cite the qualified REQ-NET-05-0025 and REQ-LIMIT-0019; a 49,140-byte `profile` is admitted and 49,141 bytes are rejected with `task_limit_exceeded`, the common input-bound class, through [barometer-go PR #118](https://github.com/tv-rain/barometer-go/pull/118) at [`db100b4`](https://github.com/tv-rain/barometer-go/commit/db100b4d6f4b2b23fbdd75f64cf5b6c01bead96d), with Go behavior unchanged.
+- **Remaining:** the milestone manifest mapping, then bindings and hosts. The finding is not closed, and no runtime, platform, field or release support is claimed.
