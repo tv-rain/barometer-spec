@@ -43,7 +43,7 @@ All measurements use the shared [task](../data-formats/task.md), [execution](../
 |---|---|
 | NET-01 | Shared [access object](../data-formats/network-context.md#access-object) and [Network Context lifecycle](../library/network-context.md); no egress collection or traffic. |
 | NET-03 | NET-01 context and shared DNS/TCP/TLS/HTTP observation objects. Its HTTP-or-HTTPS validation request and redirect prohibition belong to NET-03; HTTP-01's HTTPS-only schema does not replace them. |
-| NET-05 | Exact versioned [DNS-01](../tests/dns-01.md), [TCP-01](../tests/tcp-01.md), [TLS-01](../tests/tls-01.md), and [HTTP-01](../tests/http-01.md) input/options/output contracts. NET-01 and NET-03 supply context under NET-05's stated policy. Atomic profile admission, outer bounds, sequence, and partial-result rules remain NET-05 obligations. |
+| NET-05 | Exact versioned [DNS-01](../tests/dns-01.md), [TCP-01](../tests/tcp-01.md), [TLS-01](../tests/tls-01.md), and [HTTP-01](../tests/http-01.md) input/options/output contracts. NET-01 supplies network context; in this version validation context comes from the platform and no NET-03 observation is obtained or reused (REQ-NET-05-0064). Atomic profile admission, outer bounds, sequence, and partial-result rules remain NET-05 obligations. |
 | DNS-01 | Shared DNS observations and Network Context. System and direct modes retain their distinct visibility, transport, and collection limits. |
 | DNS-03 | Shared DNS/TCP/TLS/HTTP observations; bootstrap and authenticated DoH protocol composition remain DNS-03 behavior. Reusing HTTP machinery does not import HTTP-01's GET-only measurement schema. |
 | DNS-04 | Shared DNS/TCP/TLS observations; bootstrap and authenticated length-prefixed DoT exchange remain DNS-04 behavior. |

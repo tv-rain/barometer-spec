@@ -4998,17 +4998,22 @@
     },
     {
       "id": "REQ-NET-05-0008",
-      "status": "active",
+      "status": "retired",
       "source": "tests/net-05.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-NET-05-0064",
+        "REQ-NET-05-0066"
+      ],
+      "reason": "NET-03 context use replaced: this version obtains and reuses no NET-03 observation and reports platform validation context (specification-issues/net-05-version-and-validation-context.md)."
     },
     {
       "id": "REQ-NET-05-0009",
-      "status": "active",
+      "status": "retired",
       "source": "tests/net-05.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-NET-05-0065"
+      ],
+      "reason": "Procedure step 4 replaced: platform validation context is read and no NET-03 observation is obtained or reused (specification-issues/net-05-version-and-validation-context.md)."
     },
     {
       "id": "REQ-NET-05-0010",
@@ -5047,10 +5052,13 @@
     },
     {
       "id": "REQ-NET-05-0015",
-      "status": "active",
+      "status": "retired",
       "source": "tests/net-05.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-NET-05-0062",
+        "REQ-NET-05-0063"
+      ],
+      "reason": "profile_version monotonicity made an issuer authoring obligation; Barometer validates only a positive integer and keeps no cross-task history (specification-issues/net-05-version-and-validation-context.md)."
     },
     {
       "id": "REQ-NET-05-0016",
@@ -5369,6 +5377,41 @@
     },
     {
       "id": "REQ-NET-05-0061",
+      "status": "active",
+      "source": "tests/net-05.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-05-0062",
+      "status": "active",
+      "source": "tests/net-05.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-05-0063",
+      "status": "active",
+      "source": "tests/net-05.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-05-0064",
+      "status": "active",
+      "source": "tests/net-05.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-05-0065",
+      "status": "active",
+      "source": "tests/net-05.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-NET-05-0066",
       "status": "active",
       "source": "tests/net-05.md",
       "successors": [],
