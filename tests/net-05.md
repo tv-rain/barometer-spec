@@ -68,20 +68,32 @@ The outer NET-05 task controls scheduling, execution constraints, safety, and la
 
 <a id="REQ-NET-05-0008"></a>
 
-**REQ-NET-05-0008:**
+**REQ-NET-05-0008 (retired):**
 
-The probe uses `NET-01` to ensure a stable network and may use an available `NET-03` observation to retain validation or captive-portal context. Primitive outcomes remain separate. NET-05 does not derive a censorship or broad-restriction classification in this version.
+The historical paragraph said the probe may use an available `NET-03` observation to retain validation or captive-portal context, without defining where such an observation comes from, how recent it must be, or how obtaining it is bounded. [REQ-NET-05-0064](#REQ-NET-05-0064) and [REQ-NET-05-0066](#REQ-NET-05-0066) replace it. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-NET-05-0064"></a>
+
+**REQ-NET-05-0064:**
+
+The probe uses `NET-01` to ensure a stable network and takes validation and captive-portal context from the platform's own validation state. In this version local policy provides no `NET-03` observation for reuse, and Barometer sends no traffic to obtain one: NET-05 neither runs `NET-03` nor reuses an earlier `NET-03` result, and adds no traffic outside its declared primitive steps, consistent with [REQ-EXECUTION-0033](../data-formats/task-execution.md#REQ-EXECUTION-0033) and [REQ-LIMIT-0035](../library/registered-limits.md#REQ-LIMIT-0035). Primitive outcomes remain separate. NET-05 does not derive a censorship or broad-restriction classification in this version.
 
 ### Procedure
 
 <a id="REQ-NET-05-0009"></a>
 
-**REQ-NET-05-0009:**
+**REQ-NET-05-0009 (retired):**
+
+The historical procedure's step 4 required obtaining or reusing a sufficiently recent `NET-03` observation under local policy, which no rule bounded or defined. [REQ-NET-05-0065](#REQ-NET-05-0065) replaces it; its other steps are unchanged. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-NET-05-0065"></a>
+
+**REQ-NET-05-0065:**
 
 1. Validate the complete profile structure, bounds, identifiers, primitive test versions, step inputs, and step options.
 2. Determine the effective risk from NET-05, every referenced primitive test, the outer task declaration, and local policy. Stop before network execution if the profile is not permitted.
 3. Confirm a stable network generation and obtain current `NET-01` context.
-4. Obtain or reuse a sufficiently recent `NET-03` observation under local policy.
+4. Read the platform's current validation and captive-portal state as the validation context. Obtain no `NET-03` observation and reuse none ([REQ-NET-05-0064](#REQ-NET-05-0064)).
 5. Execute primitive steps sequentially in array order, applying each primitive's registered behavior and bounds.
 6. Stop immediately if the network changes, the outer execution limit is reached, or local safety policy withdraws permission.
 7. Preserve every per-step observation and the overall completion state.
@@ -135,13 +147,25 @@ The `profile` object contains:
 
 <a id="REQ-NET-05-0015"></a>
 
-**REQ-NET-05-0015:**
+**REQ-NET-05-0015 (retired):**
+
+The historical table constrained `profile_version` to be positive and monotonically increasing for a given `profile_id` without naming who enforces monotonicity, over what scope, with which rejection class, or how earlier versions are retained and cleared. [REQ-NET-05-0062](#REQ-NET-05-0062) and [REQ-NET-05-0063](#REQ-NET-05-0063) replace it; the `profile_id` and `steps` rows are unchanged. This text is historical, not a current obligation; historical revisions remain available.
+
+<a id="REQ-NET-05-0062"></a>
+
+**REQ-NET-05-0062:**
 
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `profile_id` | string | Yes | Stable, non-identifying ASCII identifier of 1–64 bytes. | Correlates runs using the same measurement plan. |
-| `profile_version` | integer | Yes | Positive and monotonically increasing for a given `profile_id`. | Distinguishes profile revisions. |
+| `profile_version` | integer | Yes | Positive. Monotonic increase is an issuer obligation; see [REQ-NET-05-0063](#REQ-NET-05-0063). | Distinguishes profile revisions. |
 | `steps` | array of objects | Yes | 1–8 entries executed sequentially. | Ordered primitive measurements. |
+
+<a id="REQ-NET-05-0063"></a>
+
+**REQ-NET-05-0063:**
+
+Monotonically increasing `profile_version` values for a given `profile_id` are an issuer authoring obligation: an issuer that revises a profile assigns the revision a higher `profile_version` than every earlier revision with the same `profile_id`. Barometer validates only that `profile_version` is a positive integer. It keeps no record of the profile versions of other tasks, does not compare a task's `profile_version` with any other task, and does not reject a task because its `profile_version` is equal to or lower than a value seen earlier. A retained `profile_version` is the issuer's value, not evidence that monotonicity was checked.
 
 Each `steps` entry contains:
 
@@ -376,7 +400,7 @@ Example partial result:
   },
   "network_validation": {
     "state": "validated",
-    "source": "cached"
+    "source": "platform"
   },
   "steps": [
     {
@@ -487,7 +511,13 @@ The `network_validation` object contains:
 | Field | Type | Required | Constraints | Description |
 |---|---|:---:|---|---|
 | `state` | string | Yes | `validated`, `not_validated`, `captive_portal_suspected`, or `unknown` | Normalized validation state. |
-| `source` | string | Yes | `fresh`, `cached`, or `platform` | Whether the state came from the current run, an allowed recent NET-03 result, or platform state only. |
+| `source` | string | Yes | `fresh`, `cached`, or `platform` | Whether the state came from the current run, an allowed recent NET-03 result, or platform state only; only `platform` is emitted in this version ([REQ-NET-05-0066](#REQ-NET-05-0066)). |
+
+<a id="REQ-NET-05-0066"></a>
+
+**REQ-NET-05-0066:**
+
+In this version `network_validation.source` is `platform`, and `network_validation.state` comes from the platform's own validation and captive-portal state. The values `fresh` and `cached` remain reserved for a later version that defines how a `NET-03` observation is obtained or reused, including its traffic accounting, maximum age and required reviews; an implementation of this version must not emit them.
 
 Each `steps` entry contains:
 
