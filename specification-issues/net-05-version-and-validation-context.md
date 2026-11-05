@@ -1,6 +1,6 @@
 # Proposal: NET-05 Profile-Version Monotonicity and NET-03 Validation Context
 
-**Disposition:** Accepted; adoption pending. The project owner selected alternative (a) for both findings on November 5, 2026. See the [disposition record](#disposition-record--november-5-2026).
+**Disposition:** Accepted; wording merged at `45bc424`; internal alignment, Go adoption, binding and host adoption pending. The project owner selected alternative (a) for both findings on November 5, 2026. See the [disposition record](#disposition-record--november-5-2026).
 **Date:** November 5, 2026
 
 This record resolves two NET-05 rules that an implementation cannot satisfy without inventing observable behavior: who enforces the monotonic increase of `profile_version`, and where the `NET-03` validation context a profile may use comes from. It records the evidence, the alternatives and the selected disposition, and it accompanies the wording change that applies that disposition.
@@ -64,7 +64,7 @@ NET-03 validation context (GO-SPEC-ISSUE-023):
 
 ## Adoption and Closure Evidence
 
-- Accepted public baseline: the merge of this change; requirement links below.
+- Accepted public baseline: [`45bc424`](https://github.com/tv-rain/barometer-spec/tree/45bc424bd9829f5389b3b4494d0966e10e21da94), merged through [public PR #46](https://github.com/tv-rain/barometer-spec/pull/46); requirement links below.
 - Internal alignment, Go adoption evidence, and binding and host adoption: pending.
 - Closure requires the merged revision, internal alignment and Go adoption evidence. No runtime, platform, field or release support is claimed.
 
@@ -76,4 +76,5 @@ NET-03 validation context (GO-SPEC-ISSUE-023):
 - **Rationale:** the specification names no scope, rejection class, persistence or clearing behavior for monotonicity, and Barometer keeps no admitted-task records across restarts. No local-policy reuse, maximum age or traffic accounting exists for a `NET-03` observation, and obtaining one would add traffic outside the profile's declared primitive steps, contrary to the approach of REQ-EXECUTION-0033 and REQ-LIMIT-0035. Rejected: (b) durable per-issuer, per-profile history (new persisted state, privacy review, clearing rules); for the context, (b) in-memory same-generation reuse with a new registered maximum age, and (c) a fresh `NET-03` pre-step counted in the declared maxima (new traffic, safety review).
 - **Version:** Draft `0.1.0` is retained; no field is added or removed.
 - **Reviews:** maintainer disposition only; the selected rules add no traffic, state or field.
-- **Remaining:** merged revision, internal alignment, Go adoption, then binding and host adoption. The findings are not closed.
+- **Merged revision:** REQ-NET-05-0062 to REQ-NET-05-0066, the three retirements, the REQ-NET-05-0043 pointer and the `source: platform` example merged through [public PR #46](https://github.com/tv-rain/barometer-spec/pull/46) at [`45bc424`](https://github.com/tv-rain/barometer-spec/tree/45bc424bd9829f5389b3b4494d0966e10e21da94), retaining Draft `0.1.0`.
+- **Remaining:** internal alignment, Go adoption, then binding and host adoption. The findings are not closed.
