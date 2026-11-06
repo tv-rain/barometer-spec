@@ -29,7 +29,7 @@ The checker scans `.md` and `.go` files under those roots, including new files, 
 
 ## Traceability Checker
 
-The [manifest contract](../traceability/README.md) defines the diagnostic codes, gap levels, and claim gates. This tooling changes no runtime behavior, specification maturity, or support status. It requires Python 3.10 or later, the pinned packages, and Git. The declaration helper and the full automated suite require Go 1.18 or later. CI uses Python 3.11/3.14 and Go 1.26.0. The requirement-ID checker above retains its Python standard-library-only workflow.
+The [manifest contract](../traceability/README.md) defines the diagnostic codes, gap levels, and claim gates. This tooling changes no runtime behavior, specification maturity, or support status. It requires Python 3.10 or later, the pinned packages, and Git. The declaration helper and the full automated suite require Go 1.18 or later. CI uses Python 3.11 and Go 1.26.0. The requirement-ID checker above retains its Python standard-library-only workflow.
 
 Prepare an isolated environment and build the trusted helper outside the checkout:
 
