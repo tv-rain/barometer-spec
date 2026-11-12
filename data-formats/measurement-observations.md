@@ -476,6 +476,10 @@ When negotiation produced a reliably exposed version, producers must retain `TLS
 
 The initial registered offered ALPN identifiers are exactly the case-sensitive ASCII strings `http/1.1`, `h2` and `dot`. Tasks must not offer `unknown`, `h2c`, arbitrary application-specific identifiers or other external registry entries. The existing eight-entry and 32-byte ceilings remain upper bounds; duplicate rejection and stricter test/target/local-policy rules still apply. This registration permits no application payload, additional test, QUIC operation or implicit ALPN offer.
 
+<a id="REQ-OBS-0052"></a>
+
+**REQ-OBS-0052:**
+
 When a protocol was actually negotiated, the retained `alpn` is its exact identifier if it is one of those three, or `unknown` for another safely exposed negotiated identifier. If none was negotiated, `alpn` must be absent, including when a platform cannot expose the value. A peer selecting an unoffered identifier is not a successful valid negotiation; a coarse retained marker must not override protocol validation or a registered failure. Do not copy the original unregistered identifier into another field or diagnostic.
 
 ### TLS Peer-Alert Normalization

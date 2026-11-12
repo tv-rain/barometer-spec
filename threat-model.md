@@ -134,6 +134,8 @@ If an assumption is absent or cannot be evaluated reliably, the affected operati
 
 ## Abuse Cases That Must Be Tested
 
+This section is a validation checklist, not a separate set of requirements: the runtime obligations each case exercises are allocated to existing requirement IDs in the documents that define them, and implementations show coverage through those IDs.
+
 - A validly shaped remote task arrives without a signed package, or with a host-asserted authentication flag or issuer.
 - A signed package has an altered task byte, issuer, issuance time, or key identifier, or a signature that is not canonical.
 - A package is signed with an unknown key, with another issuer's key, or with a key outside its validity period.

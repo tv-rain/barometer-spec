@@ -3630,6 +3630,13 @@
       "reason": ""
     },
     {
+      "id": "REQ-TRUST-0060",
+      "status": "active",
+      "source": "library/task-trust.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-OBS-0034",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
@@ -7267,6 +7274,13 @@
     },
     {
       "id": "REQ-OBS-0051",
+      "status": "active",
+      "source": "data-formats/measurement-observations.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-OBS-0052",
       "status": "active",
       "source": "data-formats/measurement-observations.md",
       "successors": [],
