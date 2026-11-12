@@ -172,6 +172,10 @@ Each trusted issuer key in trusted local policy contains:
 | `not_before` | UTC time in the same fixed format as package `issued_at`. |
 | `not_after` | UTC time in the same format, later than `not_before`; the period from `not_before` to `not_after` does not exceed the registered maximum key validity. |
 
+<a id="REQ-TRUST-0060"></a>
+
+**REQ-TRUST-0060:**
+
 Policy validation enforces these constraints and the registered key-count limits. A policy with an invalid key record fails complete validation and is not activated under [REQ-TRUST-0030](#REQ-TRUST-0030) and [REQ-TRUST-0031](#REQ-TRUST-0031). The concrete policy representation is implementation-defined. Remote tasks, signed packages, collector responses, and other delivered content cannot add, replace, or extend trusted keys.
 
 <a id="REQ-TRUST-0052"></a>

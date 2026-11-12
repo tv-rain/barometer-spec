@@ -255,7 +255,7 @@ Options cannot extend or override an execution limit.
 
 For example, if a test operation is still running when `execution.limits.max_duration_ms` is reached, the probe may terminate the execution attempt even when the option-level timeout has not expired.
 
-Clearly inconsistent tasks should be rejected during validation. For example, a timeout for a single mandatory operation that exceeds the entire execution deadline is normally invalid.
+This paragraph is informative. A task is inconsistent when, for example, a timeout for a single mandatory operation exceeds the entire execution deadline. Admission does not reject a task on that ground alone; the execution limit bounds the attempt at run time under [REQ-OPTIONS-0016](#REQ-OPTIONS-0016).
 
 <a id="REQ-OPTIONS-0017"></a>
 
