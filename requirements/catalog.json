@@ -3188,17 +3188,22 @@
     },
     {
       "id": "REQ-LINKAGE-0041",
-      "status": "active",
+      "status": "retired",
       "source": "library/result-linkage.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-LINKAGE-0053",
+        "REQ-LINKAGE-0054"
+      ],
+      "reason": "Ingress recommendations split: the account-authentication recommendation became the mandatory account separation rule and the remaining recommendations continue unchanged (specification-issues/collector-account-and-publication.md)."
     },
     {
       "id": "REQ-LINKAGE-0042",
-      "status": "active",
+      "status": "retired",
       "source": "library/result-linkage.md",
-      "successors": [],
-      "reason": ""
+      "successors": [
+        "REQ-LINKAGE-0054"
+      ],
+      "reason": "Bundle delivery through an account-authenticated API, previously permitted after separate review, is prohibited (specification-issues/collector-account-and-publication.md)."
     },
     {
       "id": "REQ-LINKAGE-0043",
@@ -3980,6 +3985,34 @@
       "reason": ""
     },
     {
+      "id": "REQ-BUNDLE-0038",
+      "status": "active",
+      "source": "data-formats/result-bundle.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-BUNDLE-0039",
+      "status": "active",
+      "source": "data-formats/result-bundle.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-BUNDLE-0040",
+      "status": "active",
+      "source": "data-formats/result-bundle.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-BUNDLE-0041",
+      "status": "active",
+      "source": "data-formats/result-bundle.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
       "id": "REQ-INPUT-0027",
       "status": "active",
       "source": "data-formats/task-input.md",
@@ -4403,6 +4436,20 @@
     },
     {
       "id": "REQ-LINKAGE-0052",
+      "status": "active",
+      "source": "library/result-linkage.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-LINKAGE-0053",
+      "status": "active",
+      "source": "library/result-linkage.md",
+      "successors": [],
+      "reason": ""
+    },
+    {
+      "id": "REQ-LINKAGE-0054",
       "status": "active",
       "source": "library/result-linkage.md",
       "successors": [],

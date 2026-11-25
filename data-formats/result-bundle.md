@@ -351,13 +351,37 @@ The unacknowledged retention of a pending bundle starts when the first result it
 
 **REQ-BUNDLE-0035:**
 
-- Analysis and publication must aggregate combinations of linkage, time, region, ASN, network type, and `connection_code` because those values can become identifying in combination.
+- Analysis and publication must aggregate combinations of linkage, time, region, ASN, network type, and `connection_code` because those values can become identifying in combination. [REQ-BUNDLE-0038](#REQ-BUNDLE-0038) to [REQ-BUNDLE-0041](#REQ-BUNDLE-0041) set the rules for publishing and sharing.
 
 <a id="REQ-BUNDLE-0036"></a>
 
 **REQ-BUNDLE-0036:**
 
 - Hashing a host or platform identifier does not make it acceptable. The token must be derived from a random Barometer installation secret as defined by the library specification.
+
+<a id="REQ-BUNDLE-0038"></a>
+
+**REQ-BUNDLE-0038:**
+
+- Raw bundles and results must not be published. A collector operator may share them with another party only under a written data-sharing agreement that binds the recipient to these Privacy and Safety Requirements.
+
+<a id="REQ-BUNDLE-0039"></a>
+
+**REQ-BUNDLE-0039:**
+
+- Published or shared statistics must count results, not people, devices, installations, or accounts. Results without linkage do not establish how many people produced them, and a statistic must not be presented as a share of users.
+
+<a id="REQ-BUNDLE-0040"></a>
+
+**REQ-BUNDLE-0040:**
+
+- A published or shared statistic must suppress, or merge into a broader group, every group containing fewer results than a minimum the deployment sets and documents before its first publication. A small group can consist of results from one person.
+
+<a id="REQ-BUNDLE-0041"></a>
+
+**REQ-BUNDLE-0041:**
+
+- A deployment must publish statistics for a documented, fixed set of groupings and periods. It must not publish overlapping selections whose difference isolates a group smaller than the minimum in [REQ-BUNDLE-0040](#REQ-BUNDLE-0040).
 
 ## Interpretation
 
