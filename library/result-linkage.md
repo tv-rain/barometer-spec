@@ -368,21 +368,32 @@ Linkage safety depends on the complete delivery path, not only token derivation.
 
 <a id="REQ-LINKAGE-0041"></a>
 
-**REQ-LINKAGE-0041:**
+**REQ-LINKAGE-0041 (retired):**
+
+The historical rule listed ingress practices as recommendations, including avoiding application account authentication on the bundle endpoint where the deployment permits. [REQ-LINKAGE-0053](#REQ-LINKAGE-0053) keeps the other recommendations and [REQ-LINKAGE-0054](#REQ-LINKAGE-0054) makes the account rule mandatory; historical revisions remain available.
+
+<a id="REQ-LINKAGE-0042"></a>
+
+**REQ-LINKAGE-0042 (retired):**
+
+The historical rule permitted bundle delivery through an API authenticated to a user account after a separate privacy and safety review. [REQ-LINKAGE-0054](#REQ-LINKAGE-0054) prohibits that delivery; historical revisions remain available.
+
+<a id="REQ-LINKAGE-0053"></a>
+
+**REQ-LINKAGE-0053:**
 
 The ingress component should:
 
 - avoid or minimize source-IP logging;
 - remove forwarding headers and other transport identifiers;
-- avoid application account authentication on the bundle endpoint where the deployment permits;
 - retain `bundle_id` only as long as required for idempotency and retry handling;
 - enforce size, rate, and schema limits without building a persistent device profile.
 
-<a id="REQ-LINKAGE-0042"></a>
+<a id="REQ-LINKAGE-0054"></a>
 
-**REQ-LINKAGE-0042:**
+**REQ-LINKAGE-0054:**
 
-If the host delivers bundles through an API already authenticated to a user account, rotating linkage does not prevent the backend from associating results with that account. Such an integration requires a separate privacy and safety review and must not be described as anonymous.
+Bundle delivery must stay separate from host application accounts. The host must not deliver bundles through an API authenticated to a user account, and the bundle endpoint must not require, request, or accept account authentication, session cookies, or account tokens. If account context nevertheless arrives with a bundle, the collector must discard it before the bundle reaches storage or analysis and must not associate the bundle's results with an account. Rotating linkage does not prevent a backend from associating results with an account that delivered them, so this separation does not depend on whether linkage is enabled.
 
 ## Privacy and Safety Requirements
 
